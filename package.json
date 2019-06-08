@@ -1,0 +1,33 @@
+{
+  "name": "cte",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "watch": "nodemon ./bin/www",
+    "test": "npx mocha"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "express": "~4.16.0",
+    "express-session": "^1.16.1",
+    "http-errors": "~1.6.2",
+    "mongoose": "^5.5.11",
+    "morgan": "~1.9.0",
+    "multer": "^1.4.1",
+    "node-sass-middleware": "^0.11.0",
+    "nodemailer": "^6.2.1",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pug": "2.0.0-beta11"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.1.4",
+    "should": "^13.2.3"
+  }
+}

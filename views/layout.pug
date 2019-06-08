@@ -1,0 +1,13 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/main.css')
+		block head
+	body
+		main
+			include include/header.pug
+			block content
+
+		include include/footer.pug
+	

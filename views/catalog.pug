@@ -1,0 +1,24 @@
+extends layout
+
+block head
+	link(rel='stylesheet', href='/stylesheets/course.css')
+
+block content
+	.catalog
+		section.hero.hero-overlay
+			.container
+				h2 Courses This Sem
+				each course in courses
+					.card
+						.card-header
+							img(src=course.coverImage, alt="Thumbnail")
+							h2 #{course.name}
+						.card-body
+							if course.description.length == 122
+								p #{course.description}
+									a(href='/courses/'+course.id + '/view/') (more)
+							else
+								p #{course.description}
+						.card-footer
+							a.regBtn(href='/courses/' + course.id + '/view/')
+								button.secondary View

@@ -1,0 +1,29 @@
+header {
+	background-color: $white;
+}
+
+nav {
+	box-shadow: 0 0 4px $gray;
+	.container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 5em;
+	}
+	.navbar-start {
+		a.navbar-item {
+			padding: 15px;
+			transition: color $animTime;
+			&:hover {
+				color: $green;
+			}
+		}	
+	}
+	.navbar-item {
+		color: inherit;
+		&:hover {
+			color: $black;
+			text-decoration: inherit;
+		}
+	}
+}

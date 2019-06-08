@@ -1,0 +1,43 @@
+@import '../../styles/include/vars';
+//
+// Catalog & Course page
+//
+
+.catalog {
+	button {
+		width: 120px;
+		margin-bottom: 15px;
+	}
+}
+.course-hero {
+	display: flex;
+	img {
+		max-width: 400px;
+	}
+	.controls {
+		padding: 10px;
+	}
+	p {
+		margin: 0 40px;
+	}
+}
+
+.card {
+	background-color: #fff;
+	box-shadow: 0 0 2px 0 rgba(0,0,0,0.35);
+	width: 375px;
+	.card-header {
+		text-align: center;
+		img {
+			width: 100%;
+			border-bottom: 8px solid $green;
+		}
+	}
+	.card-body {
+		padding: 0 30px;
+	}
+	.card-footer {
+		padding-bottom: 15px;
+		text-align: center;
+	}
+}

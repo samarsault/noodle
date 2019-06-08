@@ -1,0 +1,31 @@
+//- Course Preview Page
+extends layout
+
+block head
+	link(rel='stylesheet', href='/stylesheets/course.css')
+
+block content
+	section.hero
+		.container
+			.course
+				h2 #{course.name}
+				.course-hero
+					div
+						img(src=course.coverImage, alt="Thumbnail")
+						.controls
+							a(href='/courses/' + course.id + '/register/')
+								button.primary Register
+							a(href=course.handout)
+								button.secondary View Handout
+					div
+						p #{course.description}	
+				.course-content
+					p Instructors: #{course.instructors}
+
+	section
+		.container
+			.card
+				h3 Topics
+				ul
+					each topic in course.topics
+						li #{topic}

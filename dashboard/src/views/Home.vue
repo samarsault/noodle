@@ -1,0 +1,84 @@
+<template>
+	<div class="container">
+		<!-- <img alt="Vue logo" src="./assets/logo.png">
+		<HelloWorld msg="Welcome to Your Vue.js App"/> -->
+		<h2>My Courses</h2>
+		<ul class="user-courses">
+			<li v-for="course in courses" v-bind:key="course._id"> 
+				<div>
+					<img :src="course.coverImage" :alt="course.name">
+					<div>
+						<h3>{{ course.name }}</h3>
+						<p>Instructors: {{  course.instructors.join(' ') }}</p>
+					</div>
+				</div>
+				<div>
+					<router-link :to="'/course/' + course._id">
+						<button class="secondary">View Course</button>
+					</router-link>
+					<router-link v-if="course.isAdmin" :to="`/admin/${course._id}`">
+						<button class="primary">Manage</button>
+					</router-link>
+				</div>
+			</li>
+		</ul>
+	</div>
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+	name: "Home",
+	data() {
+		return {
+			courses: [ ],
+			user: {}
+		}
+	},
+	beforeCreate () {
+		axios.get('/api/dashboard').then( ({ data }) => {
+			this.user = data.user;
+			this.courses = data.courses;
+		});
+	},
+	components: {
+		// HelloWorld
+	}
+}
+</script>
+
+<style lang="scss">
+@import '../../../styles/include/vars';
+
+.user-courses {
+	list-style-type: none;
+	padding: 0;
+	li {
+		padding: 20px 30px;
+		box-shadow: 0 0 1px 0 rgba(0,0,0,0.35);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background-color: #fff;
+		>div {
+			display: flex;
+			align-items: center;
+		}
+		h3 {
+			margin: 10px 0;
+		}
+		p {
+			color: $darkGray;
+		}
+	}
+
+	img {
+		display: inline-block;
+		width: 140px;
+		height: 140px;
+		margin-right: 20px;
+		border-radius: 100%;
+	}
+}
+</style>

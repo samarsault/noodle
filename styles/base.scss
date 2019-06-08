@@ -1,0 +1,166 @@
+@import 'include/vars';
+@import 'include/normalize';
+@import 'include/navbar';
+@import 'include/footer';
+@import 'include/form';
+
+*,*:before,*:after {
+	box-sizing: border-box;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	font-family: 'Nunito Sans', system-ui, sans-serif;
+	font-size: 17px;
+	line-height: 1.2em;
+	margin: 0;
+	color: $blueBlack;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: $gray;
+
+	// sticky footer
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+
+img, embed, object, video {
+	max-width: 100%;
+}
+
+// Typography 
+h1, h2, h3, h4 {
+	font-weight: normal;
+	font-family: 'Open Sans', sans-serif;
+	line-height: 1.36em;
+	color: $black;
+}
+
+h1 {
+	font-size: 36px;
+}
+
+h2 {
+	font-size: 30px;
+}
+
+h3 {
+	font-size: 24px;
+}
+
+h4 {
+	font-size: 20px;
+}
+
+p {
+	line-height: 1.5em;
+}
+
+a {
+	color: $tealBlue;
+	text-decoration: none;
+	transition: color $animTime;
+	&:hover {
+		color: darken($tealBlue, 15%);
+		text-decoration: underline;
+	}
+}
+
+.big-type {
+	font-size: 22px;
+}
+
+button {
+	border: 0;
+	padding: 10px 25px;
+	border-radius: 2px;
+	// @extend .big-type;
+	margin: 2px 4px;
+	&.primary, &.secondary {
+		color: $white;
+		transition: background-color $animTime;
+	}
+	&.primary {
+		background-color: $green;
+		&:hover {
+			background-color: darken($green, 4%);
+		}
+	}
+	&.secondary {
+		background-color: $tealBlue;
+		&:hover {
+			background-color: darken($tealBlue, 4%);
+		}
+	}
+	&:focus {
+		outline: none;
+	}
+}
+
+
+//
+// Components
+//
+.panel {
+	background-color: $white;
+	box-shadow: 0 0 3px 0 rgba(0,0,0,0.35);
+	padding: 10px 20px;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 10vw;
+}
+
+section.hero {
+	background-color: $blueBlack;
+	.container {
+		padding: 60px 0;
+	}
+	color: $white;
+	h1, h2, h3 {
+		margin-top: 0;
+		color: $white;
+	}
+	.card {
+		color: $blueBlack;
+		h1,h2,h3 {
+			margin: 15px 0;
+			color: $black;
+		}
+	}
+}
+
+.hero-overlay {
+	height: 400px;
+	margin-bottom: 400px;
+}
+
+table {
+	background-color: #fff;
+	width: 100%;
+
+	td,
+	th {
+		padding: 15px 10px;
+	}
+
+	th {
+		background-color: $tealBlue;
+		color: #fff;
+		font-weight: normal;
+		text-transform: uppercase;
+		font-size: 15px;
+	}
+
+	td {
+		text-align: center;
+		border: 1px solid $gray;
+	}
+}
+
