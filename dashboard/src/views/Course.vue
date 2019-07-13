@@ -1,11 +1,9 @@
 <template>
 	<section id="course-bg" class="hero hero-overlay" :style="`background-image: url('${course.coverImage}')`">
 		<div class="container">
-		<!-- <img alt="Vue logo" src="./assets/logo.png">
-			<HelloWorld msg="Welcome to Your Vue.js App"/> -->
 			<h1> {{ course.name }}</h1>
 
-			<CourseTabs>
+			<CourseTabs ref="courseTabs">
 				<Tab v-for="(topic,i) in course.topics" :name="topic" v-bind:key="i">
 					<ul>
 						<li v-for="(resource, j) in resources[topic]" v-bind:key="j">
@@ -41,6 +39,9 @@ export default {
 		try {
 			this.course = (await axios.get(`/api/courses/${this.course_id}/view`)).data;
 			this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
+			// select 1st item
+			if (this.$refs.courseTabs.tabs.length > 0)
+				this.$refs.courseTabs.tabs[0].isActive = true;
 		} catch (error) {
 			console.error(error);
 		}

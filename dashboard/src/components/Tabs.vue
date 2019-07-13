@@ -26,7 +26,11 @@ export default {
   },
 
   created() {
-    this.tabs = this.$children;
+	this.tabs = this.$children;
+  },
+  mounted() {
+	if (this.tabs.length > 0)
+		this.tabs[0].isActive = true
   },
   methods: {
     selectTab(selectedTab) {
