@@ -10,6 +10,7 @@ header
       .navbar-start
         a.navbar-item(href='/dashboard') My Courses
         a.navbar-item(href='/explore') Catalog
+        a.navbar-item(href='/admin', v-if='isAdmin') Admin
         a.navbar-item(href='/auth/logout') Sign Out
 </template>
 
@@ -20,6 +21,7 @@ export default {
 	name: 'NavBar',
 	data () {
 		return {
+      isAdmin: true,
 			burgerNavActive: false
 		}
 	},

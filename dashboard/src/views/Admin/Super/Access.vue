@@ -36,7 +36,11 @@ import Modal from '../../../components/Dialogs/Modal';
 import vSelect from 'vue-select'
 
 export default {
-
+  components: {
+    Modal,
+    vSelect
+  },
+  
   data() {
     return {
       accessLevel: 'student',
