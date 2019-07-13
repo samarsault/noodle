@@ -2,6 +2,7 @@ input, textarea {
 	display: block;
 	margin: 10px 0;	
 }
+
 input[type="text"], input[type="password"], input[type="number"], textarea {
 	background: $white;
 	border: 1px solid $gray;
@@ -15,4 +16,12 @@ input[type="text"], input[type="password"], input[type="number"], textarea {
 
 input[type="file"] {
 	// display: none;
+}
+
+.form-container {
+  max-width: 480px;
+  margin: 0 auto;
+  input, textarea {
+    width: 100%;
+  }
 }

@@ -54,6 +54,15 @@ router.get('/users/search', async function(req, res) {
 	return res.json(users);
 })
 
+router.get('/courses/search', async function (req, res) {
+  const query = req.query['q'];
+  if (!query)
+    return res.json([])
+
+  const courses = await Course.find({ $text: { $search: query } }).limit(10);
+  const names = courses.map(course => course.name);
+  return res.json(names);
+})
 //
 // Upgrade Access Level of User
 //
@@ -61,12 +70,15 @@ router.post('/users/updateAccess', async function (req, res) {
 	const { role, instructor_for } = req.body;
 
 	if (!role) {
+
 		if (role === 'instructor' && !instructor_for)
 			return res.json(response.error('Instructor role requires a course.'))
-
+    
+    const course = Course.findOne({ name: instructor_for }).select('');
+    
 		await User.updateOne({
 			role,
-			instructor_for
+			instructor_for: course._id
 		});
 
 		return res.json(response.success('Updated Role'))
@@ -75,6 +87,7 @@ router.post('/users/updateAccess', async function (req, res) {
 	return res.json(
 		response.error('role not specified')
 	);
+
 })
 
 module.exports = router;

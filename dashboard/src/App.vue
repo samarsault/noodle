@@ -13,6 +13,7 @@
 <style lang="scss">
 @charset 'utf-8';
 
+@import "vue-select/src/scss/vue-select.scss";
 </style>
 
 <script>
