@@ -8,7 +8,7 @@ const { User, Course } = require('../../models');
 
 const router = express.Router();
 
-router.post('/add', upload.fields([{
+router.post('/addCourse', upload.fields([{
 	name: 'coverImage',
 	maxCount: 1
 }, {
@@ -22,8 +22,11 @@ router.post('/add', upload.fields([{
 		name,
 		description,
 		offerYear,
-		offerSem
+		offerSem,
+    topics
 	} = req.body;
+  
+  const topicsArr = topics.replace('\r', '').topics.split('\n');
 
 	let course = new Course({
 		name,
@@ -31,7 +34,8 @@ router.post('/add', upload.fields([{
 		handout: `/uploads/${req.files['handout'][0].filename}`,
 		coverImage: `/uploads/${req.files['coverImage'][0].filename}`,
 		offerYear,
-		offerSem
+		offerSem,
+    topics: topicsArr
 	});
 
 	course.save((err) => {

@@ -9,6 +9,10 @@
 		margin-bottom: 15px;
 	}
 }
+.courses {
+  display: flex;
+}
+
 .course-hero {
 	display: flex;
 	img {
@@ -26,6 +30,7 @@
 	background-color: #fff;
 	box-shadow: 0 0 2px 0 rgba(0,0,0,0.35);
 	width: 375px;
+  margin: 20px;
 	.card-header {
 		text-align: center;
 		img {
