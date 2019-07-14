@@ -1,31 +1,34 @@
 <template>
-  <form method="post" :action="`/admin/courses/resource/add/${course_id}`" enctype="multipart/form-data">
+  <form 
+    method="post" 
+    :action="`/admin/courses/resource/add/${course_id}`"
+    enctype="multipart/form-data"
+    v-on:keydown.enter.prevent
+  >
     <input name="name" type="text" placeholder="Name">
     <textarea name="description" placeholder="Description" />
     <label for="topic">Topic: </label>
-    <select name="topic">
-      <option 
-      v-for="(topic,index) in topics" 
-      v-bind:key="index"
-      :value="topic"
-      >
-      {{ topic }}
-    </option>
-  </select>
-  <input type="file" name="res"> 
-  <button class="primary">Add Resource</button>
+    <v-select :options="topics" v-model="selectedTopic"/>
+    <input name="topic" type="hidden" v-model="selectedTopic"/>
+    <input type="file" name="res">
+    <button class="primary">Add Resource</button>
   </form>
 </template>
 
 
 <script>
 import axios from 'axios';
+import vSelect from 'vue-select';
 
 export default {
   props: [ 'course_id' ],
+  components: {
+    vSelect
+  },
   data() {
     return {
-      topics: []
+      topics: [],
+      selectedTopic: ''
     }
   },
   mounted() {

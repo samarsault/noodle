@@ -3,7 +3,18 @@ const { r_string, r_num } = require('../util/schemaTypes');
 
 const CourseSchema = new Schema({
   name: r_string,
-  description: r_string,
+  summary: {
+    type: String,
+    required: true,
+    minlength: 200,
+    maxlength: 250
+  },
+  description: {
+    type: String,
+    required: true,
+    minlength: 800,
+    maxlength: 1000
+  },
   handout: r_string,
   coverImage: r_string,
   offerYear: r_num,

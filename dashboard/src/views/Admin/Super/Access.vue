@@ -7,7 +7,7 @@
       v-on:close="updateModal = false"
     >
       <v-select v-model="accessLevel" :options="['student','admin', 'instructor']"/>
-      <v-select v-model="instructorFor" placeholder="Course" style="margin-top:15px" v-if="accessLevel == 'instructor'"" :options="courseOptions" @search="searchCourses" />
+      <CourseInput :selected="instructorFor" v-if="accessLevel === 'instructor'"/>
     </Modal>
     <table>
       <thead>
@@ -33,21 +33,22 @@
 <script>
 import axios from 'axios';
 import Modal from '../../../components/Dialogs/Modal';
+import CourseInput from "../../../components/Input/Course";
 import vSelect from 'vue-select'
 
 export default {
   components: {
     Modal,
-    vSelect
+    vSelect,
+    CourseInput
   },
   
   data() {
     return {
       accessLevel: 'student',
-      instructorFor: [],
+      instructorFor: '',
       users: [],
       updateModal: false,
-      courseOptions: []
     }
 
   },
@@ -59,14 +60,6 @@ export default {
   },
 
   methods: {
-    searchCourses(search, loading) {
-      loading(true);
-      axios.get(`/admin/super/courses/search?q=${search}`)
-        .then (({data}) => {
-          this.courseOptions = data;
-          loading(false);
-        })
-    },
     updateAccess() {
       axios.post('/admin/super/updateAccess', {
         role: this.accessLevel,

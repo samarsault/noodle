@@ -54,7 +54,19 @@ router.get('/users', async function (req, res) {
 })
 
 router.get('/users/search', async function(req, res) {
-	const users = await User.find(req.query);
+  const query = req.query['q'];
+  if (!query)
+    return res.json([]);
+  
+  const re = new RegExp(`${query}.*`, 'i')
+  re.ignoreCase = true;
+
+  const users = await User.find({
+    $or: [
+      { name: re },
+      { email: re }
+    ]
+  }).select("name email").limit(10);
 	return res.json(users);
 })
 

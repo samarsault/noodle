@@ -21,7 +21,7 @@ input[type="file"] {
 .form-container {
   max-width: 480px;
   margin: 0 auto;
-  input, textarea {
+  input[type="text"], input[type="number"], textarea {
     width: 100%;
   }
 }
