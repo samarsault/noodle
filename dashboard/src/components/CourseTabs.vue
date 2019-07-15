@@ -41,7 +41,7 @@ export default {
 
 <style lang="scss">
 .course-items {
-	display: flex;
+  display: flex;
 }
 .topics {
 	width: 300px;

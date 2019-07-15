@@ -1,9 +1,10 @@
 <template>
-	<section id="course-bg" class="hero hero-overlay" :style="`background-image: url('${course.coverImage}')`">
-		<div class="container">
-			<h1> {{ course.name }}</h1>
+  <div>
+	<section id="course-bg" class="hero hero-overlay" :style="`background-image: url('${course.coverImage}')`"/>
+	<div class="container">
+			<h1 style="color: #fff"> {{ course.name }}</h1>
 
-			<CourseTabs ref="courseTabs">
+			<CourseTabs ref="courseTabs" style="margin-bottom: 60px">
 				<Tab v-for="(topic,i) in course.topics" :name="topic" v-bind:key="i">
 					<ul>
 						<li v-for="(resource, j) in resources[topic]" v-bind:key="j">
@@ -16,8 +17,8 @@
 					</ul>
 				</Tab>
 			</CourseTabs>
-		</div>
-	</section>
+	</div>
+	</div>
 </template>
 
 <script>

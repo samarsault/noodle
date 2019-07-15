@@ -9,14 +9,25 @@ const { User, Course, Resource } = require('../models');
 
 // Get User Details
 router.get('/dashboard', async function(req, res) {
-	console.log(`Dashboard for ${req.session.passport.user}`)
-	const user = await User.findOne({ _id: req.session.passport.user })
-	// res.json(user);
+  console.log(`Dashboard for ${req.session.passport.user}`)
+
+  const user = await User.findOne({ _id: req.session.passport.user })
+
 	const coursePromises = user.courses.map( async (course_id) => {
-		const course = await Course.findOne({ _id: course_id }).select("name coverImage instructors")
+    const course = await Course.findOne({ _id: course_id }).select("name coverImage instructors")
+
+    // Intructor Id to Name
+    const instructors = await Promise.all(
+      course.instructors.map(async user_id => {
+        const { name } = await User.findOne({_id:user_id}).select('name')
+        return name;
+      })
+    );
+
 		if (course._id.equals(user.instructor_for))
-			return Object.assign({}, course.toObject(), { isAdmin: true })
-		return course;
+      return Object.assign({}, course.toObject(), { instructors } ,{ isAdmin: true })
+
+		return Object.assign({}, course.toObject(), { instructors });
 	});
 
 	Promise.all(coursePromises)
@@ -30,7 +41,6 @@ router.get('/dashboard', async function(req, res) {
 
 // Get Course Meta
 router.get('/courses/:course_id/view', function(req, res, next) {
-	// TODO: check user enrolled
 	Course.findOne({ _id: req.params.course_id }, (err, course) => {
 		if (err) {
 			return res.status(500).send(err);

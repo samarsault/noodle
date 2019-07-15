@@ -10,7 +10,7 @@
   					<img :src="course.coverImage" :alt="course.name">
   					<div>
   						<h3>{{ course.name }}</h3>
-  						<p>Instructors: {{  course.instructors.join(' ') }}</p>
+  						<p>Instructors: {{  course.instructors.join(', ') }}</p>
   					</div>
   				</div>
   				<div>
