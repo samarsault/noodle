@@ -7,19 +7,19 @@ block content
   .catalog
     if courses.length > 0
       section.hero.hero-overlay
-        .container
-          h2 Courses This Sem
-          .courses
-            each course in courses
-              .card
-                .card-header
-                  img(src=course.coverImage, alt="Thumbnail")
-                  h2 #{course.name}
-                .card-body
-                  p #{course.summary}
-                .card-footer
-                  a.regBtn(href='/courses/' + course.id + '/view/')
-                    button.secondary View
+      .container
+        h2#heading Courses This Sem
+        .courses
+          each course in courses
+            .card
+              .card-header
+                img(src=course.coverImage, alt="Thumbnail")
+                h2 #{course.name}
+              .card-body
+                p #{course.summary}
+              .card-footer
+                a.regBtn(href='/courses/' + course.id + '/view/')
+                  button.secondary View
     else
       .not-found
         img(src='/images/empty.png')

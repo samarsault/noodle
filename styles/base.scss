@@ -137,7 +137,11 @@ section.hero {
 }
 
 .hero-overlay {
-	height: 400px;
+  position: absolute;
+  height: 400px;
+  width: 100%;
+  z-index: -1;
+  top: 0;
 	margin-bottom: 400px;
 }
 
