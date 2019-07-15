@@ -1,28 +1,35 @@
 <template>
-	<div class="container">
-		<!-- <img alt="Vue logo" src="./assets/logo.png">
-		<HelloWorld msg="Welcome to Your Vue.js App"/> -->
-		<h2>My Courses</h2>
-		<ul class="user-courses">
-			<li v-for="course in courses" v-bind:key="course._id"> 
-				<div>
-					<img :src="course.coverImage" :alt="course.name">
-					<div>
-						<h3>{{ course.name }}</h3>
-						<p>Instructors: {{  course.instructors.join(' ') }}</p>
-					</div>
-				</div>
-				<div>
-					<router-link :to="'/course/' + course._id">
-						<button class="secondary">View Course</button>
-					</router-link>
-					<router-link v-if="course.isAdmin" :to="`/admin/${course._id}`">
-						<button class="primary">Manage</button>
-					</router-link>
-				</div>
-			</li>
-		</ul>
-	</div>
+  <div>
+  	<div class="container" v-if="courses.length > 0">
+  		<!-- <img alt="Vue logo" src="./assets/logo.png">
+  		<HelloWorld msg="Welcome to Your Vue.js App"/> -->
+  		<h2>My Courses</h2>
+  		<ul class="user-courses">
+  			<li v-for="course in courses" v-bind:key="course._id"> 
+  				<div>
+  					<img :src="course.coverImage" :alt="course.name">
+  					<div>
+  						<h3>{{ course.name }}</h3>
+  						<p>Instructors: {{  course.instructors.join(' ') }}</p>
+  					</div>
+  				</div>
+  				<div>
+  					<router-link :to="'/course/' + course._id">
+  						<button class="secondary">View Course</button>
+  					</router-link>
+  					<router-link v-if="course.isAdmin" :to="`/admin/${course._id}`">
+  						<button class="primary">Manage</button>
+  					</router-link>
+  				</div>
+  			</li>
+  		</ul>
+  	</div>
+  	<div class="not-found" v-if="courses.length == 0">
+  		<img src='/images/empty.png'>
+      <h2>You are missing out!</h2>
+      <button class="primary">Explore Courses</button>
+  	</div>
+  </div>
 </template>
 
 <script>

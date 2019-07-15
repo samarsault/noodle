@@ -16,11 +16,7 @@ block content
                   img(src=course.coverImage, alt="Thumbnail")
                   h2 #{course.name}
                 .card-body
-                  if course.description.length == 122
-                    p #{course.description}
-                      a(href='/courses/'+course.id + '/view/') (more)
-                  else
-                    p #{course.description}
+                  p #{course.summary}
                 .card-footer
                   a.regBtn(href='/courses/' + course.id + '/view/')
                     button.secondary View

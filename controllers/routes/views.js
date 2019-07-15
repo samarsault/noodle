@@ -21,14 +21,23 @@ router.get('/courses', function(req, res) {
 })
 
 // Course Page
-router.get('/courses/:course_id/view', function (req, res, next) {
-	// TODO: check user enrolled
-	Course.findOne({ _id: req.params.course_id }, (err, course) => {
-		if (err) {
-			return res.status(500).send(err);
-		}
-		res.render('course',  { course });
-	})
+router.get('/courses/:course_id/view', async function (req, res, next) {
+  const course = await Course.findOne({ _id: req.params.course_id });
+
+  const instructorDelegates = course.instructors.map(async user_id => {
+    const user = await User.findOne({ _id: user_id }).select('name');
+    return user.name;
+  });
+
+  const instructors = await Promise.all(instructorDelegates);
+  const courseObject = course.toObject();
+  courseObject.instructors = instructors;
+
+  res.render(
+    'course',  
+    { course: courseObject }
+  );
+
 });
 
 module.exports = router;

@@ -14,37 +14,63 @@ router.post('/addCourse', upload.fields([{
 }, {
 	name: 'handout',
 	maxCount: 1
-}]), function (req, res) {
+}]), async function (req, res) {
 	if (!req.files || !req.files['coverImage'][0] || !req.files['handout'])
 		return res.json(response.error('Insufficent fields'));
 
 	const {
 		name,
+    summary,
 		description,
 		offerYear,
 		offerSem,
-    topics
+    topics,
+    instructors
 	} = req.body;
   
-  const topicsArr = topics.replace('\r', '').topics.split('\n');
+  const topicsArr = topics.replace(/\r/g, '').split('\n');
+  const instructorsArr = instructors.split(',');
 
-	let course = new Course({
-		name,
-		description,
-		handout: `/uploads/${req.files['handout'][0].filename}`,
-		coverImage: `/uploads/${req.files['coverImage'][0].filename}`,
-		offerYear,
-		offerSem,
-    topics: topicsArr
-	});
+  try {
+    // Create Course
+  	const course =  await Course.create({
+      name,
+      summary,
+  		description,
+  		handout: `/uploads/${req.files['handout'][0].filename}`,
+  		coverImage: `/uploads/${req.files['coverImage'][0].filename}`,
+  		offerYear,
+  		offerSem,
+      topics: topicsArr
+    });
 
-	course.save((err) => {
-		if (!err) {
-			res.send(response.success())
-		} else {
-			res.send(response.error('Database error'));
-		}
-	})
+    // Update instructor & roles
+    const updateDelegates = instructorsArr.map(async (email) => {
+      const user = await User.findOneAndUpdate({
+        email,
+      }, {
+        role: 'instructor',
+        instructor_for: course._id
+      })
+
+      await Course.updateOne({
+        $addToSet: {
+          instructors: user._id
+        }
+      })
+    });
+
+    await Promise.all(updateDelegates);
+
+    return res.json(response.success());
+
+  } catch (e) {
+
+    if (process.env.NODE_ENV !== 'production')
+      return res.json(response.error(e.message));
+
+    return res.json(response.error());
+  }
 });
 
 // TODO: Efficiency
@@ -67,6 +93,7 @@ router.get('/users/search', async function(req, res) {
       { email: re }
     ]
   }).select("name email").limit(10);
+
 	return res.json(users);
 })
 
@@ -79,29 +106,37 @@ router.get('/courses/search', async function (req, res) {
   const names = courses.map(course => course.name);
   return res.json(names);
 })
+
 //
 // Upgrade Access Level of User
 //
 router.post('/users/updateAccess', async function (req, res) {
-	const { role, instructor_for } = req.body;
+	const { user_id, role, instructor_for } = req.body;
 
-	if (!role) {
+	if (user_id && role) {
 
 		if (role === 'instructor' && !instructor_for)
 			return res.json(response.error('Instructor role requires a course.'))
     
-    const course = Course.findOne({ name: instructor_for }).select('');
+    const user = await User.findOne({ _id: user_id });
+    const course = await Course.findOne({ name: instructor_for }).select('');
     
 		await User.updateOne({
 			role,
 			instructor_for: course._id
-		});
+    });
+
+    await Course.updateOne({
+      $addToSet: {
+        instructors: user._id
+      }
+    })
 
 		return res.json(response.success('Updated Role'))
 	}
 
 	return res.json(
-		response.error('role not specified')
+		response.error('role/user not specified')
 	);
 
 })

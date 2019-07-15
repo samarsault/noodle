@@ -23,7 +23,11 @@ const CourseSchema = new Schema({
     { type: String }
   ],
   instructors: [
-    { type: Schema.Types.ObjectId, ref: 'User' }
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User', 
+      required: true
+    }
   ]
 });
 

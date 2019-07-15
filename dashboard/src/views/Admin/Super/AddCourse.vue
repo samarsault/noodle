@@ -6,7 +6,7 @@
     <label>Summary</label>
     <textarea 
       name="summary" 
-      rows="5" 
+      rows="7" 
       placeholder="Course summary in 200-250 characters"
       minlength="200"
       maxlength="250"
@@ -15,7 +15,7 @@
     <label>Description</label>
     <textarea 
       name="description" 
-      rows="10" 
+      rows="12" 
       placeholder="Detailed description in 800-1000 characters."
       minlength="800"
       maxlength="1000"
@@ -23,13 +23,13 @@
     <input type="number" name="offerYear" placeholder="Year">   
     <input type="number" name="offerSem" placeholder="Semester">  
 
-    <label for="topics" style="display: block">Topics</label> 
+    <label for="topics">Topics</label> 
     <v-select multiple taggable :options="topics" v-model="topics" />
     <input type="hidden" name="topics" v-model="topicsString">
 
     <label for="instructors">Instructors</label> 
     
-    <UserInput :selected="instructors"/>
+    <UserInput v-model="instructors"/>
     <input type="hidden" name="instructors" v-model="instructorStr">
 
     <label for="coverImage">Cover Image</label>
@@ -46,6 +46,7 @@
 import vSelect from 'vue-select';
 import UserInput from '../../../components/Input/User';
 
+const emailExtract = /<(.*)>/;
 export default {
   components: {
     vSelect,
@@ -56,7 +57,9 @@ export default {
       return this.topics.join('\n');
     },
     instructorStr: function() {
-      return this.instructors.map(x=>x.email).join(',');
+      return this.instructors.map(x => {
+        return x.match(emailExtract)[1]
+      }).join(',');
     }
   },
   data() {

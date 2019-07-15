@@ -1,14 +1,25 @@
 <template>
-  <v-select :options="courseOptions" v-model="selected" />
+  <v-select 
+    :options="courseOptions" 
+    @search="searchCourses"
+    v-on:input="changed"
+  />
 </template>
 
 <script>
+import vSelect from 'vue-select';
+
 export default {
-  props: ['selected'],
+  props: {
+    value: { }
+  },
   data() {
     return {
       courseOptions: []
     }
+  },
+  components: {
+    vSelect
   },
   methods: {
     searchCourses(search, loading) {
@@ -18,8 +29,11 @@ export default {
             this.courseOptions = data;
             loading(false);
           })
+    },
+    changed(value) {
+      this.$emit('input', value);
     }
-   }
+  }
 }
 </script>
 
