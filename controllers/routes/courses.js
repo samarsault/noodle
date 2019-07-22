@@ -5,7 +5,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { User } = require('../models');
+const { User, Course } = require('../models');
 
 // Get Course Students
 router.get('/:course_id/students', function (req, res, next) {
@@ -18,6 +18,17 @@ router.get('/:course_id/students', function (req, res, next) {
 
 // Register User for course
 router.get('/:course_id/register', async function (req, res) {
+	const course = await Course.findOne({ _id: req.params.course_id }).select('name');
+	return res.render('agreement', {
+		course
+	});
+});
+
+router.post('/:course_id/register', async function (req, res) {
+	const { agreement } = req.body;
+	if (agreement !== "yes")
+		return res.status(500).send('Not agreed');
+
 	const course_id = req.params.course_id;
 	// User.
 	const user_id = req.session.passport.user;
