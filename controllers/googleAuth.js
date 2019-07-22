@@ -27,10 +27,15 @@ module.exports = (passport) => {
 				if (!err && user !== null) {
 					done(null, user);
 				} else {
+					const email = profile.emails[0].value;
+
+					if (email.split('@')[1] !== 'goa.bits-pilani.ac.in')
+						return done(null, false, 'Please Sign In using your BITS Goa Email');
+
 					let user = new User({
 						oauth_id: profile.id,
 						name: profile.displayName,
-						email: profile.emails[0].value,
+						email,
 						created: Date.now()
 					});
 					user.save(function(err) {
