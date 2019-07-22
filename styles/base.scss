@@ -100,6 +100,22 @@ button {
 	&:focus {
 		outline: none;
 	}
+
+	&.icon-button {
+		display: flex;
+		align-items: center;
+		span {
+			&.icon-left {
+				margin-left: 8px;
+			}
+			&.icon-right {
+				margin-right: 8px;
+			}
+		}
+	}
+	.material-design-icon__svg {
+		display: flex;
+	}
 }
 
 

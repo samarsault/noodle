@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Course from './views/Course.vue'
 import Admin from './views/Admin/SuperIndex.vue'
 import CourseAdmin from './views/Admin/CourseIndex.vue'
+import SignUp from './views/SignUp';
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ export default new Router({
 		path: '/admin',
 		name: 'admin',
 		component: Admin
+	},
+	{
+		path: '/signup',
+		name: 'signup',
+		component: SignUp
 	}
 
 	]

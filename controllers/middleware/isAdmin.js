@@ -4,7 +4,7 @@
 const { User } = require('../models/');
 
 module.exports = function(req, res, next) {
-	const id = req.session.passport.user.id;
+	const id = req.session.passport.user;
 	const { role } = User.find({ _id: id }).select('role')
 	if (role === 'admin')
 		return next()

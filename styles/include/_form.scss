@@ -14,8 +14,15 @@ input[type="text"], input[type="password"], input[type="number"], textarea {
 	}	
 }
 
-input[type="file"] {
-	// display: none;
+// Hide Number Spinner
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
 }
 
 .form-container {

@@ -16,15 +16,18 @@ router.get('/callback',
 );
 
 // Update user with BITS ID, Phone Number
-router.post('/update', (req, res) => {
-	const bits_id = req.params.bits_id;
-	const phone = req.params.phone;
+router.post('/update', async (req, res) => {
+	const user_id = req.session.passport.user;
+	const { bits_id, phone }  =  req.body;
 	
-	User.update({
+	await User.updateOne({
+		_id: user_id
+	}, {
 		bits_id,
 		phone	
-	})
+	});
 
+	res.redirect('/dashboard');
 });
 
 router.get('/logout', (req, res) => {

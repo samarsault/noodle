@@ -5,10 +5,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { User, Course, Resource } = require('../models');
+const { User } = require('../models');
 
 // Get Course Students
-router.get('/:course_id/students/:course_id', function (req, res, next) {
+router.get('/:course_id/students', function (req, res, next) {
 	User.find({ courses: req.params.course_id, role: 'student' }, { courses: 0 }, function (err, users) {
 		if (err)
 			res.status(500).send(err);
@@ -18,9 +18,10 @@ router.get('/:course_id/students/:course_id', function (req, res, next) {
 
 // Register User for course
 router.get('/:course_id/register', async function (req, res) {
-	let course_id = req.params.course_id;
+	const course_id = req.params.course_id;
 	// User.
-	let user_id = req.session.passport.user;
+	const user_id = req.session.passport.user;
+
 	console.log(`Registering ${user_id}`)
 	await User.updateOne(
 		{ _id: user_id },
