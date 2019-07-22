@@ -16,6 +16,12 @@
 }
 .courses {
   display: flex;
+  .card {
+    transition: transform .3s ease;
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
 }
 
 .course-hero {
@@ -24,10 +30,19 @@
 		max-width: 400px;
 	}
 	.controls {
-		padding: 10px;
+		padding: 0;
+		button {
+			margin-right: 10px;
+			&:first-child {
+				margin-left: 0;
+			}
+		}
 	}
-	p {
+	.info {
 		margin: 0 40px;
+		p {
+			margin-top: 0;
+		}
 	}
 }
 
@@ -36,6 +51,8 @@
 	box-shadow: 0 0 2px 0 rgba(0,0,0,0.35);
 	width: 375px;
   margin: 20px;
+  height: 100%;
+  
 	.card-header {
 		text-align: center;
 		img {
@@ -49,5 +66,29 @@
 	.card-footer {
 		padding-bottom: 15px;
 		text-align: center;
+	}
+}
+
+.course-info {
+	margin: 20px 0;
+}
+
+.course-info .container {
+  display: flex;
+  .card {
+    padding: 15px 30px;
+	}
+	#description {
+		width: 100%;
+		margin-left: 0;
+	}
+  h3 {
+    margin: .5em 0;
+	}
+	ul {
+		padding-inline-start: 35px;
+		li {
+			padding: 5px 0;
+		}
 	}
 }

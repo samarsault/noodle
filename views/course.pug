@@ -11,19 +11,21 @@ block content
 				h2 #{course.name}
 				.course-hero
 					div
-						img(src=course.coverImage, alt="Thumbnail")
+						img(src=course.coverImage, alt="Thumbnail", width=360, height=240)
+					div.info
+						p #{course.summary}	
+						p Instructors: #{course.instructors}						
 						.controls
 							a(href='/courses/' + course._id + '/register/')
 								button.primary Register
 							a(href=course.handout)
 								button.secondary View Handout
-					div
-						p #{course.description}	
-				.course-content
-					p Instructors: #{course.instructors}
 
-	section
+	section.course-info
 		.container
+			.card#description
+				h3 Description
+				p #{course.description}
 			.card
 				h3 Topics
 				ul
