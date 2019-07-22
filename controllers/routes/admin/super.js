@@ -118,19 +118,24 @@ router.post('/users/updateAccess', async function (req, res) {
 		if (role === 'instructor' && !instructor_for)
 			return res.json(response.error('Instructor role requires a course.'))
     
-    const user = await User.findOne({ _id: user_id });
-    const course = await Course.findOne({ name: instructor_for }).select('');
-    
-		await User.updateOne({
-			role,
-			instructor_for: course._id
-    });
+    const user = await User.findOneAndUpdate(
+			{ _id: user_id }, 
+			{ role }
+		);
 
-    await Course.updateOne({
-      $addToSet: {
-        instructors: user._id
-      }
-    })
+		// Update role as instructor
+		if (instructor_for) {
+ 			await Course.updateOne(
+				{
+					name: instructor_for
+				},
+				{
+			    $addToSet: {
+ 			  		instructors: user._id
+ 			  	}
+				}
+			)
+		}
 
 		return res.json(response.success('Updated Role'))
 	}

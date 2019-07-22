@@ -1,14 +1,16 @@
 //
 // Verify the user is admin for the course
 //
-const { User } = require('../models/');
+const { Course } = require('../models/');
 
-module.exports = function(req, res, next) {
-	const id = req.session.passport.user.id;
+module.exports = async function(req, res, next) {
+	const user_id = req.session.passport.user.id;
 	const course_id = req.course_id;
-	const { role, instructor_for } = User.find({ _id: id }).select('role instructor_for')
-	if (role === 'instructor' && instructor_for === course_id)
-		return next()
+
+	const { instructors } = await Course.countDocuments({ _id: course_id, instructors: user_id }).limit(1);
+
+	if (instructors > 0)
+		return next();
 
 	// Unauthorized
 	return res.staus(401);

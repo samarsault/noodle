@@ -33,11 +33,6 @@ const UserSchema = new Schema({
     enum: ['admin', 'instructor', 'student'],
     default: 'student'
   },
-  // each person can be instructor for only 1 course
-  instructor_for: {
-    type: Schema.Types.ObjectId,
-    ref: 'Course'
-  },
   created: Date,
   courses: [{
     type: Schema.Types.ObjectId,

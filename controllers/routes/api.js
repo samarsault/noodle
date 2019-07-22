@@ -9,9 +9,10 @@ const { User, Course, Resource } = require('../models');
 
 // Get User Details
 router.get('/dashboard', async function(req, res) {
-  console.log(`Dashboard for ${req.session.passport.user}`)
+	const user_id = req.session.passport.user;
+  console.log(`Dashboard for ${user_id}`)
 
-  const user = await User.findOne({ _id: req.session.passport.user })
+  const user = await User.findOne({ _id: user_id })
 
 	const coursePromises = user.courses.map( async (course_id) => {
     const course = await Course.findOne({ _id: course_id }).select("name coverImage instructors")
@@ -24,7 +25,10 @@ router.get('/dashboard', async function(req, res) {
       })
     );
 
-		if (course._id.equals(user.instructor_for))
+		const instructor_index = course.instructors.findIndex(x => x.equals(user_id));
+
+		// Is an instructor for the course
+		if (instructor_index !== -1)
       return Object.assign({}, course.toObject(), { instructors } ,{ isAdmin: true })
 
 		return Object.assign({}, course.toObject(), { instructors });
