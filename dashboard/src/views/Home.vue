@@ -34,6 +34,7 @@
 
 <script>
 import axios from 'axios'
+import event from '../utils/event';
 
 export default {
 	name: "Home",
@@ -44,9 +45,11 @@ export default {
 		}
 	},
 	beforeCreate () {
+    event.$emit('loading', true);
 		axios.get('/api/dashboard').then( ({ data }) => {
 			this.user = data.user;
-			this.courses = data.courses;
+      this.courses = data.courses;
+      event.$emit('loading', false);
 		});
 	},
 	components: {

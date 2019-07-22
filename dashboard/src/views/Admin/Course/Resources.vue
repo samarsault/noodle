@@ -11,7 +11,7 @@
     <v-select :options="topics" v-model="selectedTopic"/>
     <input name="topic" type="hidden" v-model="selectedTopic"/>
     <input type="file" name="res">
-    <button class="primary">Add Resource</button>
+    <button class="primary"><Plus decorative/>Add Resource</button>
   </form>
 </template>
 
@@ -19,11 +19,13 @@
 <script>
 import axios from 'axios';
 import vSelect from 'vue-select';
+import Plus from 'vue-material-design-icons/Plus'
 
 export default {
   props: [ 'course_id' ],
   components: {
-    vSelect
+    vSelect,
+    Plus
   },
   data() {
     return {

@@ -1,7 +1,7 @@
 <template>
   <div>
   <a :href="`/admin/courses/students/${course_id}/download`">
-    <button class="primary">Download as CSV</button>
+    <button class="primary"><DownloadIcon decorative/> Download as CSV</button>
   </a>
   <table>
     <thead>
@@ -26,6 +26,7 @@
 
 <script>
 import axios from 'axios';
+import DownloadIcon from 'vue-material-design-icons/FileDownload';
 
 export default {
   props: [ 'course_id' ],
@@ -33,6 +34,9 @@ export default {
     return {
       registered: []
     }
+  },
+  components: {
+    DownloadIcon
   },
   mounted() {
     axios.get(`/admin/courses/students/${this.course_id}`)

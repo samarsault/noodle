@@ -24,6 +24,7 @@
 <script>
 import axios from 'axios'
 import CourseTabs from '../components/CourseTabs';
+import event from '../utils/event';
 import Tab from '../components/Tab';
 
 export default {
@@ -36,13 +37,17 @@ export default {
 			admin: true
 		}
 	},
-	async mounted () {
+	async created () {
+    event.$emit('loading', true);
 		try {
 			this.course = (await axios.get(`/api/courses/${this.course_id}/view`)).data;
-			this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
+      this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
+
 			// select 1st item
-			if (this.$refs.courseTabs.tabs.length > 0)
-				this.$refs.courseTabs.tabs[0].isActive = true;
+			if (this.$refs.courseTabs.tabs.length > 0) {
+        this.$refs.courseTabs.tabs[0].isActive = true;
+      }
+      event.$emit('loading', false);
 		} catch (error) {
 			console.error(error);
 		}
