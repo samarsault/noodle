@@ -12,6 +12,9 @@ const bodyParser = require('body-parser');
 // Custom
 const googleAuth = require('./controllers/googleAuth');
 
+// Middleware
+const isAuth = require('./controllers/middleware/isAuth');
+
 // Routes
 const viewsRouter = require('./controllers/routes/views');
 const authRouter = require('./controllers/routes/auth');
@@ -23,6 +26,8 @@ const apiRouter = require('./controllers/routes/api');
 require('dotenv').config()
 
 // Connect to database
+
+mongoose.set("useCreateIndex", true);
 mongoose.connect('mongodb://localhost:27017/cte-dev', { useNewUrlParser: true });
 
 const app = express();
@@ -74,7 +79,7 @@ if (process.env.NODE_ENV !== "production") {
 app.use('/', viewsRouter);
 app.use('/auth', authRouter);
 app.use('/courses', coursesRouter);
-app.use('/admin', adminRouter);
+app.use('/admin', isAuth, adminRouter);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API

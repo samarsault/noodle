@@ -81,6 +81,9 @@
 	#description {
 		width: 100%;
 		margin-left: 0;
+		p {
+			white-space: pre-line;
+		}
 	}
   h3 {
     margin: .5em 0;

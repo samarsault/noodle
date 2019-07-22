@@ -1,5 +1,6 @@
 //
 // Course Admin Actions
+// Course_id: req.course_id
 //
 const express = require('express');
 const router = express.Router();
@@ -10,18 +11,18 @@ const upload = require('./upload');
 //
 // Fetch students registered to course
 //
-router.get('/students/:course_id', async function (req, res) {
+router.get('/students', async function (req, res) {
 	const users = await User.find({
-		courses: req.params.course_id
+		courses: req.course_id
 	});
 	if (users)
 		return res.json(users);
 	return res.status(500);
 });
 
-router.get('/students/:course_id/download', async function (req, res) {
+router.get('/students/download', async function (req, res) {
 	const users = await User.find({
-		courses: req.params.course_id,
+		courses: req.course_id,
 		// role: 'student'
 	});
 
@@ -51,16 +52,16 @@ router.get('/students/:course_id/download', async function (req, res) {
 })
 
 // Add a resource to course
-router.post('/resource/add/:course_id', upload.single('res'), function (req, res) {
+router.post('/resource/add', upload.single('res'), function (req, res) {
 	if (!req.file)
 		res.status(500);
-	console.log(req.body);
+
 	const { name, topic, description } = req.body;
 	let resource = new Resource({
 		name,
 		topic,
 		description,
-		course: req.params.course_id,
+		course: req.course_id,
 		url: `/uploads/${req.file.filename}`
 	});
 

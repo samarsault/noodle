@@ -1,7 +1,7 @@
 <template>
   <form 
     method="post" 
-    :action="`/admin/courses/resource/add/${course_id}`"
+    :action="`/admin/courses/${course_id}/resource/add/`"
     enctype="multipart/form-data"
     v-on:keydown.enter.prevent
   >
@@ -11,7 +11,7 @@
     <v-select :options="topics" v-model="selectedTopic"/>
     <input name="topic" type="hidden" v-model="selectedTopic"/>
     <input type="file" name="res">
-    <button class="primary"><Plus decorative/>Add Resource</button>
+    <button class="primary icon-button"><Plus decorative/><span class="icon-left">Add Resource</span></button>
   </form>
 </template>
 
@@ -41,3 +41,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+input[type="file"] {
+	padding: 20px 0;
+}
+button {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+</style>

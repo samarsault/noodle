@@ -1,7 +1,7 @@
 <template>
   <div>
-  <a :href="`/admin/courses/students/${course_id}/download`">
-    <button class="primary"><DownloadIcon decorative/> Download as CSV</button>
+  <a :href="`/admin/courses/${course_id}/students/download`">
+    <button class="primary icon-button"><DownloadIcon decorative/><span class="icon-left">Download as CSV</span></button>
   </a>
   <table>
     <thead>
@@ -39,7 +39,7 @@ export default {
     DownloadIcon
   },
   mounted() {
-    axios.get(`/admin/courses/students/${this.course_id}`)
+    axios.get(`/admin/courses/${this.course_id}/students`)
       .then(({ data }) => {
         this.registered = data;
       })

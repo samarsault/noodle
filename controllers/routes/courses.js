@@ -45,11 +45,4 @@ router.post('/:course_id/register', async function (req, res) {
 	res.redirect('/dashboard');
 });
 
-
-function ensureAuthenticated (req,res,next) {
-	if (req.isAuthenticated()) 
-		return next();
-	res.redirect('/');
-}
-
 module.exports = router;

@@ -81,22 +81,27 @@ button {
 	border-radius: 2px;
 	// @extend .big-type;
 	margin: 2px 4px;
+
 	&.primary, &.secondary {
 		color: $white;
 		transition: background-color $animTime;
 	}
+
 	&.primary {
 		background-color: $green;
 		&:hover {
 			background-color: darken($green, 4%);
 		}
 	}
+
 	&.secondary {
 		background-color: $tealBlue;
 		&:hover {
 			background-color: darken($tealBlue, 4%);
 		}
+
 	}
+
 	&:focus {
 		outline: none;
 	}
@@ -111,8 +116,12 @@ button {
 			&.icon-right {
 				margin-right: 8px;
 			}
+			&:hover {
+				text-decoration: none;
+			}
 		}
 	}
+
 	.material-design-icon__svg {
 		display: flex;
 	}
