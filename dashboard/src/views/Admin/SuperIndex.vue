@@ -21,6 +21,7 @@
 import axios from 'axios'
 import Tabs from '../../components/Tabs';
 import Tab from '../../components/Tab';
+import event from '../../utils/event';
 
 // Super Admin Tabs
 import AddCourse from './Super/AddCourse.vue';
@@ -32,6 +33,14 @@ export default {
     Tab,
     AddCourse,
     Access
-  }
+	},
+	mounted() {
+		if (this.$route.query.success) {
+			if (this.$route.query.success === '1')
+				event.$emit('alert', 'success', 'Operation successful.')
+			else if (this.$route.query.success === '0')
+				event.$emit('alert', 'error', 'Operation was not successful.')
+		} 
+	}
 }
 </script>

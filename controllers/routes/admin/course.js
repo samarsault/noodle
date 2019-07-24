@@ -67,6 +67,7 @@ router.post('/resource/add', upload.single('res'), function (req, res) {
 
 	resource.save((err) => {
 		if (!err) {
+			res.redirect('/dashboard/admin')
 			res.send(response.success('Added'))
 		} else {
 			res.send(response.error(err.message))

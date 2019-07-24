@@ -137,11 +137,11 @@ router.post('/users/updateAccess', async function (req, res) {
 			)
 		}
 
-		return res.json(response.success('Updated Role'))
+		return res.redirect('/dashboard/admin?success=1')
 	}
 
-	return res.json(
-		response.error('role/user not specified')
+	return res.redirect(
+		'/dashboard/admin?success=0'
 	);
 
 })

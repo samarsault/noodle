@@ -7,8 +7,9 @@
       v-on:close="updateModal = false"
     >
       <v-select v-model="accessLevel" :options="['student','admin', 'instructor']"/>
-      <CourseInput :selected="instructorFor" v-if="accessLevel === 'instructor'"/>
+      <CourseInput style="margin-top:15px" v-model="instructorFor" v-if="accessLevel === 'instructor'"/>
     </Modal>
+
     <table>
       <thead>
         <tr>
@@ -23,7 +24,7 @@
           <td>{{ student.name }}</td>
           <td>{{ student.email }}</td>
           <td>{{ student.role }}</td>
-          <td><button @click="showUpdateModal(student.role)" class="primary">Update</button></td>
+          <td><button @click="showUpdateModal(student.role, student._id)" class="primary">Update</button></td>
         </tr>
       </tbody>
     </table>
@@ -35,6 +36,7 @@ import axios from 'axios';
 import Modal from '../../../components/Dialogs/Modal';
 import CourseInput from "../../../components/Input/Course";
 import vSelect from 'vue-select'
+import event from '../../../utils/event';
 
 export default {
   components: {
@@ -48,7 +50,8 @@ export default {
       accessLevel: 'student',
       instructorFor: '',
       users: [],
-      updateModal: false,
+			updateModal: false,
+			selectedUser: ''
     }
 
   },
@@ -61,14 +64,19 @@ export default {
 
   methods: {
     updateAccess() {
-      axios.post('/admin/super/updateAccess', {
+      axios.post('/admin/super/users/updateAccess', {
+				user_id: this.selectedUser,
         role: this.accessLevel,
         instructor_for: this.instructorFor
-      })
+			})
+			.then( ({ data }) => {
+				event.$emit('alert', 'success', `Updated Access to ${this.accessLevel}`);
+			});
     },
-    showUpdateModal(role) {
+    showUpdateModal(role, _id) {
       this.updateModal = true;
-      this.accessLevel = role;
+			this.accessLevel = role;
+			this.selectedUser = _id;
     }
   }
 

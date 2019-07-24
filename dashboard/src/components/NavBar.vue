@@ -8,9 +8,9 @@ header
 
       .navbar-menu
       .navbar-start
-        a.navbar-item(href='/dashboard') My Courses
+        router-link.navbar-item(to='/') My Courses
         a.navbar-item(href='/explore') Catalog
-        a.navbar-item(href='/admin', v-if='isAdmin') Admin
+        router-link.navbar-item(to='/admin', v-if='isAdmin') Admin
         a.navbar-item(href='/auth/logout') Sign Out
 </template>
 
@@ -21,9 +21,14 @@ export default {
 	name: 'NavBar',
 	data () {
 		return {
-      isAdmin: true,
+      isAdmin: false,
 			burgerNavActive: false
 		}
+	},
+	async created() {
+		const { data } = await axios.get('/api/user')	
+		if (data.role === 'admin')
+			this.isAdmin = true;
 	},
 	methods: {
 		toggleMobileNav () {

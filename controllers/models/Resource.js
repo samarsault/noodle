@@ -10,5 +10,6 @@ module.exports = model('Resource', new Schema({
 		ref: 'Course',
 		required: true
 	},
-	url: r_string
+	url: r_string,
+	type: r_string
 }), 'resources');

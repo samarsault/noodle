@@ -7,7 +7,13 @@ const router = express.Router();
 
 const courseApiRouter = require('./course');
 const isRegisteredForCourse = require('../../middleware/isRegistered');
-const { User, Course, Resource } = require('../../models');
+const { User, Course } = require('../../models');
+
+
+router.use('/courses/:course_id', (req, res, next) => {
+	req.course_id = req.params.course_id;
+	return next();
+}, isRegisteredForCourse, courseApiRouter);
 
 // Get User Details
 router.get('/dashboard', async function(req, res) {
@@ -45,10 +51,9 @@ router.get('/dashboard', async function(req, res) {
 		})
 })
 
-router.use('/courses/:course_id', (req, res, next) => {
-	req.course_id = req.params.course_id;
-	return next();
-}, isRegisteredForCourse, courseApiRouter);
-
+router.get('/user', async function(req, res) {
+	const user = await User.findOne({ _id: req.session.passport.user }).select('name email role');
+	return res.json(user);
+});
 
 module.exports = router;

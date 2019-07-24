@@ -3,9 +3,9 @@
 //
 const { User } = require('../models/');
 
-module.exports = function(req, res, next) {
+module.exports = async function(req, res, next) {
 	const id = req.session.passport.user;
-	const { role } = User.find({ _id: id }).select('role')
+	const { role } = await User.findOne({ _id: id }).select('role')
 	if (role === 'admin')
 		return next()
 

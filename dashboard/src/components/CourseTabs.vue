@@ -46,6 +46,7 @@ export default {
 .topics {
 	width: 300px;
 	box-shadow: 0 0 1px 0 rgba(0,0,0,0.35);
+	min-height: 480px;
 	h4 {
 		background-color: #f7f7f7;
 		color: #020202 !important;

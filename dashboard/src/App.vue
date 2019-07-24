@@ -1,5 +1,13 @@
 <template>
 	<div id="app">
+		<Modal 
+			v-if="alert.show" 
+			:title="alert.status" 
+			v-on:ok="alert.show = false"
+			v-on:close="alert.show = false"
+		>
+			<p>{{ alert.message }}</p>
+		</Modal>
     <Loading v-if="loading"/>
     <div :class="{'app-loading': loading }">
 		  <NavBar />
@@ -27,9 +35,10 @@ export default {
   data() {
     return {
       loading: false,
-      confirm: {
-        message: '',
-        show: true
+      alert: {
+				message: '',
+				status: '',
+        show: false
       }
     }
   },
@@ -38,20 +47,19 @@ export default {
       this.loading = state;
     });
 
-    event.$on('confirm', (msg) => {
-      this.confirm.message = msg;
-      this.confirm.show = true;
-    })
+    event.$on('alert', (state, msg) => {
+			this.alert.status = state;
+      this.alert.message = msg;
+      this.alert.show = true;
+		})
   },
 	components: {
     Loading,
 		NavBar,
-    Footer
+		Footer,
+		Modal
   },
   methods: {
-    sendConfirm() {
-
-    }
   }
 }
 </script>

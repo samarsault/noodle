@@ -37,7 +37,7 @@ router.get('/view/:prop', async function (req, res, next) {
 //
 router.get('/resources', async function (req, res, next) {
 
-	const course_id = req.params.course_id;
+	const course_id = req.course_id;
 	const resources = await Resource.find({
 		course: course_id
 	});

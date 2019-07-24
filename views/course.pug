@@ -14,7 +14,6 @@ block content
 						img(src=course.coverImage, alt="Thumbnail", width=360, height=240)
 					div.info
 						p #{course.summary}	
-						p Instructors: #{course.instructors}						
 						.controls
 							a(href='/courses/' + course._id + '/register/')
 								button.primary Register
@@ -26,8 +25,14 @@ block content
 			.card#description
 				h3 Description
 				p #{course.description}
-			.card
-				h3 Topics
-				ul
-					each topic in course.topics
-						li #{topic}
+			div
+				.card
+					h3 Topics
+					ul
+						each topic in course.topics
+							li #{topic}
+				.card
+					h3 Instructors
+					ul
+						each instructor in course.instructors
+							li #{instructor}
