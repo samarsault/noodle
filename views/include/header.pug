@@ -4,11 +4,15 @@ header
 			.navbar-brand
 				a(href='/').navbar-item
 					img(src='/logo.png', width='108', height='48.6')
+				a.navbar-burger(role='button', href='#', data-target='navmain')
+					span(aria-hidden="true")
+					span(aria-hidden="true")
+					span(aria-hidden="true")
 
-			.navbar-menu
-			.navbar-start
-				a.navbar-item(href='/') Home
-				a.navbar-item(href='/courses') Courses
-				a.navbar-item(href='/team') Team
-				a.navbar-item(href='/faq') FAQ
-				a.navbar-item(href='/auth') Sign In
+			.navbar-menu#navmain
+				block menu
+					a.navbar-item(href='/') Home
+					a.navbar-item(href='/courses') Courses
+					a.navbar-item(href='/team') Team
+					a.navbar-item(href='/faq') FAQ
+					a.navbar-item(href='/auth') Sign In

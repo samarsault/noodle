@@ -5,7 +5,9 @@
 				<div class="modal-container">
 					<div class="modal-header">
 						<p>{{ title }}</p>
-						<a href="#" @click="$emit('close')">Close</a>
+						<a href="#" @click="$emit('close')">
+							<CloseIcon :size="24" />
+						</a>
 					</div>
 
 					<div class="modal-body">
@@ -24,10 +26,15 @@
 </template>
 
 <script>
+import CloseIcon from 'vue-material-design-icons/Close';
+
 export default {
 		name: "Modal",
 		props: {
-				title: String
+			title: String
+		},
+		components: {
+			CloseIcon
 		}
 }
 </script>
@@ -77,12 +84,11 @@ export default {
 		text-transform: capitalize;
 	}
 	svg {
-		fill: #fff;
-		width: 15px;
+		fill: #555;
 		transition: fill 0.3s;
 		&:hover {
 			cursor: pointer;
-			fill: #ccc;
+			fill: #111;
 		}
 	}
 }

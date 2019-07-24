@@ -1,17 +1,11 @@
 <template lang="pug">
-header
-  nav(role="navigation", aria-label="main navigation")
-    .container
-      .navbar-brand
-        a(href='/').navbar-item
-          img(src='/logo.png', width='108', height='48.6')
+extends ../../../views/include/header
 
-      .navbar-menu
-      .navbar-start
-        router-link.navbar-item(to='/') My Courses
-        a.navbar-item(href='/explore') Catalog
-        router-link.navbar-item(to='/admin', v-if='isAdmin') Admin
-        a.navbar-item(href='/auth/logout') Sign Out
+block menu
+  router-link.navbar-item(to='/') My Courses
+  a.navbar-item(href='/explore') Catalog
+  router-link.navbar-item(to='/admin', v-if='isAdmin') Admin
+  a.navbar-item(href='/auth/logout') Sign Out
 </template>
 
 <script>
