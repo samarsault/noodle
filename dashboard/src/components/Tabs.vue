@@ -49,23 +49,40 @@ export default {
 .tabs-container {
 	display: flex;
 	margin:20px 0;
+	@media screen and (max-width: 960px){
+		display: block;
+	}
 }
 .tabs {
-	min-width: 300px;
+	@media screen and (min-width: 960px) {
+		min-width: 300px;
+	}
 	height: 100%;
 	box-shadow: 0 0 1px 0 rgba(0,0,0,0.35);
+
 	background-color: #fff;
 	color: $black;
 	ul {
 		padding: 0;
 		margin: 0;
 		list-style-type: none;
+		@media screen and (max-width: 960px) {
+			display: flex;	
+			background-color: #fff;
+			overflow-x: scroll;
+		}
 		li {
 			padding: 25px 30px;
 			border-bottom: 1px solid $gray;
+			cursor: pointer;
 			&.is-active {
 				border-left: .5em solid $green;
+				@media screen and (max-width: 960px) {
+					border-left: 0;
+					border-bottom: .3em solid $green;
+				}
 			}
+
 		}
 		a {
 			color: inherit;
@@ -75,11 +92,15 @@ export default {
 			&:focus {
 				outline: none;
 			}
-     	}
+    }
 	}
 }
 .tabs-details {
 	flex: 1;
 	padding: 0 20px;
+	@media screen and (max-width: 960px) {
+		margin-top: 20px;
+		padding: 0;
+	}
 }
 </style>

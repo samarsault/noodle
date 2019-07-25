@@ -71,7 +71,7 @@ section.white {
 		justify-content: center;
 		>div {
 			padding: 20px;
-			font-size: 18px;
+			@include fluidType(16px, 18px);
 		}
 	}
 }

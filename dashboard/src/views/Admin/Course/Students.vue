@@ -1,8 +1,5 @@
 <template>
   <div>
-  <a :href="`/admin/courses/${course_id}/students/download`">
-    <button class="primary icon-button"><DownloadIcon decorative/><span class="icon-left">Download as CSV</span></button>
-  </a>
   <table>
     <thead>
       <tr>
@@ -21,6 +18,9 @@
       </tr>
     </tbody>
   </table>
+  <a :href="`/admin/courses/${course_id}/students/download`">
+    <button class="primary icon-button"><DownloadIcon decorative/><span class="icon-left">Download as CSV</span></button>
+  </a>
 </div>
 </template>
 
@@ -46,3 +46,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+table {
+	max-height: 250px;
+	overflow-y: scroll;
+}
+button {
+	margin-top: 20px;
+}
+</style>

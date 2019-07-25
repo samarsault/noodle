@@ -85,7 +85,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // API
 app.use('/api', apiRouter);
 // Admin App
-app.use('/dashboard', express.static(path.join(__dirname, 'client', 'dashboard', 'dist' )));
+app.use('/dashboard', express.static(path.join(__dirname, 'dashboard', 'dist' )));
 
 if (process.env.NODE_ENV !== 'production') {
   // error handler

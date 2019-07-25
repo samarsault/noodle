@@ -31,19 +31,41 @@ form {
 	padding: 20px;
 	margin: auto;
 	margin-top: 60px;
+	@media screen and (max-width: 640px) {
+		margin-top:20px;
+		padding: 40px 20px;
+	}
 	input {
 		width: 100%;
 	}
 }
 main {
 	display: flex;
+	@media screen and (max-width: 640px) {
+		flex-direction: column;
+	}
 }
 section {
 	max-width: 600px;
 	flex-basis: 40%;
+	@media screen and (min-width: 640px) and (max-width: 880px){
+		flex-basis: 50%;	
+	}
+}
+@media screen and (max-width: 640px) {
+	section, aside {
+		flex-basis: 100%;
+	}
 }
 aside {
 	flex-basis: 60%;
+	@media screen and (min-width: 640px) and (max-width: 880px) {
+		flex-basis: 50%
+	}
+	
+	@media screen  and (max-width: 640px) {
+		min-height: 480px;
+	}
 	background-image: url('/images/welcome.svg');
 	background-size: cover;
 	display: flex;

@@ -9,12 +9,13 @@
 }
 
 html, body {
-	height: 100%;
+	// height: 100%;
+	overflow-x: hidden;
 }
 
 body {
 	font-family: 'Nunito Sans', system-ui, sans-serif;
-	font-size: 17px;
+	@include fluidType(14px, 17px);
 	line-height: 1.2em;
 	margin: 0;
 	color: $blueBlack;
@@ -42,19 +43,19 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-	font-size: 36px;
+	@include fluidType(28px, 36px);
 }
 
 h2 {
-	font-size: 30px;
+	@include fluidType(24px, 30px);
 }
 
 h3 {
-	font-size: 24px;
+	@include fluidType(18px, 24px);
 }
 
 h4 {
-	font-size: 20px;
+	@include fluidType(16px, 20px);
 }
 
 p {
@@ -72,7 +73,7 @@ a {
 }
 
 .big-type {
-	font-size: 22px;
+	@include fluidType(16px,22px);
 }
 
 button {
@@ -140,6 +141,9 @@ button {
 .container {
 	max-width: 1200px;
 	margin: 0 10vw;
+	@media screen and (max-width: 768px){
+		margin: 0 5vw;	
+	}
 }
 
 section.hero {
@@ -173,6 +177,7 @@ section.hero {
 table {
 	background-color: #fff;
 	width: 100%;
+	overflow-x: auto;
 
 	td,
 	th {

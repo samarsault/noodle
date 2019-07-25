@@ -71,9 +71,24 @@ export default {
 		justify-content: space-between;
 		align-items: center;
 		background-color: #fff;
+		@media screen and (max-width: 800px) {
+			padding: 40px 30px;
+			flex-direction: column;
+			text-align: center;
+		}
+		button {
+			@media screen and (max-width: 800px){
+				margin-top: 10px;	
+				width: 150px;
+			}
+		}
 		>div {
 			display: flex;
 			align-items: center;
+			@media screen and (max-width: 800px) {
+				justify-content: center;
+				flex-direction: column;
+			}
 		}
 		h3 {
 			margin: 10px 0;
