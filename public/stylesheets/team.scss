@@ -1,0 +1,36 @@
+section#team {
+	background-image: url('/images/team_bg.svg');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	padding: 30px 0;
+	text-align: center;
+	background-size: cover;
+	
+	p {
+		max-width: 600px;
+		margin: auto;
+	}
+
+	.img-wrapper {
+		position: relative;
+		img {
+			max-width: 960px;
+			width: 90%;
+			margin: 50px;
+			@media screen and (max-width: 960px) {
+				width: 90%;
+				margin: auto;
+			}
+		}
+		h2 {
+			position: absolute;
+			top: 50px;
+			left: 30px;
+			@media screen and (max-width: 960px) {
+				position: relative;
+				top: 0;
+				left: 0;
+			}
+		}
+	}
+}

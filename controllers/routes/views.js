@@ -11,6 +11,10 @@ router.get('/', function(req, res, next) {
 	res.render('index', { title: 'CTE' });
 });
 
+router.get('/team', function(req, res) {
+	return res.render('team');
+})
+
 // Courses Page
 router.get('/courses', function(req, res) {
 	Course.find({ }, function (err, courses) {
