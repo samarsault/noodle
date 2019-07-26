@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const logger = require('morgan');
 const passport = require('passport');
 const mongoose = require('mongoose');
@@ -44,11 +45,16 @@ app.use(sassMiddleware({
 app.use(logger('dev'));
 // app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(session({
 	secret:  '!P+@3D7x&rW#G%m',
 	resave: true,
-    saveUninitialized: true
+	saveUninitialized: true,
+	store: new MongoStore({
+		mongooseConnection: mongoose.connection
+	})
 }))
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
