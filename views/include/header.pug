@@ -15,4 +15,7 @@ header
 					a.navbar-item(href='/courses') Courses
 					a.navbar-item(href='/team') Team
 					a.navbar-item(href='/faq') FAQ
-					a.navbar-item(href='/auth') Sign In
+					if !signedIn
+						a.navbar-item(href='/auth') Sign In
+					else
+						a.navbar-item(href='/dashboard') Dashboard

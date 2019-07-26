@@ -3,7 +3,7 @@ extends ../../../views/include/header
 
 block menu
   router-link.navbar-item(to='/') My Courses
-  a.navbar-item(href='/explore') Catalog
+  a.navbar-item(href='/courses') Catalog
   router-link.navbar-item(to='/admin', v-if='isAdmin') Admin
   a.navbar-item(href='/auth/logout') Sign Out
 </template>

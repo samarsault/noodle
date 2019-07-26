@@ -8,7 +8,7 @@ const { User, Course } = require('../models');
 
 // Home Page
 router.get('/', function(req, res, next) {
-	res.render('index', { title: 'CTE' });
+	res.render('index', { title: 'CTE', signedIn: req.isAuthenticated() });
 });
 
 router.get('/team', function(req, res) {
@@ -19,7 +19,8 @@ router.get('/team', function(req, res) {
 router.get('/courses', function(req, res) {
 	Course.find({ }, function (err, courses) {
 		res.render('catalog', {
-			courses
+			courses,
+			signedIn: req.isAuthenticated()
 		})
 	})
 })
@@ -39,7 +40,10 @@ router.get('/courses/:course_id/view', async function (req, res, next) {
 
   res.render(
     'course',  
-    { course: courseObject }
+		{
+			course: courseObject,
+			signedIn: req.isAuthenticated()
+		},
   );
 
 });
