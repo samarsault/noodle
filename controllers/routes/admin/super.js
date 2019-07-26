@@ -46,12 +46,22 @@ router.post('/addCourse', upload.fields([{
 
     // Update instructor & roles
     const updateDelegates = instructorsArr.map(async (email) => {
-      const user = await User.findOneAndUpdate({
+      const user = await User.findOne({
         email,
-      }, {
-        role: 'instructor',
-        instructor_for: course._id
-      })
+			}).select('role');
+
+			// don't degrede admin
+			if (user.role !== 'admin') {
+				await User.updateOne(
+					{
+						_id: user._id
+					},
+					{
+        		role: 'instructor',
+        		instructor_for: course._id
+					}
+				)
+			}
 
       await Course.updateOne({
         $addToSet: {

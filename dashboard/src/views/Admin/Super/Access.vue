@@ -70,6 +70,7 @@ export default {
         instructor_for: this.instructorFor
 			})
 			.then( ({ data }) => {
+				this.updateModal = false;
 				event.$emit('alert', 'success', `Updated Access to ${this.accessLevel}`);
 			});
     },
