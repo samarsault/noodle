@@ -10,6 +10,7 @@ const { User, Course } = require('../models');
 router.get('/:course_id/register', async function (req, res) {
 	const course = await Course.findOne({ _id: req.params.course_id }).select('name');
 	return res.render('agreement', {
+		hideAgreement: false,
 		course
 	});
 });

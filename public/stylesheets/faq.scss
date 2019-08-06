@@ -36,6 +36,12 @@ section#qa {
 }
 .question {
 	color: #777;
+	transition: color .3s;
+	user-select: none;
+	@include fluidType(16px, 18px);
+	&:hover {
+		color: #555;
+	}
 	margin: .7em 0;
 	cursor: pointer;
 }

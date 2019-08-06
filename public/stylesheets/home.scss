@@ -50,14 +50,20 @@ section.white {
 	}
 }
 
+.hero {
+	h1 {
+		margin-bottom: .3em;
+	}
+	h4 {
+		color: #999;
+		margin: 0;
+	}
+}
+
 #facts {
 	background-image: url('/images/facts.png');
 	background-size: cover;
 	background-repeat: no-repeat;
-
-	// Add Overlay
-	background-color: rgba($tealBlue, 0.7);
-	background-blend-mode: multiply;
 
 	padding: 60px 0;
 	color: #fff;
@@ -72,6 +78,9 @@ section.white {
 		>div {
 			padding: 20px;
 			@include fluidType(16px, 18px);
+		}
+		@media screen and (max-width: 480px){
+			flex-wrap: wrap;
 		}
 	}
 }

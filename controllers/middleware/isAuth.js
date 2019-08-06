@@ -23,5 +23,6 @@ module.exports = async function(req, res, next) {
 		return next();
 	}
 
-	return res.status(401).redirect('/');
+	// TODO: Register on auth
+	return res.status(401).redirect('/auth');
 }

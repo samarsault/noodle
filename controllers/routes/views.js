@@ -35,6 +35,10 @@ router.get('/courses', function(req, res) {
 	})
 })
 
+router.get('/terms', function (req, res) {
+	return renderView(req, res, 'agreement', { hideAgreement: true });
+})
+
 // Course Page
 router.get('/courses/:course_id/view', async function (req, res, next) {
   const course = await Course.findOne({ _id: req.params.course_id });
@@ -48,7 +52,7 @@ router.get('/courses/:course_id/view', async function (req, res, next) {
   const courseObject = course.toObject();
   courseObject.instructors = instructors;
 
-	res.renderView(
+	renderView(
 		req,
 		res,
 		'course',

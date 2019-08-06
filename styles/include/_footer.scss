@@ -1,5 +1,6 @@
 footer {
-	padding: 20px 0;
+	padding-top: 20px;
+	padding-bottom: 30px;
 	&.pre {
 		background-color: $black;
 		color: #fff;
@@ -10,6 +11,29 @@ footer {
 			li {
 				padding: 12px 0;
 			}
+		}
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		i.fa {
+			color: #fff;
+			transition: color .3s;
+			&:hover {
+				color: #999;
+			}
+			@include fluidType(22px, 28px);
+			padding: 10px;
+		}
+	}
+	#footer-info {
+		padding: 25px 0;
+		span {
+			padding: 15px;
+		}
+		a {
+			color: inherit;
 		}
 	}
 	span {

@@ -18,8 +18,12 @@ block content
 				li CTE will make all reasonable efforts to deliver the course as outlined in the handout of the respective course. However, CTE reserves the right to make reasonable amendments to the content and syllabus of a course when necessary.
 				li CTE reserves the right to cancel courses, if necessary, which could be due to unforeseeable circumstances or insufficient enrollment. In this instance, all tuition and fees paid for the course will be refunded.
 			
-		form(action='/courses/' + course._id + '/register', method='POST', style='margin:10px 0;line-height:1.6em;')
-			input(name='agreement', type='checkbox', value='yes', required) 
-			|	I have read and agree to the Terms and Conditions, knowing that any violation of these terms may result in your expulsion from the course without any prior notice/warning and thereafter, I am willing to register for the course(s).
-			br
-			button.primary(style='width:auto;margin:20px 0') Register Me
+		if !hideAgreement
+			form(action='/courses/' + course._id + '/register', method='POST', style='margin:10px 0;line-height:1.6em;')
+				input(name='agreement', type='checkbox', value='yes', required) 
+				|	I have read and agree to the Terms and Conditions, knowing that any violation of these terms may result in your expulsion from the course without any prior notice/warning and thereafter, I am willing to register for the course(s).
+				br
+				button.primary(style='width:auto;margin:20px 0') Register Me
+		else
+			// Buffer
+			div(style='padding:20px')

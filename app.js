@@ -72,15 +72,6 @@ app.use(passport.session())
 // Initialize Google Auth
 googleAuth(passport);
 
-if (process.env.NODE_ENV !== "production") {
-	app.use((req, res, next) => {
-		req.session.passport= {
-			user: '5d244ff77d92f15ad81fd99c'
-		}
-		return next();
-	});
-}
-
 // Routes
 app.use('/', viewsRouter);
 app.use('/auth', authRouter);

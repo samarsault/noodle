@@ -2,7 +2,7 @@
 	<main>
 		<aside class="flex-centre">
 			<h1>Welcome</h1>
-			<p>Please complete the following info to complete your sign up. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit iure similique dolorem voluptatum unde</p>
+			<p>Please complete the following info to complete your sign up. It is required that you input the correct information for hassle-free registration.</p>
 		</aside>
 		<section>
 			<form method="POST" action="/auth/update">
