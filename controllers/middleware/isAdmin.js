@@ -1,11 +1,8 @@
 //
 // Verify the user is admin
 //
-const { User } = require('../models/');
-
 module.exports = async function(req, res, next) {
-	const id = req.session.passport.user;
-	const { role } = await User.findOne({ _id: id }).select('role')
+	const { role } = req.user;
 	if (role === 'admin')
 		return next()
 

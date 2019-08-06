@@ -9,7 +9,6 @@ const courseApiRouter = require('./course');
 const isRegisteredForCourse = require('../../middleware/isRegistered');
 const { User, Course } = require('../../models');
 
-
 router.use('/courses/:course_id', (req, res, next) => {
 	req.course_id = req.params.course_id;
 	return next();

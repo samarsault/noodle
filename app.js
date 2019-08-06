@@ -89,9 +89,13 @@ app.use('/admin', isAuth, adminRouter);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API
-app.use('/api', apiRouter);
+app.use('/api', isAuth, apiRouter);
 // Admin App
 app.use('/dashboard', express.static(path.join(__dirname, 'dashboard', 'dist' )));
+// Forward all dashboard urls to vue App
+app.get('/dashboard/*', function (req, res) {
+	res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
+})
 
 if (process.env.NODE_ENV !== 'production') {
   // error handler

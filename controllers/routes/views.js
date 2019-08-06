@@ -6,22 +6,24 @@ const router = express.Router();
 
 const { User, Course } = require('../models');
 
+function renderView(req, res, name, params) {
+	const data = Object.assign({}, { signedIn: req.isAuthenticated() }, params || {});
+	return res.render(name, params);
+}
+
 // Home Page
 router.get('/', function(req, res, next) {
-	res.render('index', { title: 'CTE', signedIn: req.isAuthenticated() });
+	return renderView(req, res, 'index', { title: 'CTE' })
 });
 
 router.get('/team', function(req, res) {
-	return res.render('team');
+	return renderView(req, res, 'team');
 })
 
 // Courses Page
 router.get('/courses', function(req, res) {
 	Course.find({ }, function (err, courses) {
-		res.render('catalog', {
-			courses,
-			signedIn: req.isAuthenticated()
-		})
+		renderView(req, res, 'catalog', { courses })
 	})
 })
 
@@ -38,13 +40,12 @@ router.get('/courses/:course_id/view', async function (req, res, next) {
   const courseObject = course.toObject();
   courseObject.instructors = instructors;
 
-  res.render(
-    'course',  
-		{
-			course: courseObject,
-			signedIn: req.isAuthenticated()
-		},
-  );
+	res.renderView(
+		req,
+		res,
+		'course',
+		{ course: courseObject }
+	)
 
 });
 

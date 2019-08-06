@@ -49,18 +49,21 @@ export default {
 }
 .topics {
 	box-shadow: 0 0 1px 0 rgba(0,0,0,0.35);
+	background-color: #fff;
+	color: #020202;
+
 	@media screen and (min-width: 960px) {
 		min-height: 480px;
 		width: 300px;
 	}
+
 	h4 {
 		background-color: #f7f7f7;
 		color: #020202 !important;
 		padding: 15px 20px;
 		margin: 0;
 	}
-	background-color: #fff;
-	color: #020202;
+	
 	ul {
 		padding: 0;
 		margin: 0;
@@ -70,10 +73,14 @@ export default {
 			display: flex;	
 			background-color: #fff;
 		}
+
 		li {
 			cursor: pointer;
 			padding: 25px 30px;
 			border-bottom: 1px solid #f7f7f7;
+			&.is-active {
+				font-weight: bold;
+			}
 		}
 	}
 }

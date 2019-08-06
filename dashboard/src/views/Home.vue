@@ -27,7 +27,9 @@
   	<div class="not-found" v-if="courses.length == 0">
   		<img src='/images/empty.png'>
       <h2>You are missing out!</h2>
-      <button class="primary">Explore Courses</button>
+			<a href="/courses">
+	      <button class="primary">Explore Courses</button>
+			</a>
   	</div>
   </div>
 </template>
