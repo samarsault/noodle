@@ -10,8 +10,9 @@ module.exports = async function(req, res, next) {
 			return next();
 
 		const user = await User.findOne({
-			_id:req.session.passport.user
-		}).select('email role bits_id');
+			_id : req.session.passport.user
+		}).select('email role bits_id phone');
+
 		req.user = user;
 		// check if bits id & phone or 
 		if (!user.bits_id || !user.phone) {

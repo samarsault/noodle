@@ -3,12 +3,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const sassMiddleware = require('node-sass-middleware');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const session = require('cookie-session');
 const logger = require('morgan');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+// fallback to index.html for vue
 
 // Custom
 const googleAuth = require('./controllers/googleAuth');
@@ -29,7 +29,7 @@ require('dotenv').config()
 // Connect to database
 
 mongoose.set("useCreateIndex", true);
-mongoose.connect('mongodb://localhost:27017/cte', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/cte-dev', { useNewUrlParser: true });
 
 const app = express();
 
@@ -46,17 +46,7 @@ app.use(logger('dev'));
 // app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(session({
-	secret:  '!P+@3D7x&rW#G%m',
-	resave: true,
-	saveUninitialized: true,
-	store: new MongoStore({
-		mongooseConnection: mongoose.connection
-	})
-}))
-
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
@@ -66,11 +56,20 @@ app.use(bodyParser.urlencoded({
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(session({
+	name: 'session',
+	keys: ['!P+@3D7x&rW#G%m' ]
+}))
 
 // Initialize Google Auth
 googleAuth(passport);
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 
 // Routes
 app.use('/', viewsRouter);
@@ -83,7 +82,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', isAuth, apiRouter);
 // Admin App
 app.use('/dashboard', express.static(path.join(__dirname, 'dashboard', 'dist' )));
-// Forward all dashboard urls to vue App
 app.get('/dashboard/*', function (req, res) {
 	res.sendFile(path.join(__dirname, 'dashboard', 'dist', 'index.html'));
 })

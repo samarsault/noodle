@@ -41,13 +41,11 @@ router.get('/dashboard', async function(req, res) {
 		return Object.assign({}, course.toObject(), { instructors });
 	});
 
-	Promise.all(coursePromises)
-		.then((courses) => {
-			res.json({
-				user,
-				courses
-			})
-		})
+	const courses = await Promise.all(coursePromises);
+	return res.json({
+		user,
+		courses
+	});
 })
 
 router.get('/user', async function(req, res) {

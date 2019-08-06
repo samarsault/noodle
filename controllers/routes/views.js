@@ -9,7 +9,7 @@ const { User, Course } = require('../models');
 
 function renderView(req, res, name, params) {
 	const data = Object.assign({}, { signedIn: req.isAuthenticated() }, params || {});
-	return res.render(name, params);
+	return res.render(name, data);
 }
 
 // Home Page
