@@ -1,20 +1,10 @@
 //
 // Courses API
-// TODO: Ensure Auth
 //
 const express = require('express');
 const router = express.Router();
 
 const { User, Course } = require('../models');
-
-// Get Course Students
-router.get('/:course_id/students', function (req, res, next) {
-	User.find({ courses: req.params.course_id, role: 'student' }, { courses: 0 }, function (err, users) {
-		if (err)
-			res.status(500).send(err);
-		res.json(users);
-	})	
-});
 
 // Register User for course
 router.get('/:course_id/register', async function (req, res) {

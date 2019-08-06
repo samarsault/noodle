@@ -1,0 +1,21 @@
+extends layout
+
+block head
+	link(rel='stylesheet', href='/stylesheets/faq.css')
+	script(src='/javascripts/faqToggle.js')
+	title FAQ
+
+block content
+	section#faq
+		h1 FAQs
+		p Browse through the most frequently asked questions.
+
+	section#qa
+		.container
+			each topic in topics
+				h3 #{topic}
+				ul.questions
+					each qa in faq[topic]
+						li
+							p.question #{qa.question}
+							p.answer #{qa.answer}

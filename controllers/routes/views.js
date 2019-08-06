@@ -3,6 +3,7 @@
 //
 const express = require('express');
 const router = express.Router();
+const faq = require('../../faq');
 
 const { User, Course } = require('../models');
 
@@ -16,8 +17,15 @@ router.get('/', function(req, res, next) {
 	return renderView(req, res, 'index', { title: 'CTE' })
 });
 
+// Team
 router.get('/team', function(req, res) {
 	return renderView(req, res, 'team');
+});
+
+// FAQ
+router.get('/faq', function(req, res) {
+	const topics = Object.keys(faq);
+	return renderView(req, res, 'faq', { faq, topics });
 })
 
 // Courses Page

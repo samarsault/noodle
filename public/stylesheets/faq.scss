@@ -1,0 +1,50 @@
+@import '../../styles/include/vars';
+
+section#faq {
+	$radius: 17px;
+	background-color: #fff;
+	padding-top: 30px;
+	padding-bottom: 70px;
+	text-align: center;
+	position: relative;
+
+	h1 {
+		margin:  0;
+	}
+
+	&::after {
+		content: '';
+		background-color: #30C41C;
+		display: block;
+		border-radius: 100%;
+		position: absolute;
+		z-index: 1;
+		width: $radius*2;
+		height: $radius*2;
+		bottom: -$radius;
+		left: calc(50vw - #{$radius});
+	}
+}
+
+section#qa {
+	margin: 40px 0;
+}
+
+.questions {
+	list-style-type: none;
+	padding-left: 0;
+}
+.question {
+	color: #777;
+	margin: .7em 0;
+	cursor: pointer;
+}
+
+.answer {
+	&.open {
+		max-height: 100%;
+	}
+	max-height: 0;
+	margin: 0;
+	overflow: hidden;
+}
