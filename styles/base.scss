@@ -141,6 +141,9 @@ button {
 .container {
 	max-width: 1200px;
 	margin: 0 10vw;
+	@media screen and (min-width: 1440px){
+		margin: 0 auto;	
+	}
 	@media screen and (max-width: 768px){
 		margin: 0 5vw;	
 	}

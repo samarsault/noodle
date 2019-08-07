@@ -36,7 +36,7 @@
      <input type="file" name="coverImage" accept="image/png, image/jpeg">
 
     <label for="handout">Handout:</label>
-    <input type="file" name="handout" accept="image/png, image/jpeg">
+    <input type="file" name="handout">
 
     <button class="primary">Add Course</button>
 </form>
