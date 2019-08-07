@@ -29,7 +29,7 @@ require('dotenv').config()
 // Connect to database
 
 mongoose.set("useCreateIndex", true);
-mongoose.connect('mongodb://localhost:27017/cte-dev', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/cte', { useNewUrlParser: true });
 
 const app = express();
 
