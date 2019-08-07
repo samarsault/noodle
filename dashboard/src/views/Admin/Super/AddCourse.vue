@@ -23,6 +23,10 @@
     <input type="number" name="offerYear" placeholder="Year">   
     <input type="number" name="offerSem" placeholder="Semester">  
 
+		<label for="manager">Manager</label>
+		<v-select :options="['CTE', 'CCE']" v-model="manager"/>
+		<input type="hidden" name="manager" v-model="manager"> 
+
     <label for="topics">Topics</label> 
     <v-select multiple taggable :options="topics" v-model="topics" />
     <input type="hidden" name="topics" v-model="topicsString">
@@ -65,13 +69,13 @@ export default {
 	methods: {
 		formEnter: function (e) {
 			if (e.target.localName !== 'textarea') {
-				console.log('Preventing');
 				e.preventDefault();
 			}
 		}
 	},
   data() {
     return {
+			manager: 'CTE',
       topics: [ ],
       instructors: []
     }

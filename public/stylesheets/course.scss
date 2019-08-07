@@ -14,7 +14,8 @@
 		margin-top: 0;
     padding-top: 1.4em;
     margin-bottom: .5em;
-  }
+	}
+	margin-bottom: 50px;
 }
 .courses {
 	display: flex;
@@ -40,12 +41,12 @@
 		}
 	}
 
-  .card {
-    transition: transform .3s ease;
-    &:hover {
-      transform: scale(1.02);
-    }
-  }
+  // .card {
+  //   transition: transform .3s ease;
+  //   &:hover {
+  //     transform: scale(1.02);
+  //   }
+  // }
 }
 
 .course-hero {
@@ -124,6 +125,7 @@
 	#description {
 		width: 100%;
 		margin-left: 0;
+		height: 110%;
 		p {
 			white-space: pre-line;
 		}

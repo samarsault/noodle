@@ -25,5 +25,11 @@ module.exports = async function(req, res, next) {
 	}
 
 	// TODO: Register on auth
+	if (req.originalUrl.match('/api')) {
+		return res.status(401).json({
+			error: 'Not authorized',
+			location: '/auth'
+		})
+	}
 	return res.status(401).redirect('/auth');
 }

@@ -73,6 +73,7 @@ export default {
 		justify-content: space-between;
 		align-items: center;
 		background-color: #fff;
+		margin-bottom: 15px;
 		@media screen and (max-width: 800px) {
 			padding: 40px 30px;
 			flex-direction: column;
@@ -97,6 +98,7 @@ export default {
 		}
 		p {
 			color: $darkGray;
+			max-width: 600px;
 		}
 	}
 

@@ -28,7 +28,12 @@ const CourseSchema = new Schema({
       ref: 'User', 
       required: true
     }
-  ]
+	],
+	manager: {
+		type: String,
+		enum: [ 'CTE', 'CCE' ],
+		default: 'CTE'
+	}
 });
 
 // Enable searching using $text

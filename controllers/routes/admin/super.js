@@ -25,7 +25,8 @@ router.post('/addCourse', upload.fields([{
 		offerYear,
 		offerSem,
     topics,
-    instructors
+		instructors,
+		manager
 	} = req.body;
   
   const topicsArr = topics.replace(/\r/g, '').split('\n');
@@ -41,7 +42,8 @@ router.post('/addCourse', upload.fields([{
   		coverImage: `/uploads/${req.files['coverImage'][0].filename}`,
   		offerYear,
   		offerSem,
-      topics: topicsArr
+			topics: topicsArr,
+			manager
     });
 
     // Update instructor & roles

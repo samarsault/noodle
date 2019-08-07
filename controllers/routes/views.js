@@ -29,9 +29,22 @@ router.get('/faq', function(req, res) {
 })
 
 // Courses Page
-router.get('/courses', function(req, res) {
-	Course.find({ }, function (err, courses) {
-		renderView(req, res, 'catalog', { courses })
+router.get('/courses', async function(req, res) {
+	const courses = await Course.find({ });
+	const CTE = [], CCE = [];
+
+	courses.forEach(course => {
+		if (course.manager && course.manager === 'CCE') {
+			CCE.push(course);
+		}
+		else {
+			CTE.push(course);
+		}
+	});
+
+	renderView(req, res, 'catalog', { 
+		CTE,
+		CCE
 	})
 })
 
