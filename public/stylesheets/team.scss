@@ -6,7 +6,7 @@ section#team {
 	text-align: center;
 	background-size: cover;
 	
-	p {
+	>p {
 		max-width: 600px;
 		margin: auto;
 	}
@@ -32,5 +32,43 @@ section#team {
 				left: 0;
 			}
 		}
+	}
+}
+
+.team-cards {
+	img {
+		width: 250px;
+	}
+	> div {
+		display: flex;
+		justify-content: center;
+		> div {
+			padding: 10px;
+			margin: 10px;
+		}
+	}
+	.team-3 {
+		flex-wrap: wrap;
+	}
+	.team-2 {
+		@media screen and (max-width: 480px){
+			flex-wrap: wrap;	
+		}
+	}
+	h3 {
+		margin-bottom: 0;
+	}
+	p {
+		margin: 1em 0;
+	}
+}
+
+.social {
+	a {
+		padding: 5px;
+		color: inherit;
+	}
+	i {
+		font-size: 24px;
 	}
 }
