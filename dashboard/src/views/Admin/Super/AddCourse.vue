@@ -1,5 +1,5 @@
 <template>
-<form method="post" action="/admin/super/addCourse" enctype="multipart/form-data" v-on:keydown.enter.prevent>
+<form method="post" action="/admin/super/addCourse" enctype="multipart/form-data" v-on:keydown.enter="formEnter">
     <label for="name">Name</label>
     <input type="text" name="name">
 
@@ -61,7 +61,15 @@ export default {
         return x.match(emailExtract)[1]
       }).join(',');
     }
-  },
+	},
+	methods: {
+		formEnter: function (e) {
+			if (e.target.localName !== 'textarea') {
+				console.log('Preventing');
+				e.preventDefault();
+			}
+		}
+	},
   data() {
     return {
       topics: [ ],
