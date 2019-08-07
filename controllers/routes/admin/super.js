@@ -63,11 +63,15 @@ router.post('/addCourse', upload.fields([{
 				)
 			}
 
-      await Course.updateOne({
-        $addToSet: {
-          instructors: user._id
-        }
-      })
+      await Course.updateOne(
+				{
+					_id: course._id
+				},
+				{
+      	  $addToSet: {
+      	    instructors: user._id
+      	  }
+      	})
     });
 
     await Promise.all(updateDelegates);
