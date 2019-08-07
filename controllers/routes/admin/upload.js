@@ -12,7 +12,10 @@ const upload = multer({
 		filename: function (req, file, cb) {
 			cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
 		}
-	})
+	}),
+	limits: {
+		fileSize: 10 * 1024 * 1024 // 10 MB
+	}
 })
 
 module.exports = upload;

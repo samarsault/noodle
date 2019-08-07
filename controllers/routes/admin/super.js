@@ -133,7 +133,7 @@ router.post('/users/updateAccess', async function (req, res) {
 
 		if (role === 'instructor' && !instructor_for)
 			return res.json(response.error('Instructor role requires a course.'))
-    
+		
     const user = await User.findOneAndUpdate(
 			{ _id: user_id }, 
 			{ role }

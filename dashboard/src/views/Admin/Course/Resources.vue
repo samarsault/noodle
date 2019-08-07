@@ -10,6 +10,8 @@
     <label for="topic">Topic: </label>
     <v-select :options="topics" v-model="selectedTopic"/>
     <input name="topic" type="hidden" v-model="selectedTopic"/>
+    <input type="text" name="link" placeholder="Link"> 
+    <label style="display:block;text-align:center;margin-top: 1em">OR</label>
     <input type="file" name="res">
     <button class="primary icon-button"><Plus decorative/><span class="icon-left">Add Resource</span></button>
   </form>

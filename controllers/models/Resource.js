@@ -11,5 +11,5 @@ module.exports = model('Resource', new Schema({
 		required: true
 	},
 	url: r_string,
-	type: r_string
+	// type: r_string -> Used to show different icons
 }), 'resources');

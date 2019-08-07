@@ -53,22 +53,25 @@ router.get('/students/download', async function (req, res) {
 
 // Add a resource to course
 router.post('/resource/add', upload.single('res'), function (req, res) {
-	if (!req.file)
-		res.status(500);
+	const { name, topic, description, link } = req.body;
 
-	const { name, topic, description } = req.body;
+	if (!req.file && !link)
+			return res.status(400).send('Missing');
+
+	const url = req.file ? `/uploads/${req.file.filename}` : link;
+		
 	let resource = new Resource({
 		name,
 		topic,
 		description,
 		course: req.course_id,
-		url: `/uploads/${req.file.filename}`
+		url
 	});
 
 	resource.save((err) => {
 		if (!err) {
-			res.redirect('/dashboard/admin')
-			res.send(response.success('Added'))
+			res.redirect(`/dashboard/admin/${req.course_id}`)
+			// res.send(response.success('Added'))
 		} else {
 			res.send(response.error(err.message))
 		}
