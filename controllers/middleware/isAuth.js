@@ -16,10 +16,15 @@ module.exports = async function(req, res, next) {
 		req.user = user;
 		// check if bits id & phone or 
 		if (!user.bits_id || !user.phone) {
-			res.status(401).json({
-				error: 'BITS ID/Phone not found',
-				location: '/dashboard/signup'
-			});
+			if (req.originalUrl.match('/api')) {
+				return res.status(401).json({
+					error: 'BITS ID/Phone not found',
+					location: '/dashboard/signup'
+				});
+			} else {
+				req.session.returnTo = req.originalUrl;
+				return res.redirect('/dashboard/signup')
+			}
 		}
 		return next();
 	}

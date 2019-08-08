@@ -69,6 +69,7 @@ export default {
 		margin: 0;
 		list-style-type: none;
 		overflow: hidden;
+		overflow-x: scroll;
 		@media screen and (max-width: 960px) {
 			display: flex;	
 			background-color: #fff;

@@ -29,7 +29,8 @@ router.post('/update', async (req, res) => {
 		phone	
 	});
 
-	res.redirect('/dashboard');
+	res.redirect(req.session.returnTo || '/dashboard');
+	delete req.session.returnTo;
 });
 
 router.get('/logout', (req, res) => {
