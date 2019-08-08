@@ -31,5 +31,9 @@ module.exports = async function(req, res, next) {
 			location: '/auth'
 		})
 	}
+
+	// redirect to page user was on after login
+	req.session.returnTo = req.originalUrl;
+
 	return res.status(401).redirect('/auth');
 }

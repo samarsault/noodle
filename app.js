@@ -70,14 +70,12 @@ app.use(passport.session())
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
 // Routes
 app.use('/', viewsRouter);
 app.use('/auth', authRouter);
 app.use('/courses', isAuth, coursesRouter); // handle course registration
 app.use('/admin', isAuth, adminRouter);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 // API
 app.use('/api', isAuth, apiRouter);
 // Admin App
@@ -87,8 +85,8 @@ app.get('/dashboard/*', function (req, res) {
 })
 
 if (process.env.NODE_ENV !== 'production') {
-  // error handler
-  app.use(function(err, req, res, next) {
+	// error handler
+	app.use(function(err, req, res, next) {
   	// set locals, only providing error in development
   	res.locals.message = err.message;
   	res.locals.error = req.app.get('env') === 'development' ? err : {};

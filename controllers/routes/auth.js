@@ -9,9 +9,12 @@ router.get('/', passport.authenticate('google', {
 
 router.get('/callback',
 	passport.authenticate('google', {
-		failureRedirect: '/error',
-		successRedirect: '/dashboard'
-	})
+		failureRedirect: '/loginError'
+	}),
+	(req, res) => {
+		res.redirect(req.session.returnTo || '/dashboard');
+		delete req.session.returnTo;
+	}
 )
 
 // Update user with BITS ID, Phone Number

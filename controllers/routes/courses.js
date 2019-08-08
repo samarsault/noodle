@@ -4,12 +4,13 @@
 const express = require('express');
 const router = express.Router();
 
+const renderView = require('../util/renderView');
 const { User, Course } = require('../models');
 
 // Register User for course
 router.get('/:course_id/register', async function (req, res) {
 	const course = await Course.findOne({ _id: req.params.course_id }).select('name');
-	return res.render('agreement', {
+	return renderView(req, res, 'agreement', {
 		hideAgreement: false,
 		course
 	});
@@ -18,7 +19,7 @@ router.get('/:course_id/register', async function (req, res) {
 router.post('/:course_id/register', async function (req, res) {
 	const { agreement } = req.body;
 	if (agreement !== "yes")
-		return res.status(500).send('Not agreed');
+		return res.status(401).send('Not agreed');
 
 	const course_id = req.params.course_id;
 	// User.

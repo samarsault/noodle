@@ -5,12 +5,8 @@ const express = require('express');
 const router = express.Router();
 const faq = require('../../faq');
 
+const renderView = require('../util/renderView');
 const { User, Course } = require('../models');
-
-function renderView(req, res, name, params) {
-	const data = Object.assign({}, { signedIn: req.isAuthenticated() }, params || {});
-	return res.render(name, data);
-}
 
 // Home Page
 router.get('/', function(req, res, next) {
@@ -74,4 +70,10 @@ router.get('/courses/:course_id/view', async function (req, res, next) {
 
 });
 
+router.get('/loginError', function (req, res) {
+	return renderView(req, res, 'error', {
+		title: 'Error Signing you Up',
+		message: 'Please ensure you are using your BITS Mail to Sign Up'
+	})
+})
 module.exports = router;
