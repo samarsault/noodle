@@ -76,4 +76,5 @@ router.get('/loginError', function (req, res) {
 		message: 'Please ensure you are using your BITS Mail to Sign Up'
 	})
 })
+
 module.exports = router;
