@@ -10,6 +10,7 @@
         <th>Email</th>
         <th>BITS ID</th>
         <th>Phone</th>
+				<th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
         <td>{{ student.email }}</td>
         <td>{{ student.bits_id }}</td>
         <td>{{ student.phone }}</td>
+				<td><button class="primary" @click="deregister(student.email)">Deregister</button></td>
       </tr>
     </tbody>
   </table>
@@ -35,12 +37,14 @@
 import axios from 'axios';
 import CourseInput from '../../../components/Input/Course';
 import DownloadIcon from 'vue-material-design-icons/FileDownload';
+import event from '../../../utils/event';
 
 export default {
   data() {
     return {
 			registered: [],
-			courseName: ''
+			courseName: '',
+			course_id: ''
     }
   },
   components: {
@@ -51,8 +55,23 @@ export default {
 		async populateReg() {
 			const { data: course_id } = await axios.get(`/api/courseId?name=${this.courseName}`);
 			if (course_id) {
+					this.course_id = course_id;
 					const studentsP = await axios.get(`/admin/courses/${course_id}/students`)
 					this.registered = studentsP.data;
+			}
+		},
+		async deregister(email) {
+			const confirmation = confirm(`Are you sure you want to deregister ${email} from ${this.courseName}?`)
+			if (confirmation) {
+				const { data } =await axios.post('/admin/super/deregister', {
+					email,
+					course: this.courseName
+				})
+				if (data.success) {
+					event.$emit('alert', 'success', `Successfully deregistered ${email} from ${this.courseName}`);
+				} else {
+					event.$emit('alert', 'error', `Error deregistering ${email} from ${this.courseName}`);
+				}
 			}
 		}
 	}

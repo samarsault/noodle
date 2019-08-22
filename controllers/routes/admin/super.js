@@ -164,4 +164,28 @@ router.post('/users/updateAccess', async function (req, res) {
 
 })
 
+router.post('/deregister', async function (req, res) {
+	try {
+		const { email, course } = req.body;
+		const { _id } = await Course.findOne({ name: course }).select('');
+		console.log(email);
+		console.log(_id);
+		await User.updateOne({
+			email
+		}, {
+			$pull: {
+				courses: _id
+			}
+		});
+
+		return res.json({
+			success: true
+		})
+	} catch (e) {
+		return res.json({
+			success: false
+		})
+	}
+})
+
 module.exports = router;
