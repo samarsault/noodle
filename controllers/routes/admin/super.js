@@ -108,7 +108,7 @@ router.get('/users/search', async function(req, res) {
       { name: re },
       { email: re }
     ]
-  }).select("name email").limit(10);
+  }).select("name email").limit(5);
 
 	return res.json(users);
 })
@@ -118,7 +118,9 @@ router.get('/courses/search', async function (req, res) {
   if (!query)
     return res.json([])
 
-  const courses = await Course.find({ $text: { $search: query } }).limit(10);
+	const re = new RegExp(`${query}.*`, 'i')
+	re.ignoreCase = true;
+  const courses = await Course.find({ name: re }).limit(5);
   const names = courses.map(course => course.name);
   return res.json(names);
 })

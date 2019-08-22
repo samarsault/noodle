@@ -48,6 +48,15 @@ router.get('/dashboard', async function(req, res) {
 	});
 })
 
+router.get('/courseId', async function (req, res) {
+	try {
+		const { _id } = await Course.findOne({ name: req.query.name }).select('');
+		return res.send(_id);
+	} catch (e) {
+		return res.send('');
+	}
+})
+
 router.get('/user', async function(req, res) {
 	const user = await User.findOne({ _id: req.session.passport.user }).select('name email role');
 	return res.json(user);

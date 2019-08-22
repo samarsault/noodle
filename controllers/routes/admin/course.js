@@ -13,7 +13,8 @@ const upload = require('./upload');
 //
 router.get('/students', async function (req, res) {
 	const users = await User.find({
-		courses: req.course_id
+		courses: req.course_id,
+		role: 'student'
 	});
 	if (users)
 		return res.json(users);

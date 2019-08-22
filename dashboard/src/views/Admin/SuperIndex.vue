@@ -13,6 +13,9 @@
         <Access /> 
       </Tab>
 
+			<Tab name="Registrations">
+        <Registrations /> 
+      </Tab>
     </Tabs>
   </div>
 </template>
@@ -26,13 +29,15 @@ import event from '../../utils/event';
 // Super Admin Tabs
 import AddCourse from './Super/AddCourse.vue';
 import Access from './Super/Access.vue';
+import Registrations from './Super/Registrations.vue';
 
 export default {
   components: {
     Tabs,
     Tab,
     AddCourse,
-    Access
+		Access,
+		Registrations
 	},
 	mounted() {
 		if (this.$route.query.success) {
