@@ -53,7 +53,7 @@ export default {
   },
 	methods: {
 		async populateReg() {
-			const { data: course_id } = await axios.get(`/api/courseId?name=${this.courseName}`);
+			const { data: course_id } = await axios.get(`/api/courseId?name=${encodeURIComponent(this.courseName)}`);
 			if (course_id) {
 					this.course_id = course_id;
 					const studentsP = await axios.get(`/admin/courses/${course_id}/students`)

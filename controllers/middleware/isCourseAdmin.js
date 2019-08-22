@@ -8,7 +8,7 @@ module.exports = async function(req, res, next) {
 	const course_id = req.course_id;
 
 	// Allow admin to pass
-	if (req.role === 'admin')
+	if (req.user.role === 'admin')
 		return next();
 
 	const count = await Course.countDocuments({ _id: course_id, instructors: user_id }).limit(1);
