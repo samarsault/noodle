@@ -10,6 +10,16 @@
       <CourseInput style="margin-top:15px" v-model="instructorFor" v-if="accessLevel === 'instructor'"/>
     </Modal>
 
+		<div class="flex-away">
+			<div>
+				<p>Total: {{ users.total }} entries</p>
+				<p>Showing: Page {{ users.page }} of {{ users.pages }} </p>
+			</div>
+			<div>
+				<button @click="goToPage(users.page - 1)"><PrevIcon/></button>
+				<button @click="goToPage(users.page + 1)"><NextIcon/></button>
+			</div>
+		</div>
     <table>
       <thead>
         <tr>
@@ -20,7 +30,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="student in users" v-bind:key="student._id">
+        <tr v-for="student in users.docs" v-bind:key="student._id">
           <td>{{ student.name }}</td>
           <td>{{ student.email }}</td>
           <td>{{ student.role }}</td>
@@ -35,6 +45,8 @@
 import axios from 'axios';
 import Modal from '../../../components/Dialogs/Modal';
 import CourseInput from "../../../components/Input/Course";
+import NextIcon from 'vue-material-design-icons/ArrowRight';
+import PrevIcon from 'vue-material-design-icons/ArrowLeft';
 import vSelect from 'vue-select'
 import event from '../../../utils/event';
 
@@ -42,24 +54,29 @@ export default {
   components: {
     Modal,
     vSelect,
-    CourseInput
+		CourseInput,
+		PrevIcon,
+		NextIcon
   },
   
   data() {
     return {
       accessLevel: 'student',
       instructorFor: '',
-      users: [],
 			updateModal: false,
+			users: {
+				total: 0,
+				page: 0,
+				pages: 0,
+				docs: []
+			},
 			selectedUser: ''
     }
 
   },
 
   mounted () {
-    axios.get('/admin/super/users').then(({ data }) => {
-      this.users = data;
-    });
+		this.goToPage();
   },
 
   methods: {
@@ -78,8 +95,27 @@ export default {
       this.updateModal = true;
 			this.accessLevel = role;
 			this.selectedUser = _id;
-    }
+		},
+		goToPage(page) {
+			if (page && (page < 0 || page > this.users.pages))
+				return;
+
+			if (!page)
+				page = 1;
+
+			axios.get(`/admin/super/users/${page}`).then(({ data }) => {
+				this.users = data;
+  	  });
+		}
   }
 
 }
 </script>
+
+<style lang="scss" scoped>
+.flex-away {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+</style>

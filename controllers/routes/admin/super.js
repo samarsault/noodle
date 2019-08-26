@@ -90,8 +90,12 @@ router.post('/addCourse', upload.fields([{
 });
 
 // TODO: Efficiency
-router.get('/users', async function (req, res) {
-	const users = await User.find({});
+router.get('/users/:page?', async function (req, res) {
+	const page = req.params.page || 1;
+	const users = await User.paginate({}, {
+		page,
+		limit: 20
+	});
 	return res.json(users);
 })
 
