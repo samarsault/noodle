@@ -16,8 +16,8 @@
 				<p>Showing: Page {{ users.page }} of {{ users.pages }} </p>
 			</div>
 			<div>
-				<button @click="goToPage(users.page - 1)"><PrevIcon/></button>
-				<button @click="goToPage(users.page + 1)"><NextIcon/></button>
+				<button @click="goToPage(parseInt(users.page) - 1)"><PrevIcon/></button>
+				<button @click="goToPage(parseInt(users.page) + 1)"><NextIcon/></button>
 			</div>
 		</div>
     <table>

@@ -28,7 +28,7 @@ require('dotenv').config()
 
 // Connect to database
 
-const dbURL = `mongodb://localhost:27017/${process.NODE_ENV === 'production' ? 'cte' : 'cte-dev'}`
+const dbURL = `mongodb://localhost:27017/${process.env.NODE_ENV === 'production' ? 'cte' : 'cte-dev'}`
 mongoose.set("useCreateIndex", true);
 mongoose.connect(dbURL, { useNewUrlParser: true });
 

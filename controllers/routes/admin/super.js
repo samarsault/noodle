@@ -94,7 +94,7 @@ router.get('/users/:page?', async function (req, res) {
 	const page = req.params.page || 1;
 	const users = await User.paginate({}, {
 		page,
-		limit: 20
+		limit: 10
 	});
 	return res.json(users);
 })
