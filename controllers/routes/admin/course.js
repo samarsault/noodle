@@ -34,7 +34,7 @@ router.get('/students/download', async function (req, res) {
 	const props = ['name', 'email', 'phone', 'bits_id']
 
 	// Write CSV Header
-	res.write(props.join(','));
+	res.write(props.join(',') + '\n');
 
 	for (const user of users) {
 		const dataArr = [];
@@ -46,7 +46,7 @@ router.get('/students/download', async function (req, res) {
 				dataArr.push(user[prop]);
 		}
 
-		res.write(dataArr.join(','));
+		res.write(dataArr.join(',') + '\n');
 	}
 
 	res.end();
