@@ -24,7 +24,7 @@ router.get('/students', async function (req, res) {
 router.get('/students/download', async function (req, res) {
 	const users = await User.find({
 		courses: req.course_id,
-		// role: 'student'
+		role: 'student'
 	});
 
 	res.setHeader('Content-disposition', 'attachment; filename=export.csv');
