@@ -5,6 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const { Course, Resource } = require('../../models');
+const { Quiz } = require('../../models/Quiz');
 
 // Get Course Meta
 router.get('/view', async function (req, res, next) {
@@ -53,5 +54,19 @@ router.get('/resources', async function (req, res, next) {
 
 	return res.json(responseObject);
 });
+
+router.get('/quiz', async function(req, res) {
+	const quizzes = await Quiz.find({
+		course: req.course_id
+	}).select('name');
+	return res.json(quizzes)
+})
+
+router.get('/quiz/:quiz_id', async function (req, res) {
+	const quiz = await Quiz.findOne({
+		_id: req.params.quiz_id
+	})
+	return res.json(quiz);
+})
 
 module.exports = router;

@@ -1,6 +1,7 @@
 <template>
   <div class="tabs-container">
     <div class="tabs">
+			<h4 style="margin-left:20px">{{ title }}</h4>
       <ul>
         <li
           v-for="(tab, index) in tabs"
@@ -24,8 +25,8 @@ export default {
   name: "Tabs",
   data() {
     return { tabs: [] };
-  },
-
+	},
+	props: [ 'title' ],
   created() {
 	this.tabs = this.$children;
   },
@@ -48,7 +49,6 @@ export default {
 
 .tabs-container {
 	display: flex;
-	margin:20px 0;
 	@media screen and (max-width: 960px){
 		display: block;
 	}
@@ -97,7 +97,7 @@ export default {
 }
 .tabs-details {
 	flex: 1;
-	padding: 0 20px;
+	padding: 20px;
 	@media screen and (max-width: 960px) {
 		margin-top: 20px;
 		padding: 0;

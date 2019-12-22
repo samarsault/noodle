@@ -69,6 +69,7 @@ a {
 	&:hover {
 		color: darken($tealBlue, 15%);
 		text-decoration: underline;
+		cursor: pointer;
 	}
 }
 
@@ -83,7 +84,7 @@ button {
 	// @extend .big-type;
 	margin: 2px 4px;
 
-	&.primary, &.secondary {
+	&.primary, &.secondary, &.outline, &.error {
 		color: $white;
 		transition: background-color $animTime;
 	}
@@ -102,7 +103,19 @@ button {
 		}
 
 	}
-
+	&.outline {
+		border: 1px solid #ddd;
+		color: inherit;
+		&:hover {
+			background-color: #efefef;
+		}	
+	}
+	&.error {
+		background-color: rgb(221, 39, 39);
+		&:hover {
+			background-color: lighten(rgb(221, 39, 39), 4%);
+		}
+	}
 	&:focus {
 		outline: none;
 	}

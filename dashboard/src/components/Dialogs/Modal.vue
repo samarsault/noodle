@@ -2,7 +2,7 @@
 <transition name="modal">
 		<div class="modal-mask">
 			<div class="modal-wrapper">
-				<div class="modal-container">
+				<div class="modal-container" :style="`width: ${size}px`">
 					<div class="modal-header">
 						<p>{{ title }}</p>
 						<a href="#" @click="$emit('close')">
@@ -11,7 +11,7 @@
 					</div>
 
 					<div class="modal-body">
-						<slot></slot>
+						<slot name="body"></slot>
 					</div>
 
 					<div class="modal-footer">
@@ -31,7 +31,8 @@ import CloseIcon from 'vue-material-design-icons/Close';
 export default {
 		name: "Modal",
 		props: {
-			title: String
+			title: String,
+			size: Number
 		},
 		components: {
 			CloseIcon
@@ -95,6 +96,8 @@ export default {
 .modal-body {
 	margin: 20px 0;
 	padding: 0 20px;
+	max-height: 60vh;
+	overflow-y: scroll;
 }
 
 //

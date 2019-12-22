@@ -1,7 +1,6 @@
 <template>
-  <div class="container">
-    <h3>Super Admin</h3>
-    <Tabs>
+  <div>
+    <Tabs title="Super Admin">
 
       <Tab name="Add Course">
         <div class="form-container">

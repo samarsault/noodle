@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const { User, Course, Resource } = require('../../models');
 const response = require('../../util/response');
+const quizzer = require('../../util/quizzer');
 const upload = require('./upload');
 
 //
@@ -97,5 +98,65 @@ router.post('/resource/remove', function (req, res, next) {
 		}
 	})
 });
+
+// Initialize Quiz Creation
+router.post('/quiz/init', async function(req, res, next) {
+	const { name } = req.body;
+	try {
+		const quiz = await quizzer.createQuiz(name, req.course_id, [])
+		return res.json({
+			success: true,
+			quiz
+		})
+	} catch (e) {
+		return res.json({
+			success: false
+		})
+	}
+})
+
+router.post('/quiz/destroy', async function(req, res, next) {
+	const { _id, name } = req.body;
+	try {
+		await quizzer.deleteQuiz(_id, name);
+		return res.json({
+			success: true
+		})
+	} catch (e) {
+		return res.json({
+			success: false
+		})
+	}
+})
+
+//
+router.post('/quiz/update', async function(req, res, next) {
+	const { quiz_id, question_id, type, data } = req.body;
+	try {
+		if (type == 'add') {
+			await quizzer.addQuestion(quiz_id, data)
+		}
+		else if (type == 'update') {
+			await quizzer.updateQuestion(question_id, data)
+		}
+		else if (type == 'delete') {
+			await quizzer.deleteQuestion(quiz_id, question_id)
+		}
+		else {
+			return res.json({
+				success: false,
+				message: 'Invalid/Blank operation type'
+			})
+		}
+		return res.json(
+			{ success: true}
+		)
+	} catch (e) {
+		return res.json({
+			success: false
+		})
+	}
+
+})
 
 module.exports = router;

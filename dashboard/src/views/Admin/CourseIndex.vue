@@ -1,7 +1,6 @@
 <template>
-	<div class="container">
-		<h3>Course Administration</h3>
-		<Tabs>
+	<div>
+		<Tabs title="Course Admin">
 			<Tab name="Registered Students">
           <Students :course_id="course_id" />
       </Tab>
@@ -10,6 +9,9 @@
           <Resources :course_id="course_id" />
         </div>
       </Tab>
+			<Tab name="Quiz Maker">
+				<Quiz :course_id="course_id"/>
+			</Tab>
       <Tab name="Announcement">
         <div class="form-container">
           <Broadcast :course_id="course_id" />
@@ -28,10 +30,12 @@ import Tabs from '../../components/Tabs';
 import Tab from '../../components/Tab';
 import event from "../../utils/event";
 
+
 // Import Tab Components
 import Students from './Course/Students.vue';
 import Resources from './Course/Resources.vue';
 import Broadcast from './Course/Broadcast.vue';
+import Quiz from './Course/Quiz.vue';
 
 export default {
   components: {
@@ -39,7 +43,8 @@ export default {
     Tab,
     Students,
     Resources,
-    Broadcast
+		Broadcast,
+		Quiz
 	},
 	mounted() {
 		if (this.$route.query.success) {
