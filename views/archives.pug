@@ -1,0 +1,13 @@
+extends layout
+
+block head
+  title Archives | CTE
+
+block content
+  .container(style='margin-top:80px;margin-bottom:80px')
+    h1 Archives
+    if periods.length > 0
+      ul
+        each course in periods
+          a(href=course.link)
+            li #{course.stamp}

@@ -8,6 +8,30 @@ const faq = require('../../faq');
 const renderView = require('../util/renderView');
 const { User, Course } = require('../models');
 
+const current = [ 2019, 2 ];
+
+async function renderCourses(req, res, period) {
+	const courses = await Course.find({ 
+		offerYear: period[0],
+		offerSem: period[1]
+	});
+
+	const CTE = [], CCE = [];
+
+	courses.forEach(course => {
+		if (course.manager && course.manager === 'CCE') {
+			CCE.push(course);
+		}
+		else {
+			CTE.push(course);
+		}
+	});
+
+	renderView(req, res, 'catalog', { 
+		CTE,
+		CCE
+	})
+}
 // Home Page
 router.get('/', function(req, res, next) {
 	return renderView(req, res, 'index', { title: 'CTE' })
@@ -26,22 +50,7 @@ router.get('/faq', function(req, res) {
 
 // Courses Page
 router.get('/courses', async function(req, res) {
-	const courses = await Course.find({ });
-	const CTE = [], CCE = [];
-
-	courses.forEach(course => {
-		if (course.manager && course.manager === 'CCE') {
-			CCE.push(course);
-		}
-		else {
-			CTE.push(course);
-		}
-	});
-
-	renderView(req, res, 'catalog', { 
-		CTE,
-		CCE
-	})
+	await renderCourses(req, res, current);	
 })
 
 router.get('/terms', function (req, res) {
@@ -68,6 +77,44 @@ router.get('/courses/:course_id/view', async function (req, res, next) {
 		{ course: courseObject }
 	)
 
+});
+
+// Archives
+router.get('/archives', function(req, res) {
+	const start = [2019, 1];
+	const end = current;
+	const periods = []
+	const years = end[0] - start[0]
+	for (let i = 0;i <= years;i++) {
+		const period1 = [ start[0] + i, 1 ];
+		const period2 = [ start[0] + i, 2 ];
+		periods.push({ 
+			stamp: `${period1[0]}-${period1[1]}`,
+			link: `/archives/${period1[0]}/${period1[1]}`
+		})
+		if (!(period1[0] === end[0]  && end[1] == 1)) {
+			periods.push({ 
+				stamp: `${period2[0]}-${period2[1]}`,
+				link: `/archives/${period2[0]}/${period2[1]}`
+			})
+		}
+	}
+	// remove end
+	periods.pop()
+	renderView(req, res, 'archives', { 
+		periods
+	})
+})
+
+
+router.get('/archives/:year/:sem', async function(req, res) {
+	const year = parseInt(req.params.year);
+	const sem = parseInt(req.params.sem);
+
+	if (!isNaN(year) && !isNaN(sem)) {
+		const period = [ year, sem ];
+		await renderCourses(req, res, period)
+	}
 });
 
 router.get('/loginError', function (req, res) {
