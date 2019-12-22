@@ -90,9 +90,18 @@ router.post('/addCourse', upload.fields([{
 });
 
 // TODO: Efficiency
-router.get('/users/:page?', async function (req, res) {
-	const page = req.params.page || 1;
-	const users = await User.paginate({}, {
+router.get('/users', async function (req, res) {
+	const query = req.query['query'];
+	const page = req.query['page'] || 1;
+	let searchObject = {};
+
+	if (query) {
+		const re = new RegExp(`${query}.*`, 'i')
+		re.ignoreCase = true;
+		searchObject = { name: re } 
+	}
+
+	const users = await User.paginate(searchObject, {
 		page,
 		limit: 10
 	});
