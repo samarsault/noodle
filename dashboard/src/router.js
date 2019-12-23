@@ -5,7 +5,7 @@ import Course from './views/Course.vue'
 import Admin from './views/Admin/SuperIndex.vue'
 import CourseAdmin from './views/Admin/CourseIndex.vue'
 import SignUp from './views/SignUp';
-import Quiz from './views/Admin/Course/Quiz.vue';
+import Quizzer from './views/Quizzer.vue';
 
 Vue.use(Router)
 
@@ -39,10 +39,10 @@ export default new Router({
 		name: 'signup',
 		component: SignUp
 	},
-	// {
-	// 	path: '/quiz',
-	// 	name: 'Quiz',
-	// 	component: Quiz
-	// }
+	{
+		path: '/course/:course_id/quiz/:quiz_id',
+		name: 'Quiz',
+		component: Quizzer
+	}
 	]
 })

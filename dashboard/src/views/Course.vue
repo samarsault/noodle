@@ -30,6 +30,24 @@
 						</li>
 					</ul>
 				</Tab>
+				<Tab v-if="quiz.length > 0" name="Quizzes">
+					<ul>
+						<li v-for="(q, i) in quiz" v-bind:key="i">
+							<div class="resource-meta">
+								<div class="resource-icon">
+									<FallbackIcon :size="72"/>
+								</div>
+								<div class="resource-meta-text">
+									<h3>{{ q.name }}</h3>
+									<p></p>
+								</div>
+							</div>
+							<a :href="`/course/${course_id}/quiz/${q._id}`">
+								<button class="secondary">Attempt</button>
+							</a>
+						</li>
+					</ul>
+				</Tab>
 			</CourseTabs>
 	</div>
 	</div>
@@ -49,17 +67,18 @@ export default {
 	data() {
 		return {
 			course_id: this.$route.params.id,
-			course:{},
-			students: [],
+			course: {},
 			resources: [],
-			admin: true
+			admin: true,
+			quiz: []
 		}
 	},
 	async created () {
     event.$emit('loading', true);
 		try {
 			this.course = (await axios.get(`/api/courses/${this.course_id}/view`)).data;
-      this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
+			this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
+			this.quiz = (await axios.get(`/api/courses/${this.course_id}/quiz`)).data
 
 			// select 1st item
 			if (this.$refs.courseTabs.tabs.length > 0) {

@@ -21,21 +21,25 @@ function deleteQuiz(_id, name) {
 }
 
 async function evaluate(attempt) {
-	const questions = await Quiz.find({ _id: attempt.quizId }).select('questions')
-	const correctAnswers = questions.map(q => q.answer);
-	const attemptAnswers = attempt.answers;
-	let score = 0
-	for (let i = 0;i < attemptAnswers.length;i++) {
-		if (
-			attemptAnswers[i] && 
-			(attemptAnswers[i] == correctAnswers[i])
-		)
-			score++;
+	try {
+		const { questions } = await Quiz.findOne({ _id: attempt.quiz_id }).select('questions')
+		const correctAnswers = questions.map(q => q.answer);
+		const attemptAnswers = attempt.answers;
+		let score = 0
+		for (let i = 0;i < attemptAnswers.length;i++) {
+			if (
+				attemptAnswers[i] && 
+				(attemptAnswers[i] == correctAnswers[i])
+			)
+				score++;
+		}
+		await QuizAttempt.create({
+			...attempt,
+			...{ score }
+		})
+	} catch (error) {
+		console.log(error);
 	}
-	await QuizAttempt.create({
-		attempt,
-		...{ score }
-	})
 }
 
 // @returns Promise

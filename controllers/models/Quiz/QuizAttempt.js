@@ -4,7 +4,7 @@ const { r_string } = require('../../util/schemaTypes');
 module.exports = model('QuizAttempt', new Schema({
 	quiz_id: {
 		type: Schema.Types.ObjectId,
-		ref: 'Course',
+		ref: 'Quiz',
 		required: true
 	},
 	user_id: {
