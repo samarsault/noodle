@@ -28,7 +28,7 @@
 		<input type="hidden" name="manager" v-model="manager"> 
 
     <label for="topics">Topics</label> 
-    <v-select multiple taggable :options="topics" v-model="topics" />
+    <v-select multiple taggable v-model="topics" />
     <input type="hidden" name="topics" v-model="topicsString">
 
     <label for="instructors">Instructors</label> 

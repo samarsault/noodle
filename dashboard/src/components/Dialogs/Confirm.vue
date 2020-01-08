@@ -1,7 +1,9 @@
 <template>
     <Modal title="Confirm">
+				<template slot="body">
         <p>{{ message }}</p>
-        <template v-slot="footer">
+				</template>
+        <template slot="footer">
             <button class="primary">Yes</button>
             <button class="secondary">No</button>
         </template>

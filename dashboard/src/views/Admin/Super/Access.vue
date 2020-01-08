@@ -6,8 +6,10 @@
       v-on:ok="updateAccess"
       v-on:close="updateModal = false"
     >
+			<template slot="body">
       <v-select v-model="accessLevel" :options="['student','admin', 'instructor']"/>
       <CourseInput style="margin-top:15px" v-model="instructorFor" v-if="accessLevel === 'instructor'"/>
+			</template>
     </Modal>
 
 		<div class="flex-away">

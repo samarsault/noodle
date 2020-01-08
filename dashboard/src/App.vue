@@ -6,7 +6,9 @@
 			v-on:ok="alert.show = false"
 			v-on:close="alert.show = false"
 		>
+			<template slot="body">
 			<p>{{ alert.message }}</p>
+			</template>
 		</Modal>
     <Loading v-if="loading"/>
     <div :class="{'app-loading': loading }">
