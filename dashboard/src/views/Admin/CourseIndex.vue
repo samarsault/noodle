@@ -9,16 +9,13 @@
           <Resources :course_id="course_id" />
         </div>
       </Tab>
-			<Tab name="Quiz Maker">
+			<!-- <Tab name="Quiz Maker">
 				<Quiz :course_id="course_id"/>
-			</Tab>
+			</Tab> -->
       <Tab name="Announcement">
         <div class="form-container">
           <Broadcast :course_id="course_id" />
         </div>
-      </Tab>
-      <Tab name="Class Schedule">
-
       </Tab>
     </Tabs>
   </div>
@@ -35,7 +32,7 @@ import event from "../../utils/event";
 import Students from './Course/Students.vue';
 import Resources from './Course/Resources.vue';
 import Broadcast from './Course/Broadcast.vue';
-import Quiz from './Course/Quiz.vue';
+// import Quiz from './Course/Quiz.vue';
 
 export default {
   components: {
