@@ -36,27 +36,29 @@
 
 <script>
 import axios from 'axios'
-import event from '../utils/event';
+import { getters, mutations } from '../utils/store';
 
 export default {
 	name: "Home",
 	data() {
 		return {
 			courses: [ ],
-			user: {}
 		}
 	},
-	beforeCreate () {
-    event.$emit('loading', true);
-		axios.get('/api/dashboard').then( ({ data }) => {
-			this.user = data.user;
-      this.courses = data.courses;
-      event.$emit('loading', false);
-		});
+	computed: {
+		...getters
 	},
-	components: {
-		// HelloWorld
+	methods: {
+		...mutations
+	},
+	mounted () {
+		this.setLoading(true);
+		axios.get('/api/dashboard').then( ({ data }) => {
+      this.courses = data;
+			this.setLoading(false);
+		});
 	}
+	
 }
 </script>
 

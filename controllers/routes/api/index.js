@@ -17,8 +17,6 @@ router.use('/courses/:course_id', (req, res, next) => {
 // Get User Details
 router.get('/dashboard', async function(req, res) {
 	const user_id = req.session.passport.user;
-  console.log(`Dashboard for ${user_id}`)
-
   const user = await User.findOne({ _id: user_id })
 
 	const coursePromises = user.courses.map( async (course_id) => {
@@ -42,10 +40,9 @@ router.get('/dashboard', async function(req, res) {
 	});
 
 	const courses = await Promise.all(coursePromises);
-	return res.json({
-		user,
+	return res.json(
 		courses
-	});
+	);
 })
 
 router.get('/courseId', async function (req, res) {

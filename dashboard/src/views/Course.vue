@@ -56,8 +56,8 @@
 <script>
 import axios from 'axios'
 import CourseTabs from '../components/CourseTabs';
-import event from '../utils/event';
 import Tab from '../components/Tab';
+import { mutations } from '../utils/store';
 
 // Icons
 import FallbackIcon from 'vue-material-design-icons/FileDocumentOutline';
@@ -74,7 +74,8 @@ export default {
 		}
 	},
 	async created () {
-    event.$emit('loading', true);
+		
+		this.setLoading(true);
 		try {
 			this.course = (await axios.get(`/api/courses/${this.course_id}/view`)).data;
 			this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
@@ -83,8 +84,8 @@ export default {
 			// select 1st item
 			if (this.$refs.courseTabs.tabs.length > 0) {
         this.$refs.courseTabs.tabs[0].isActive = true;
-      }
-      event.$emit('loading', false);
+			}
+			this.setLoading(false);
 		} catch (error) {
 			console.error(error);
 		}
@@ -95,6 +96,9 @@ export default {
 		Tab,
 		Empty,
 		FallbackIcon
+	},
+	methods: {
+		...mutations
 	}
 }
 </script>

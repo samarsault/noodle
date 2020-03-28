@@ -22,11 +22,9 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Tabs from '../../components/Tabs';
 import Tab from '../../components/Tab';
-import event from "../../utils/event";
-
+import { mutations } from "../../utils/store";
 
 // Import Tab Components
 import Students from './Course/Students.vue';
@@ -41,21 +39,24 @@ export default {
     Students,
     Resources,
 		Broadcast,
-		Quiz
+		// Quiz
 	},
 	mounted() {
 		if (this.$route.query.success) {
-			if (this.$route.query.success === '1')
-				event.$emit('alert', 'success', 'Operation successful.')
+			if (this.$route.query.success === '1') 
+				this.setAlert('success', 'Operation succesful');
 			else if (this.$route.query.success === '0')
-				event.$emit('alert', 'error', 'Operation was not successful.')
+				this.setAlert('error', 'Operation was not successful')
 		} 
 	},
-  data() {
-    return {
-     course_id: this.$route.params.id,
-   }
- }
+	methods: {
+		...mutations
+	},
+	data() {
+		return {
+			course_id: this.$route.params.id,
+		}
+	}
 }
 </script>
 

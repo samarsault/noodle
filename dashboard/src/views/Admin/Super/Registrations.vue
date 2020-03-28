@@ -37,7 +37,7 @@
 import axios from 'axios';
 import CourseInput from '../../../components/Input/Course';
 import DownloadIcon from 'vue-material-design-icons/FileDownload';
-import event from '../../../utils/event';
+import { mutations } from '../../../utils/store';
 
 export default {
   data() {
@@ -50,8 +50,9 @@ export default {
   components: {
 		DownloadIcon,
 		CourseInput
-  },
+	},
 	methods: {
+		...mutations,
 		async populateReg() {
 			const { data: course_id } = await axios.get(`/api/courseId?name=${encodeURIComponent(this.courseName)}`);
 			if (course_id) {
@@ -68,9 +69,9 @@ export default {
 					course: this.courseName
 				})
 				if (data.success) {
-					event.$emit('alert', 'success', `Successfully deregistered ${email} from ${this.courseName}`);
+					this.setAlert('success', `Successfully deregistered ${email} from ${this.courseName}`);
 				} else {
-					event.$emit('alert', 'error', `Error deregistering ${email} from ${this.courseName}`);
+					this.setAlert('error', `Error deregistering ${email} from ${this.courseName}`);
 				}
 			}
 		}

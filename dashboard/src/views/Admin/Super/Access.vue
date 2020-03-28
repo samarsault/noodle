@@ -51,7 +51,7 @@ import CourseInput from "../../../components/Input/Course";
 import NextIcon from 'vue-material-design-icons/ArrowRight';
 import PrevIcon from 'vue-material-design-icons/ArrowLeft';
 import vSelect from 'vue-select'
-import event from '../../../utils/event';
+import event from '../../../utils/store';
 
 export default {
   components: {
@@ -93,7 +93,7 @@ export default {
 			})
 			.then( ({ data }) => {
 				this.updateModal = false;
-				event.$emit('alert', 'success', `Updated Access to ${this.accessLevel}`);
+				this.setAlert('success', `Updated Access to ${this.accessLevel}`);
 			});
     },
     showUpdateModal(role, _id) {
