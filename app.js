@@ -4,9 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('cookie-session');
-const logger = require('morgan');
 const passport = require('passport');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 // fallback to index.html for vue
 
@@ -23,16 +21,12 @@ const coursesRouter = require('./controllers/routes/courses');
 const adminRouter = require('./controllers/routes/admin');
 const apiRouter = require('./controllers/routes/api');
 
+const app = express();
+
 // Configure environment variables
 require('dotenv').config()
-
-// Connect to database
-
-const dbURL = `mongodb://localhost:27017/${process.env.NODE_ENV === 'production' ? 'cte' : 'cte-dev'}`
-mongoose.set("useCreateIndex", true);
-mongoose.connect(dbURL, { useNewUrlParser: true });
-
-const app = express();
+// Configure database & environment
+require('./configure')(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -43,7 +37,7 @@ app.use(sassMiddleware({
 	indentedSyntax: false, // true = .sass and false = .scss
 	sourceMap: true
 }));
-app.use(logger('dev'));
+
 // app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

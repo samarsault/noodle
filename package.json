@@ -5,7 +5,11 @@
   "scripts": {
     "start": "node ./bin/www",
     "watch": "nodemon ./bin/www",
-    "test": "npx mocha"
+    "test": "jest -i",
+    "coverage": "jest -i --coverage"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -27,9 +31,7 @@
     "vue-mathjax": "0.0.11"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
-    "mocha": "^6.1.4",
-    "should": "^13.2.3"
+    "jest": "^25.2.6",
+    "supertest": "^4.0.2"
   }
 }

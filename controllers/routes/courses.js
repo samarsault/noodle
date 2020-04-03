@@ -25,16 +25,16 @@ router.post('/:course_id/register', async function (req, res) {
 	// User.
 	const user_id = req.session.passport.user;
 
-	console.log(`Registering ${user_id}`)
 	await User.updateOne(
 		{ _id: user_id },
 		{ $addToSet: { courses: course_id } },
 		function (err) {
-			console.log (err)
+			if (err)
+				console.log (err)
 		}
 	)
 
-	res.redirect('/dashboard');
+	return res.redirect('/dashboard');
 });
 
 module.exports = router;

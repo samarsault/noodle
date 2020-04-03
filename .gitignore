@@ -25,5 +25,8 @@ yarn-error.log*
 db
 uploads
 
+# coverage
+# coverage
+
 public/stylesheets/*.css
 public/stylesheets/*.css.map

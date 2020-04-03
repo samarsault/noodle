@@ -17,7 +17,7 @@ module.exports = async function(req, res, next) {
 		// check if bits id & phone or 
 		if (!user.bits_id || !user.phone) {
 			if (req.originalUrl.match('/api')) {
-				return res.status(401).json({
+				return res.status(302).json({
 					error: 'BITS ID/Phone not found',
 					location: '/dashboard/signup'
 				});
