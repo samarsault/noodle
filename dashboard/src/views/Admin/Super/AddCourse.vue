@@ -23,10 +23,6 @@
     <input type="number" name="offerYear" placeholder="Year">   
     <input type="number" name="offerSem" placeholder="Semester">  
 
-		<label for="manager">Manager</label>
-		<v-select :options="['CTE', 'CCE']" v-model="manager"/>
-		<input type="hidden" name="manager" v-model="manager"> 
-
     <label for="topics">Topics</label> 
     <v-select multiple taggable v-model="topics" />
     <input type="hidden" name="topics" v-model="topicsString">
@@ -75,7 +71,6 @@ export default {
 	},
   data() {
     return {
-			manager: 'CTE',
       topics: [ ],
       instructors: []
     }

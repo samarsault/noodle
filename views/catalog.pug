@@ -18,19 +18,13 @@ block head
 
 block content
   .catalog
-    if CTE.length > 0
+    if courses.length > 0
       section.hero.hero-overlay
       .container
         h2#heading Courses This Sem
         .courses
-          each course in CTE
+          each course in courses
             +courseCard(course)
-        if CCE.length > 0
-          h2 Centre for Cultural Excellence
-          .courses
-            each course in CCE
-              +courseCard(course)
-
     else
       .not-found
         img(src='/images/empty.png')

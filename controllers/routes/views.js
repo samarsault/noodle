@@ -16,20 +16,8 @@ async function renderCourses(req, res, period) {
 		offerSem: period[1]
 	});
 
-	const CTE = [], CCE = [];
-
-	courses.forEach(course => {
-		if (course.manager && course.manager === 'CCE') {
-			CCE.push(course);
-		}
-		else {
-			CTE.push(course);
-		}
-	});
-
 	renderView(req, res, 'catalog', { 
-		CTE,
-		CCE
+		courses
 	})
 }
 // Home Page
