@@ -1,9 +1,6 @@
 //
 // Test Auth related endpoints
 //
-//  GET /<course id>/register
-//  POST /<course id>/register
-//
 const app = require('../app')
 const server = require('supertest').agent(app)
 const mongoose = require('mongoose')
@@ -33,7 +30,7 @@ describe('API Access', function() {
 		done();
 	})
 
-	// TODO: check for wrong bits id
+	// TODO: check for wrong bits id input
 
 	it('Updates BITS ID and Phone', async (done) => {
 		const bits_id = '2018A8PS0414G';

@@ -1,46 +1,30 @@
+//
+// Test course features
+//
+
 const app = require('../app')
 const server = require('supertest').agent(app)
 const mongoose = require('mongoose')
 
 const { User, Course, Resource } = require('../controllers/models')
+const dummyCourse = require('./data/createDummyCourse');
 const loginUser = require('./util/loginUser')
 
-const data = { }
+let data = { }
 
 beforeAll( async () =>{
 	// Cleanup
 	await User.deleteMany()
 
-	const instructor = await User.create({
-		name: 'Instroctor',
-		email: 'thelehhman@gmail.com',
-		oauth_id: 'soemthing',
-		role: 'instructor'
-	});
-
-	const course = await Course.create({
-		name: 'Dummy Course',
-		summary: new Array(21).join('Dummy.....'),
-		description: new Array(58).join('Long Description.'),
-		handout: '/something.pdf',
-		coverImage: '/something.png',
-		offerYear: 2019,
-		offerSem: 2,
-		topics: [ 'Introduction', 'Endnotes'],
-		instructors: [
-			instructor._id
-		]
-	})
+	data = await dummyCourse();
 
 	const resource = await Resource.create({
 		name: 'Test',
 		topic: 'Introduction',
-		course: course._id,
+		course: data.course._id,
 		url: '/res.pdf'
 	})
 
-	data.instructor = instructor
-	data.course = course
 	data.resource = resource
 })
 
@@ -48,6 +32,12 @@ describe('Registration', function() {
 	it ('Login User', loginUser(server, true));
 
 	it('Does not register a user without agreement', async (done) => {
+		const response = await server.post(`/courses/${data.course._id}/register`)
+		expect(response.statusCode).toBe(401)
+		done();
+	})
+
+	it('Unregistered user can\'t access resources', async (done) => {
 		const response = await server.post(`/courses/${data.course._id}/register`)
 		expect(response.statusCode).toBe(401)
 		done();
