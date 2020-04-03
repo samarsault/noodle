@@ -6,9 +6,10 @@ block content
 		h2 Terms & Conditions
 
 		#terms
-			p In order to register for 
-				b #{course.name}, 
-				| you will have to accept the following terms and conditions:
+			if !hideAgreement
+				p In order to register for 
+					b #{course.name}, 
+					| you will have to accept the following terms and conditions:
 			ul
 				li I am totally aware of Course Structure and am willing to register for the course after going through the handout thoroughly.
 				li I will make sure to complete all the minimum requirements to be fulfilled for the certification of the courses and only then, I will be eligible to collect the Certification of Completion from CTE.

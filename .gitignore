@@ -24,9 +24,7 @@ yarn-error.log*
 # local db
 db
 uploads
-
-# coverage
-# coverage
+coverage
 
 public/stylesheets/*.css
 public/stylesheets/*.css.map
