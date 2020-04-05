@@ -15,9 +15,15 @@ $ npm i && npm start
 ```
 To run the app, you will require a .env file listing your GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET. You can obtain it via the [Google API console](https://console.developers.google.com/). The file will look something like(dont copy this):
 ```
-GOOGLE_CLIENT_ID=sdjfoasjfoda
-GOOGLE_CLIENT_SECRET=3232-u23.apps.googleusercontent.com
+GOOGLE_CLIENT_ID=3232-u23.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=sdjfoasjfoda
 ```
+Also, add the following link to Authorized Redirect URLs in Credentials Page:
+```
+http://localhost:3000/auth/callback
+
+```
+
 ## Access Levels
 
 There are 3 types of access levels:
