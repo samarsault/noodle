@@ -87,4 +87,7 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  if(typeof addr !== 'string'){
+    console.log('Started on http://localhost:'+addr.port);
+  }
 }
