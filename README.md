@@ -21,7 +21,6 @@ GOOGLE_CLIENT_SECRET=3232-u23.apps.googleusercontent.com
 Add the following URL in the Authorized Redirect URLs box in the [Googele API Console page].
 ```
 http://localhost:3000/auth/callback
-
 ```
 
 ## Access Levels
