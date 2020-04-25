@@ -8,7 +8,15 @@ const faq = require('../../faq');
 const renderView = require('../util/renderView');
 const { User, Course } = require('../models');
 
-const current = [ 2019, 2 ];
+//Current Date Calculation
+function calcCurDate(){
+	const curDate = new Date(Date.now());
+	const curMonth = curDate.getMonth();
+	const curSem = (curMonth<7) ? 2 : 1; // 7 meaning August 
+	const curYear = (curSem===2) ? curDate.getFullYear() -1 : curDate.getFullYear();
+	return current = [ curYear, curSem ];
+}
+
 
 async function renderCourses(req, res, period) {
 	const courses = await Course.find({ 
@@ -38,6 +46,7 @@ router.get('/faq', function(req, res) {
 
 // Courses Page
 router.get('/courses', async function(req, res) {
+	const current = calcCurDate();
 	await renderCourses(req, res, current);	
 })
 
@@ -70,7 +79,7 @@ router.get('/courses/:course_id/view', async function (req, res, next) {
 // Archives
 router.get('/archives', function(req, res) {
 	const start = [2019, 1];
-	const end = current;
+	const end = calcCurDate();
 	const periods = []
 	const years = end[0] - start[0]
 	for (let i = 0;i <= years;i++) {
