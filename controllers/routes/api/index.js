@@ -14,13 +14,17 @@ router.use('/courses/:course_id', (req, res, next) => {
 	return next();
 }, isRegisteredForCourse, courseApiRouter);
 
+//Current Date Calculation
+const calcCurDate = require('../../util/calcCurDate')
+
+
 // Get User Details
 router.get('/dashboard', async function(req, res) {
 	const user_id = req.session.passport.user;
   const user = await User.findOne({ _id: user_id })
 
 	const coursePromises = user.courses.map( async (course_id) => {
-    const course = await Course.findOne({ _id: course_id }).select("name coverImage instructors")
+    const course = await Course.findOne({ _id: course_id }).select("name coverImage instructors offerYear offerSem")
 
     // Intructor Id to Name
     const instructors = await Promise.all(
@@ -39,9 +43,13 @@ router.get('/dashboard', async function(req, res) {
 		return Object.assign({}, course.toObject(), { instructors });
 	});
 
+
 	const courses = await Promise.all(coursePromises);
 	return res.json(
-		courses
+		{
+			courses: courses,
+			curDate: calcCurDate()
+		}
 	);
 })
 

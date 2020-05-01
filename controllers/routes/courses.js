@@ -7,6 +7,9 @@ const router = express.Router();
 const renderView = require('../util/renderView');
 const { User, Course } = require('../models');
 
+// Current Date Calculator
+const calcCurDate = require('../util/calcCurDate')
+
 // Register User for course
 router.get('/:course_id/register', async function (req, res) {
 	const course = await Course.findOne({ _id: req.params.course_id }).select('name');
@@ -18,7 +21,14 @@ router.get('/:course_id/register', async function (req, res) {
 
 router.post('/:course_id/register', async function (req, res) {
 	const { agreement } = req.body;
-	if (agreement !== "yes")
+	const course = await Course.findOne({_id: req.params.course_id});
+  const courseObject = course.toObject();
+  const curDate = calcCurDate();
+	let isArchive = false;
+  if(courseObject.offerYear < curDate[0] || (course.offerYear===curDate[0] && courseObject.offerSem===1)){
+	  isArchive = true;
+  }
+	if (agreement !== "yes" && isArchive!==true)
 		return res.status(401).send('Not agreed');
 
 	const course_id = req.params.course_id;
