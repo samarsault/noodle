@@ -9,14 +9,7 @@ const renderView = require('../util/renderView');
 const { User, Course } = require('../models');
 
 //Current Date Calculation
-function calcCurDate(){
-	const curDate = new Date(Date.now());
-	const curMonth = curDate.getMonth();
-	const curSem = (curMonth<7) ? 2 : 1; // 7 meaning August 
-	const curYear = (curSem===2) ? curDate.getFullYear() -1 : curDate.getFullYear();
-	return current = [ curYear, curSem ];
-}
-
+const calcDate  = require('../util/calcDate')
 
 async function renderCourses(req, res, period) {
 	const courses = await Course.find({ 
@@ -46,6 +39,7 @@ router.get('/faq', function(req, res) {
 
 // Courses Page
 router.get('/courses', async function(req, res) {
+	const current = calcDate(Date.now());
 	await renderCourses(req, res, current);	
 })
 
@@ -65,12 +59,15 @@ router.get('/courses/:course_id/view', async function (req, res, next) {
   const instructors = await Promise.all(instructorDelegates);
   const courseObject = course.toObject();
   courseObject.instructors = instructors;
-
+  const curDate = calcDate(Date.now());
+  const isArchive = (courseObject.offerYear < curDate[0] || (course.offerYear===curDate[0] && courseObject.offerSem===1));
 	renderView(
 		req,
 		res,
 		'course',
-		{ course: courseObject }
+		{ course: courseObject ,
+		isArchive: isArchive
+		}
 	)
 
 });
@@ -78,7 +75,7 @@ router.get('/courses/:course_id/view', async function (req, res, next) {
 // Archives
 router.get('/archives', function(req, res) {
 	const start = [2019, 1];
-	const end = calcCurDate();
+	const end = calcDate(Date.now());
 	const periods = []
 	const years = end[0] - start[0]
 	for (let i = 0;i <= years;i++) {

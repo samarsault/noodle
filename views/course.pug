@@ -16,8 +16,12 @@ block content
 					div.info
 						p #{course.summary}	
 						.controls
-							a(href='/courses/' + course._id + '/register/')
-								button.primary Register
+							if isArchive
+								form(action='/courses/' + course._id + '/register', method='POST')
+									button.primary Audit Course								
+							else
+								a(href='/courses/' + course._id + '/register/')
+									button.primary Register
 							a(href=course.handout)
 								button.secondary View Handout
 

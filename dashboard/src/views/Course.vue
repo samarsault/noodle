@@ -3,7 +3,7 @@
 	<section id="course-bg" class="hero hero-overlay" :style="`background-image: url('${course.coverImage}')`"/>
 	<div class="container">
 			<h1 style="color: #fff"> {{ course.name }}</h1>
-
+			<h4 style="color: #fff" v-if="isArchive(course)">Archived</h4>
 			<CourseTabs ref="courseTabs" style="margin-bottom: 60px">
 				<Tab v-for="(topic,i) in course.topics" :name="topic" v-bind:key="i">
 					<ul>
@@ -62,6 +62,7 @@ import { mutations } from '../utils/store';
 // Icons
 import FallbackIcon from 'vue-material-design-icons/FileDocumentOutline';
 import Empty from 'vue-material-design-icons/FlaskEmptyOutline';
+import calcDate from '../utils/calcDate';
 
 export default {
 	data() {
@@ -70,7 +71,8 @@ export default {
 			course: {},
 			resources: [],
 			admin: true,
-			quiz: []
+			quiz: [],
+			curDate: [ ]
 		}
 	},
 	async created () {
@@ -80,7 +82,7 @@ export default {
 			this.course = (await axios.get(`/api/courses/${this.course_id}/view`)).data;
 			this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
 			this.quiz = (await axios.get(`/api/courses/${this.course_id}/quiz`)).data
-
+			this.curDate = calcDate(Date.now());
 			// select 1st item
 			if (this.$refs.courseTabs.tabs.length > 0) {
         this.$refs.courseTabs.tabs[0].isActive = true;
@@ -98,7 +100,10 @@ export default {
 		FallbackIcon
 	},
 	methods: {
-		...mutations
+		...mutations,
+		isArchive (course) {
+			return course.offerYear < this.curDate[0] || (course.offerYear===this.curDate[0] && course.offerSem===1);
+		}
 	}
 }
 </script>
