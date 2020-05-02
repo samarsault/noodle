@@ -6,10 +6,11 @@ import Admin from './views/Admin/SuperIndex.vue'
 import CourseAdmin from './views/Admin/CourseIndex.vue'
 import SignUp from './views/SignUp';
 import Quizzer from './views/Quizzer.vue';
+import { getters } from './utils/store';
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
 	mode: 'history',
 	base: process.env.BASE_URL,
 	routes: [
@@ -27,12 +28,18 @@ export default new Router({
 	{
 		path: '/admin/:id',
 		name: 'courseAdmin',
-		component: CourseAdmin
+		component: CourseAdmin,
+		meta: {
+			requiresAuth: true
+		}
 	},
 	{
 		path: '/admin',
 		name: 'admin',
-		component: Admin
+		component: Admin,
+		meta: {
+			requiresAuth: true
+		}
 	},
 	{
 		path: '/signup',
@@ -46,3 +53,22 @@ export default new Router({
 	}
 	]
 })
+
+router.beforeEach((to, from, next)=>{
+	if(to.meta.requiresAuth){
+		const user = getters.user();
+		if(user.role === 'student'){
+			next({
+				name: 'home'
+			})
+		}
+		else{
+			next();
+		}
+	}
+	else{
+		next();
+	}
+})
+
+export default router;
