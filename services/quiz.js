@@ -5,14 +5,15 @@
 const { QnA, Quiz, QuizAttempt } = require('../models/Quiz');
 
 // @returns Promise
-function createQuiz(name, course, questions) {
+exports.createQuiz = function(name, course, questions) {
 		return Quiz.create({
 			name,
 			course,
 			questions
 		})
 }
-function deleteQuiz(_id, name) {
+
+exports.deleteQuiz = function(_id, name) {
 	// name just for safety
 	return Quiz.deleteOne({
 		_id,
@@ -20,7 +21,7 @@ function deleteQuiz(_id, name) {
 	});
 }
 
-async function evaluate(attempt) {
+exports.evaluate = async function(attempt) {
 	try {
 		const { questions } = await Quiz.findOne({ _id: attempt.quiz_id }).select('questions')
 		const correctAnswers = questions.map(q => q.answer);
@@ -43,7 +44,7 @@ async function evaluate(attempt) {
 }
 
 // @returns Promise
-function addQuestion(quizId, QnA) {
+exports.addQuestion = function(quizId, QnA) {
 	 return Quiz.update(
 		{
 			_id: quizId
@@ -56,7 +57,7 @@ function addQuestion(quizId, QnA) {
 	)
 }
 
-function updateQuestion(questionId, newQnA) {
+exports.updateQuestion = function(questionId, newQnA) {
 	return Quiz.updateOne(
 		{
 			'questions._id' : questionId
@@ -71,7 +72,7 @@ function updateQuestion(questionId, newQnA) {
 	)
 }
 
-function deleteQuestion(quizId, questionId) {
+exports.deleteQuestion = function(quizId, questionId) {
 	return Quiz.updateOne(
 		{
 			_id: quizId
@@ -85,16 +86,18 @@ function deleteQuestion(quizId, questionId) {
 		}
 	)
 }
-function attemptQuiz (quizId, userId, answers) {
 
+exports.get = async function(course_id) {
+	const quizzes = await Quiz.find({
+		course: course_id
+	}).select('name');
+
+	return quizzes;
 }
 
-module.exports = {
-	createQuiz,
-	deleteQuiz,
-	addQuestion,
-	updateQuestion,
-	deleteQuestion,
-	attemptQuiz,
-	evaluate
+exports.getById = async function(quiz_id) {
+	const quiz = await Quiz.findOne({
+		_id: quiz_id
+	})
+	return quiz;
 }

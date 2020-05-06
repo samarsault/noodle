@@ -1,6 +1,5 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const MockStrategy = require('../test/util/mock-auth').Strategy;
-const { User } = require('./models');
+const { User } = require('../models');
 
 // 
 // Callback on successful authentication from provider
@@ -31,21 +30,6 @@ async function oauthCallback(accessToken, refreshToken, profile, done) {
 	}
 }
 
-//
-// We need to mock the authentication
-// for e2e tests
-//
-function getStrategyForEnvironment() {
-	if (process.env.NODE_ENV == 'test')
-	return new MockStrategy('google', oauthCallback)
-	
-	return new GoogleStrategy({
-		clientID: process.env.GOOGLE_CLIENT_ID,
-		clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-		callbackURL: '/auth/callback'
-	}, oauthCallback);
-}
-
 module.exports = (passport) => {
 	passport.serializeUser(function(user, done) {
 		// value of req.passport.user
@@ -59,10 +43,14 @@ module.exports = (passport) => {
 		});
 	});
 	
-	const Strategy = getStrategyForEnvironment();
+	const Strategy = new GoogleStrategy({
+		clientID: process.env.GOOGLE_CLIENT_ID,
+		clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+		callbackURL: '/auth/callback'
+	}, oauthCallback);
 	
 	passport.use(
 		Strategy
-		)
-	};
+	)
+};
 	

@@ -9,17 +9,17 @@ const bodyParser = require('body-parser');
 // fallback to index.html for vue
 
 // Custom
-const googleAuth = require('./controllers/googleAuth');
+const googleAuth = require('./services/googleAuth');
 
 // Middleware
-const isAuth = require('./controllers/middleware/isAuth');
+const isAuth = require('./middleware/isAuth');
 
 // Routes
-const viewsRouter = require('./controllers/routes/views');
-const authRouter = require('./controllers/routes/auth');
-const coursesRouter = require('./controllers/routes/courses');
-const adminRouter = require('./controllers/routes/admin');
-const apiRouter = require('./controllers/routes/api');
+const viewsRouter = require('./routes/views');
+const authRouter = require('./routes/auth');
+const coursesRouter = require('./routes/courses');
+const adminRouter = require('./routes/admin');
+const apiRouter = require('./routes/api');
 
 const app = express();
 

@@ -40,7 +40,7 @@ export default {
 		...getters
 	},
 	components: {
-    Loading,
+		Loading,
 		NavBar,
 		Footer,
 		Modal
@@ -53,7 +53,7 @@ export default {
 		const { data: user } = await axios.get('/api/user')
 		this.setUser(user);
 		this.setLoading(false);
-}
+	}
 }
 </script>
 

@@ -4,57 +4,33 @@
 //
 const express = require('express');
 const router = express.Router();
-const { User, Course, Resource } = require('../../models');
+const courseService = require('../../services/course');
+const resourceService = require('../../services/resource');
 const response = require('../../util/response');
-const quizzer = require('../../util/quizzer');
-const upload = require('./upload');
+const quizzer = require('../../services/quiz');
+const upload = require('../../middleware/upload');
 
 //
 // Fetch students registered to course
 //
 router.get('/students', async function (req, res) {
-	const users = await User.find({
-		courses: req.course_id,
-		role: 'student'
-	});
+	const users = await courseService.getRegistered(req.course_id);
 	if (users)
 		return res.json(users);
 	return res.status(500);
 });
 
 router.get('/students/download', async function (req, res) {
-	const users = await User.find({
-		courses: req.course_id,
-		role: 'student'
-	});
-
 	res.setHeader('Content-disposition', 'attachment; filename=export.csv');
 	res.setHeader('Content-type', 'text/csv');
 
-	// properties to send
-	const props = ['name', 'email', 'phone', 'bits_id']
+	const registeredCSV = await courseService.getRegisteredCSV(req.course_id);
 
-	// Write CSV Header
-	res.write(props.join(',') + '\n');
-
-	for (const user of users) {
-		const dataArr = [];
-
-		for (const prop of props) {
-			if (!user[prop])
-				dataArr.push(' ')
-			else
-				dataArr.push(user[prop]);
-		}
-
-		res.write(dataArr.join(',') + '\n');
-	}
-
-	res.end();
-})
+	return res.send(registeredCSV);
+});
 
 // Add a resource to course
-router.post('/resource/add', upload.single('res'), function (req, res) {
+router.post('/resource/add', upload.single('res'), async function (req, res) {
 	const { name, topic, description, link } = req.body;
 
 	if (!req.file && !link)
@@ -62,41 +38,36 @@ router.post('/resource/add', upload.single('res'), function (req, res) {
 
 	const url = req.file ? `/uploads/${req.file.filename}` : link;
 		
-	let resource = new Resource({
-		name,
-		topic,
-		description,
-		course: req.course_id,
-		url
-	});
+	try {
+		await resourceService.create({
+			name,
+			topic,
+			description,
+			course: req.course_id,
+			url
+		});
+		res.redirect(`/dashboard/admin/${req.course_id}`)
+	} catch (e) {
+		res.send(response.error(err.message))
+	}
 
-	resource.save((err) => {
-		if (!err) {
-			res.redirect(`/dashboard/admin/${req.course_id}`)
-			// res.send(response.success('Added'))
-		} else {
-			res.send(response.error(err.message))
-		}
-	});
 });
 
 // Delete a resource from course
-router.post('/resource/remove', function (req, res, next) {
-	Resource.deleteOne({
-		_id: req.body.id
-	}, function (err) {
-		if (!err) {
-			res.send({
-				success: true
-			})
-		} else {
-			res.send({
-				success: false,
-				error: err,
-				body: req.body
-			})
-		}
-	})
+router.post('/resource/remove', async function (req, res, next) {
+	try {
+		await resourceService.delete(req.body.id);
+		res.send({
+			success: true
+		})
+	} catch (e) {
+		res.send({
+			success: false,
+			error: err,
+			body: req.body
+		})
+	}
+
 });
 
 // Initialize Quiz Creation

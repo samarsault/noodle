@@ -25,4 +25,3 @@ let info = await transporter.sendMail({
 	html: render('hello')
 })
 
-console.log(info);
