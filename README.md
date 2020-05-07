@@ -18,6 +18,11 @@ To run the app, you will require a .env file listing your GOOGLE_CLIENT_ID and G
 GOOGLE_CLIENT_ID=sdjfoasjfoda
 GOOGLE_CLIENT_SECRET=3232-u23.apps.googleusercontent.com
 ```
+Also, add the following URL in the Authorized Redirect URLs box in the [Googele API Console page].
+```
+http://localhost:3000/auth/callback
+```
+
 ## Access Levels
 
 There are 3 types of access levels:
