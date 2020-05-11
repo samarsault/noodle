@@ -16,7 +16,10 @@ block content
 					div.info
 						p #{course.summary}	
 						.controls
-							if isArchive
+							if isReg
+								a(href='/dashboard/course/' + course._id)
+									button.primary View Course
+							else if isArchive
 								form(action='/courses/' + course._id + '/register', method='POST')
 									button.primary Audit Course								
 							else

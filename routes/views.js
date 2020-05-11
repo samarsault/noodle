@@ -46,8 +46,12 @@ router.get('/terms', function (req, res) {
 
 // Course Page
 router.get('/courses/:course_id/view', async function (req, res, next) {
-  const course = await courseService.getCourseView(req.params.course_id);
-
+	let course;
+	if(req.isAuthenticated()){
+		course = await courseService.getCourseView(req.params.course_id, req.session.passport.user);
+	}else{
+		course = await courseService.getCourseView(req.params.course_id, null);
+	}
   renderView(
     req,
     res,

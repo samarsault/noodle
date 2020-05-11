@@ -21,14 +21,22 @@ exports.deregister = async function(user_email, course_name) {
 	});
 }
 
-exports.getCourseView = async function(course_id) {
+exports.isRegistered = async (course_id, user_id) => {
+	const userCourses = (await User.findOne({_id: user_id}).select('courses')).courses;
+	return userCourses.find( (user_course_id) => user_course_id == course_id );
+}
+
+exports.getCourseView = async function(course_id, user_id) {
 	const course = await Course.findOne({ _id: course_id });
 
 	const instructorDelegates = course.instructors.map(async user_id => {
 		const user = await User.findOne({ _id: user_id }).select('name');
 		return user.name;
 	});
-
+	let isReg = false;
+	if(user_id){
+		isReg = await this.isRegistered(course_id, user_id);
+	}
 	const instructors = await Promise.all(instructorDelegates);
 	const courseObject = course.toObject();
 	courseObject.instructors = instructors;
@@ -37,7 +45,8 @@ exports.getCourseView = async function(course_id) {
 	
 	return { 
 		course: courseObject,
-		isArchive: isArchive
+		isArchive: isArchive, 
+		isReg: isReg
 	}
 }
 
