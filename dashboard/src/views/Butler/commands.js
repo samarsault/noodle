@@ -20,10 +20,9 @@ export default (editor) => [
   },
   {
     id: 1,
-    name: "Todo List",
+    name: "Code Block",
     onCommand: function() {
-      const src = prompt('URL:');
-      editor.commands.image({ src });
+			editor.commands.code_block();
     }
   },
   {

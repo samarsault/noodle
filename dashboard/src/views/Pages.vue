@@ -69,6 +69,7 @@ import {
   History,
   Heading,
   Code,
+  CodeBlockHighlight,
   Bold,
   Italic,
   Image,
@@ -79,6 +80,14 @@ import Resources from './Butler/nodes/resource';
 import ButlerCommands from './Butler/commands';
 
 import axios from 'axios';
+
+// Syntax Highlighting
+import javascript from 'highlight.js/lib/languages/javascript'
+import css from 'highlight.js/lib/languages/css'
+import python from 'highlight.js/lib/languages/python'
+import xml from 'highlight.js/lib/languages/xml'
+import clike from 'highlight.js/lib/languages/c-like'
+import java from 'highlight.js/lib/languages/java'
 
 export default {
   components: {
@@ -115,6 +124,16 @@ export default {
         new HardBreak(),
         new Heading({ levels: [1, 2, 3] }),
         new Image(),
+        new CodeBlockHighlight({
+          languages: [
+            javascript,
+            css,
+            xml,
+            python,
+            java,
+            clike
+          ]
+        }),
         new History(),
         new Iframe(),
         new Resources(),
@@ -267,8 +286,21 @@ export default {
 </script>
 
 <style lang="scss">
+@import './nord.css';
 $color-black: #111;
 $color-white: #fff;
+pre {
+  color: #fff;
+  &::before {
+    content: attr(data-language);
+    text-transform: uppercase;
+    display: block;
+    text-align: right;
+    font-weight: bold;
+    font-size: 0.6rem;
+  }
+}
+
 .ProseMirror {
   outline: none;
 }
@@ -369,4 +401,6 @@ $color-white: #fff;
     background: transparent;
     color: $color-white;
   }
-}</style>
+}
+
+</style>
