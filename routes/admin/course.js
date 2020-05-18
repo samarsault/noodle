@@ -5,10 +5,10 @@
 const express = require('express');
 const router = express.Router();
 const courseService = require('../../services/course');
-const resourceService = require('../../services/resource');
 const response = require('../../util/response');
 const quizzer = require('../../services/quiz');
 const upload = require('../../middleware/upload');
+const { Uploads, CoursePage } = require('../../models');
 
 //
 // Fetch students registered to course
@@ -30,46 +30,39 @@ router.get('/students/download', async function (req, res) {
 });
 
 // Add a resource to course
-router.post('/resource/add', upload.single('res'), async function (req, res) {
-	const { name, topic, description, link } = req.body;
-
+router.post('/upload', upload.single('res'), async function (req, res) {
 	if (!req.file && !link)
 			return res.status(400).send('Missing');
 
 	const url = req.file ? `/uploads/${req.file.filename}` : link;
-		
-	try {
-		await resourceService.create({
-			name,
-			topic,
-			description,
-			course: req.course_id,
-			url
-		});
-		res.redirect(`/dashboard/admin/${req.course_id}`)
-	} catch (e) {
-		res.send(response.error(err.message))
-	}
-
+	// History of uploads
+	const upload = await Uploads.create({
+		name: req.file.originalname,
+		course: req.course_id,
+		user: req.session.passport.user,
+		url
+	})
+	res.send({ name: upload.name, url });
 });
 
-// Delete a resource from course
-router.post('/resource/remove', async function (req, res, next) {
-	try {
-		await resourceService.delete(req.body.id);
-		res.send({
-			success: true
-		})
-	} catch (e) {
-		res.send({
-			success: false,
-			error: err,
-			body: req.body
-		})
-	}
+router.post('/page/create', async function (req, res) {
+	const coursePage = await CoursePage.create({
+		name: req.body.name,
+		course: req.course_id
+	});
+	return res.send(coursePage);
+})
 
-});
-
+router.post('/page/save', async function (req, res) {
+	await CoursePage.updateOne({
+		_id: req.body._id
+	}, {
+		doc: JSON.stringify(req.body.doc)
+	});
+	return res.send({
+		success: true
+	});
+})
 // Initialize Quiz Creation
 router.post('/quiz/init', async function(req, res, next) {
 	const { name } = req.body;

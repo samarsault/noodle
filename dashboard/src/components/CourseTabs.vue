@@ -7,7 +7,7 @@
           v-for="(tab, index) in tabs"
           :class="{ 'is-active': tab.isActive }"
           v-bind:key="index"
-					@click="selectTab(tab)"
+	  @click="selectTab(tab)"
         >
           <a :href="tab.href">{{ tab.name }}</a>
         </li>

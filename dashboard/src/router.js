@@ -3,9 +3,10 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Course from './views/Course.vue'
 import Admin from './views/Admin/SuperIndex.vue'
-import CourseAdmin from './views/Admin/CourseIndex.vue'
 import SignUp from './views/SignUp';
 import Quizzer from './views/Quizzer.vue';
+import Pages from './views/Pages';
+import Registrations from './views/Students.vue';
 import { getters } from './utils/store'
 
 Vue.use(Router)
@@ -21,17 +22,19 @@ const router = new Router({
 	},
 	
 	{
-		path: '/course/:id',
+		path: '/course/:course_id',
 		name: 'course',
-		component: Course
-	},
-	{
-		path: '/admin/:id',
-		name: 'courseAdmin',
-		component: CourseAdmin,
-		meta: {
-			requiresAuth: true
-		}		
+		component: Course,
+		children: [
+			{
+				path: 'pages/:page_id',
+				component: Pages
+			},
+			{
+				path: 'registrations',
+				component: Registrations
+			}
+		]
 	},
 	{
 		path: '/admin',

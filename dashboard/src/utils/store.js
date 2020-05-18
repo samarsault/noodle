@@ -15,13 +15,18 @@ const store = Vue.observable({
 		status: '',
 		message: '',
 		show: false
-	}
+	},
+	uploadBox: {
+		show: false,
+		onSuccess: null
+	},
 })
 
 export const getters = {
 	user: () => store.user,
 	isLoading: () => store.isLoading,
-	alert: () => store.alert
+	alert: () => store.alert,
+	uploadBox: () => store.uploadBox,
 }
 
 export const mutations = {
@@ -40,5 +45,9 @@ export const mutations = {
 	},
 	hideAlert() {
 		store.alert.show = false;
-	}
+	},
+	toggleUploadBox(value, cb) {
+		store.uploadBox.show = value;
+		store.uploadBox.onSuccess = cb;
+	},
 }
