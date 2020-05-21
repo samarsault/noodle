@@ -13,12 +13,17 @@ exports.register = function(user_id, course_id) {
 exports.deregister = async function(user_email, course_name) {
 	const { _id } = await Course.findOne({ name: course_name }).select('');
 	await User.updateOne({
-		email
+		email: user_email
 	}, {
 		$pull: {
 			courses: _id
 		}
 	});
+}
+
+exports.isRegistered = async (course_id, user_id) => {
+	const userCourses = (await User.findOne({_id: user_id})).courses;
+	return userCourses.find( (user_course_id) => (user_course_id).equals(course_id));
 }
 
 exports.getCourseView = async function(course_id) {
@@ -56,7 +61,7 @@ exports.getIdByName = function(courseName) {
 exports.getProp = async function(course_id, toSelect) {
 	return Course.findOne({
 		_id: course_id
-	}).select(toSelect);
+	}, {_id: 0, [toSelect]: 1});
 }
 
 exports.getFromHistory = function(period) {
@@ -69,8 +74,21 @@ exports.getFromHistory = function(period) {
 exports.getArchives = function(start, end) {
 	const periods = []
 	const years = end[0] - start[0]
-	for (let i = 0;i <= years;i++) {
-		const period1 = [ start[0] + i, 1 ];
+	if(start[0]!==end[0] || start[1]!==end[1]){
+		periods.push({ 
+			stamp: `${start[0]}-${start[1]}`,
+			link: `/archives/${start[0]}/${start[1]}`
+		})
+		if(start[1]===1){
+			periods.push({ 
+				stamp: `${start[0]}-${start[1]+1}`,
+				link: `/archives/${start[0]}/${start[1]+1}`
+			})
+		}
+	}
+	
+	for (let i = 1;i <= years;i++) {
+		const period1 = [ start[0] + i, 1];
 		const period2 = [ start[0] + i, 2 ];
 		periods.push({ 
 			stamp: `${period1[0]}-${period1[1]}`,
@@ -143,14 +161,12 @@ exports.create = async function(body) {
 		description,
 		offerYear,
 		offerSem,
-    topics,
 		instructors,
 		handout,
 		coverImage
 	} = body;
 
-  const topicsArr = topics.replace(/\r/g, '').split('\n');
-  const instructorsArr = instructors.split(',');
+  const instructorsArr = instructors.toString().split(',');
 
 	const course =  await Course.create({
 		name,
@@ -160,13 +176,12 @@ exports.create = async function(body) {
 		coverImage,
 		offerYear,
 		offerSem,
-		topics: topicsArr
 	});
 
 	// Update instructor & roles
-	const updateDelegates = instructorsArr.map(async (email) => {
+	const updateDelegates = instructorsArr.map(async (id) => {
 		const user = await User.findOne({
-			email,
+			_id: id,
 		}).select('role');
 
 		// don't degrede admin
@@ -194,7 +209,7 @@ exports.create = async function(body) {
 	});
 
 	await Promise.all(updateDelegates);
-
+	return Course.findOne({_id: course._id})
 }
 
 exports.search = async function(query) {
@@ -207,4 +222,8 @@ exports.search = async function(query) {
 	const names = courses.map(course => course.name);
 
   return names;
+}
+
+exports.del = async (course_id) => {
+	return await Course.deleteOne({_id: course_id});
 }
