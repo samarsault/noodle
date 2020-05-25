@@ -48,7 +48,7 @@ async function populateDB() {
 		coverImage: '/something.png',
 		offerYear: 2019,
 		offerSem: 2,
-		topics: [ 'Introduction', 'Endnotes'],
+		// topics: [ 'Introduction', 'Endnotes'],
 		instructors: [ instructor._id ]
 	})
 	
