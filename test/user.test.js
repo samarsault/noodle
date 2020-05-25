@@ -8,8 +8,9 @@ const { User } = require('../models');
 
 let data;
 
-beforeAll(async () => {
-	data = await basicData.beforeAll();
+beforeAll(basicData.beforeAll);
+beforeEach(async () => {
+	data = await basicData.beforeEach();
 	await courseService.register(data.student._id, data.course._id);
 });
 
