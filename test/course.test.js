@@ -84,25 +84,49 @@ describe("Course Service", function () {
 		done();
 	});
 
-	//it("Get past courses successfully", async (done) => {
-		//const demoDates = [
-			//[2019, 1],
-			//[2019, 2],
-		//];
-		//demoDates.map(async (date) => {
-			//let demoCourse = data.course.toObject();
-			//demoCourse.offerYear = date[0];
-			//demoCourse.offerSem = date[1];
-			//demoCourse.name = "Thing";
-			//let histCourse = await courseService.create(demoCourse);
-			//let histCourses = await courseService.getFromHistory(date);
-			//histCourses = histCourses.map((c) => c.toObject());
-			//expect(histCourses).toEqual(
-				//expect.arrayContaining([histCourse.toObject()])
-			//);
-		//});
-		//done();
-	//});
+	it("Get past courses successfully", async (done) => {
+		const demoDates = [
+			[2019, 1],
+			[2019, 2],
+			[2016, 1],
+			[2016, 2],
+			[2040, 1],
+			[2040, 2]
+		];
+		const checkCorrectness = async (date) => {
+			let demoCourse = data.course.toObject();
+			demoCourse.offerYear = date[0];
+			demoCourse.offerSem = date[1];
+			demoCourse.name = "Thing";
+			let histCourse = await courseService.create(demoCourse);
+			let histCourses = await courseService.getFromHistory(date);
+			histCourses = histCourses.map((c) => c.toObject());
+			expect(histCourses).toEqual(
+				expect.arrayContaining([histCourse.toObject()])
+			);
+		}
+
+		const checkEmpty = async (date) => {
+			let coursesEmpty  = await courseService.getFromHistory(date);
+			expect(coursesEmpty).toEqual(
+				expect.arrayContaining([])
+			);
+		}
+
+		//Get courses which exist
+		await checkCorrectness(demoDates[1]);
+		await checkCorrectness(demoDates[0]);
+
+		//Extreme Past should be empty
+		await checkEmpty(demoDates[2]);
+		await checkEmpty(demoDates[3]);
+
+		//Future should be empty
+		await checkEmpty(demoDates[4]);
+		await checkEmpty(demoDates[5]);
+		
+		done();
+	});
 
 	it("Get Archives successfully", (done) => {
 		const archivesAsExpected = (want, got) => {
