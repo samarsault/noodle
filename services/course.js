@@ -33,7 +33,10 @@ exports.getCourseView = async function(course_id) {
 		const user = await User.findOne({ _id: user_id }).select('name');
 		return user.name;
 	});
-
+	let isReg = false;
+	if(user_id){
+		isReg = await this.isRegistered(course_id, user_id);
+	}
 	const instructors = await Promise.all(instructorDelegates);
 	const courseObject = course.toObject();
 	courseObject.instructors = instructors;
@@ -42,7 +45,8 @@ exports.getCourseView = async function(course_id) {
 	
 	return { 
 		course: courseObject,
-		isArchive: isArchive
+		isArchive: isArchive, 
+		isReg: isReg
 	}
 }
 
