@@ -3,13 +3,15 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Course from './views/Course.vue'
 import Admin from './views/Admin/SuperIndex.vue'
-import CourseAdmin from './views/Admin/CourseIndex.vue'
 import SignUp from './views/SignUp';
 import Quizzer from './views/Quizzer.vue';
+import Pages from './views/Pages';
+import Registrations from './views/Students.vue';
+import { getters } from './utils/store'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
 	mode: 'history',
 	base: process.env.BASE_URL,
 	routes: [
@@ -20,19 +22,27 @@ export default new Router({
 	},
 	
 	{
-		path: '/course/:id',
+		path: '/course/:course_id',
 		name: 'course',
-		component: Course
-	},
-	{
-		path: '/admin/:id',
-		name: 'courseAdmin',
-		component: CourseAdmin
+		component: Course,
+		children: [
+			{
+				path: 'pages/:page_id',
+				component: Pages
+			},
+			{
+				path: 'registrations',
+				component: Registrations
+			}
+		]
 	},
 	{
 		path: '/admin',
 		name: 'admin',
-		component: Admin
+		component: Admin,
+		meta: {
+			requiresAuth: true
+		}
 	},
 	{
 		path: '/signup',
@@ -46,3 +56,22 @@ export default new Router({
 	}
 	]
 })
+
+router.beforeEach((to, from, next)=>{
+	if(to.meta.requiresAuth){
+		const user = getters.user();
+		if(user.role === 'student'){
+			next({
+				name: 'home'
+			})
+		}
+		else{
+			next();
+		}
+	}
+	else{
+		next();
+	}
+})
+
+export default router;

@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const courseService = require('../../services/course')
 const quizzer = require('../../services/quiz')
+const { CoursePage } = require('../../models');
 
 // Get Course Meta
 router.get('/view', async function (req, res) {
@@ -34,6 +35,20 @@ router.get('/view/:prop', async function(req, res) {
 router.get('/resources', async function(req, res) {
 	const resources = await courseService.getResources(req.course_id);
 	return res.json(resources);
+});
+
+router.get('/pages', async function (req, res) {
+	const pages = await CoursePage.find({
+		course: req.course_id
+	}).select('name');
+	return res.send(pages);
+});
+
+router.get('/pages/:id', async function (req, res) {
+	const page = await CoursePage.findOne({
+		_id: req.params.id
+	});
+	return res.json(page);
 });
 
 router.get('/quiz', async function(req, res) {

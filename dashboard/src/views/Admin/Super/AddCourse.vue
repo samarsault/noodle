@@ -23,10 +23,6 @@
     <input type="number" name="offerYear" placeholder="Year">   
     <input type="number" name="offerSem" placeholder="Semester">  
 
-    <label for="topics">Topics</label> 
-    <v-select multiple taggable v-model="topics" />
-    <input type="hidden" name="topics" v-model="topicsString">
-
     <label for="instructors">Instructors</label> 
     
     <UserInput v-model="instructors"/>
@@ -43,19 +39,14 @@
 </template>
 
 <script>
-import vSelect from 'vue-select';
 import UserInput from '../../../components/Input/User';
 
 const emailExtract = /<(.*)>/;
 export default {
   components: {
-    vSelect,
     UserInput
   },
   computed: {
-    topicsString: function() {
-      return this.topics.join('\n');
-    },
     instructorStr: function() {
       return this.instructors.map(x => {
         return x.match(emailExtract)[1]

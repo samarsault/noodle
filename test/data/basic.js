@@ -6,15 +6,16 @@ const mongoose = require('mongoose');
 const { User, Course } = require('../../models');
 
 module.exports = {
-	beforeAll: async () => {
-		mongoose.set('useCreateIndex', true);
-		mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
-
-		return populateDB();
-	},
-	afterAll: async () => {
+	beforeEach: async() => {
 		await User.deleteMany();
 		await Course.deleteMany();
+		return populateDB();
+	},
+	beforeAll: async () => {
+		mongoose.set('useCreateIndex', true);
+		mongoose.connect(global.MONGO_URL, { dbName: global.MONGO_DB_NAME, useNewUrlParser: true });
+	},
+	afterAll: async () => {
 		mongoose.connection.close();
 	}
 }
@@ -48,7 +49,7 @@ async function populateDB() {
 		coverImage: '/something.png',
 		offerYear: 2019,
 		offerSem: 2,
-		topics: [ 'Introduction', 'Endnotes'],
+		// topics: [ 'Introduction', 'Endnotes'],
 		instructors: [ instructor._id ]
 	})
 	

@@ -1,165 +1,126 @@
 <template>
-  <div>
-	<section id="course-bg" class="hero hero-overlay" :style="`background-image: url('${course.coverImage}')`"/>
-	<div class="container">
-			<h1 style="color: #fff"> {{ course.name }}</h1>
-
-			<CourseTabs ref="courseTabs" style="margin-bottom: 60px">
-				<Tab v-for="(topic,i) in course.topics" :name="topic" v-bind:key="i">
-					<ul>
-						<li v-if="!resources[topic] || resources[topic].length === 0" class="resource-empty">
-							<Empty :size="96"/>
-							<div>
-								<h3>There's nothing here!</h3>
-								<p class="light">Wait for the instructor to upload something</p>
-							</div>
-						</li>
-						<li v-else v-for="(resource, j) in resources[topic]" v-bind:key="j">
-							<div class="resource-meta">
-								<div class="resource-icon">
-									<FallbackIcon :size="72"/>
-								</div>
-								<div class="resource-meta-text">
-									<h3>{{ resource.name }}</h3>
-									<p class="light">{{ resource.description }}</p>
-								</div>
-							</div>
-							<a :href="resource.url">
-								<button class="secondary">Download</button>
-							</a>
-						</li>
-					</ul>
-				</Tab>
-				<Tab v-if="quiz.length > 0" name="Quizzes">
-					<ul>
-						<li v-for="(q, i) in quiz" v-bind:key="i">
-							<div class="resource-meta">
-								<div class="resource-icon">
-									<FallbackIcon :size="72"/>
-								</div>
-								<div class="resource-meta-text">
-									<h3>{{ q.name }}</h3>
-									<p></p>
-								</div>
-							</div>
-							<a :href="`/course/${course_id}/quiz/${q._id}`">
-								<button class="secondary">Attempt</button>
-							</a>
-						</li>
-					</ul>
-				</Tab>
-			</CourseTabs>
-	</div>
-	</div>
+  <div class="course-main">
+    <div class="sidebar">
+      <div style="display: flex;align-items:center;justify-content:space-between;padding: 0 10px;">
+	<p style="font-weight: bold">{{ course.name }}</p>
+	<Plus @click="addPage" style="cursor:pointer"/>
+      </div>
+      <nav>
+	<router-link 
+	    v-for="page in pages" 
+	    :to="`/course/${course_id}/pages/${page._id}`" 
+	    >
+	    {{ page.name }}
+	</router-link>
+      </nav>
+      <p style="padding-left: 10px;font-weight: bold">Admin</p>
+      <nav>
+	<router-link to="/course/${course_id}/registrations">Registrations</router-link>
+      </nav>
+    </div>
+    <div class="course-pages">
+      <router-view :key="$route.path"/>
+    </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
-import CourseTabs from '../components/CourseTabs';
-import Tab from '../components/Tab';
 import { mutations } from '../utils/store';
+import Pages from '../views/Pages.vue';
+import Registrations from '../views/Students.vue';
 
 // Icons
 import FallbackIcon from 'vue-material-design-icons/FileDocumentOutline';
-import Empty from 'vue-material-design-icons/FlaskEmptyOutline';
+import Plus from 'vue-material-design-icons/Plus';
 
 export default {
-	data() {
-		return {
-			course_id: this.$route.params.id,
-			course: {},
-			resources: [],
-			admin: true,
-			quiz: []
-		}
-	},
-	async created () {
-		
-		this.setLoading(true);
-		try {
-			this.course = (await axios.get(`/api/courses/${this.course_id}/view`)).data;
-			this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
-			this.quiz = (await axios.get(`/api/courses/${this.course_id}/quiz`)).data
+  data() {
+    return {
+      course_id: this.$route.params.course_id,
+      course: {},
+      admin: true,
+      quiz: [],
+      pages: [],
+    }
+  },
+  async created () {
 
-			// select 1st item
-			if (this.$refs.courseTabs.tabs.length > 0) {
-        this.$refs.courseTabs.tabs[0].isActive = true;
-			}
-			this.setLoading(false);
-		} catch (error) {
-			console.error(error);
-		}
+    this.setLoading(true);
+    try {
+      this.course = (await axios.get(`/api/courses/${this.course_id}/view`)).data;
+      this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
+      this.quiz = (await axios.get(`/api/courses/${this.course_id}/quiz`)).data
+      this.pages = (await axios.get(`/api/courses/${this.course_id}/pages`)).data;
 
-	},
-	components: {
-		CourseTabs,
-		Tab,
-		Empty,
-		FallbackIcon
-	},
-	methods: {
-		...mutations
-	}
+      // select 1st item
+      //if (this.$refs.courseTabs.tabs.length > 0) {
+      //this.$refs.courseTabs.tabs[0].isActive = true;
+      //}
+      this.setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+
+  },
+  components: {
+    Plus,
+    Pages,
+    Registrations
+  },
+  methods: {
+    ...mutations,
+    async addPage() {
+      const name = prompt('Name:');
+      if (!name)
+	return;
+      const response = await axios.post(`/admin/courses/${this.course_id}/page/create`, {
+	name
+      });
+      this.pages.push(response.data);
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../../../styles/include/_vars';
 
-.container {
-	margin-top: 50px;
-	margin-bottom: 50px;
+.sidebar {
+  background-color: #222;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+  color: #fff ;
+  flex-basis: 300px;
+  h4 {
+    color: #fff;
+  }
+  nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    a {
+      display: block;
+      padding: 15px;
+      background-color: #0D0D0D;
+      border-left: 3px solid #0D0D0D;
+      cursor: pointer;
+      color: inherit;
+      &:hover {
+      	text-decoration: none;
+      }
+      &:focus {
+      	outline: none;
+      }
+      &.router-link-exact-active {
+      	border-left-color: $green;
+      }
+    }
+  }
 }
-
-#course-bg {
-	background-color: rgba(black, 0.5);
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-blend-mode: multiply;
+.course-main {
+  display: flex;
 }
-.resources {
-	ul {
-		list-style-type: none;
-		margin: 0;
-	}
-
-	li {
-		background-color: #fff;
-		color: #0B2027;
-		padding-right: 20px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 10px;
-		// border: 1px solid #eee;
-		box-shadow: 0 0 2px 0 rgba(44, 44, 44, 0.35);
-
-		&.resource-empty {
-			flex-direction: column;
-			justify-content: center;
-			padding: 50px 0 !important;
-			> div {
-				text-align: center;
-			}	
-		}
-	}
-}
-
-.resource-meta {
-	display: flex;
-	align-items: center;
-	.resource-icon {
-		padding: 25px;
-		background-color: $gray;
-	}
-	.resource-meta-text {
-		margin-left: 20px;
-		h3 {
-			margin: .4em 0;
-		}
-		p {
-			margin-top: 0;
-		}
-	}
+.course-pages {
+  width: 100%;
 }
 </style>

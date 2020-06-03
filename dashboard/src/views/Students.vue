@@ -1,3 +1,4 @@
+  
 <template>
   <div>
   <table>
@@ -27,7 +28,6 @@
 <script>
 import axios from 'axios';
 import DownloadIcon from 'vue-material-design-icons/FileDownload';
-
 export default {
   props: [ 'course_id' ],
   data() {

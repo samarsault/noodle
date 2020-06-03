@@ -20,9 +20,6 @@
 						<router-link :to="'/course/' + course._id">
 							<button class="secondary">View Course</button>
 						</router-link>
-						<router-link v-if="course.isAdmin" :to="`/admin/${course._id}`">
-							<button class="primary">Manage</button>
-						</router-link>
 					</div>
 				</li>
 			</ul>
