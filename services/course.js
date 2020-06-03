@@ -26,7 +26,7 @@ exports.isRegistered = async (course_id, user_id) => {
 	return userCourses.find( (user_course_id) => (user_course_id).equals(course_id));
 }
 
-exports.getCourseView = async function(course_id) {
+exports.getCourseView = async function(course_id, user_id) {
 	const course = await Course.findOne({ _id: course_id });
 
 	const instructorDelegates = course.instructors.map(async user_id => {
