@@ -1,0 +1,30 @@
+{
+	"env": {
+		"browser": true,
+		"commonjs": true,
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:vue/essential",
+		"airbnb-base",
+		"prettier"
+		// "plugin:node/recommended"
+	],
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
+	"parserOptions": {
+		"ecmaVersion": 11
+	},
+	"plugins": ["vue", "prettier"],
+	"rules": {
+		"prettier/prettier": "error",
+		"camelcase": "off",
+		"no-underscore-dangle": "off",
+		"no-plusplus": "off",
+		"func-names": "off"
+	}
+}
