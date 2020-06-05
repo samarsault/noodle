@@ -1,98 +1,99 @@
 const { User, Course } = require('../models');
 const calcCurDate = require('../util/calcCurDate');
 
-exports.get = async function(user_id) {
+exports.get = async function (user_id) {
 	const user = await User.findOne({ _id: user_id }).select('name email role');
 	return user;
-}
+};
 
-exports.updateInfo = async function(user_id, updateObject) {
-	return User.updateOne({
-		_id: user_id
-	}, updateObject);
-}
+exports.updateInfo = async function (user_id, updateObject) {
+	return User.updateOne(
+		{
+			_id: user_id,
+		},
+		updateObject
+	);
+};
 
-exports.getDashboard = async function(user_id) {
-	const user = await User.findOne({ _id: user_id })
+exports.getDashboard = async function (user_id) {
+	const user = await User.findOne({ _id: user_id });
 
-	const coursePromises = user.courses.map( async (course_id) => {
-		const course = await Course.findOne({ _id: course_id }).select("name coverImage instructors offerYear offerSem")
+	const coursePromises = user.courses.map(async (course_id) => {
+		const course = await Course.findOne({ _id: course_id }).select(
+			'name coverImage instructors offerYear offerSem'
+		);
 
 		// TODO: Use courseController method
-		
+
 		// Intructor Id to Name
 		const instructors = await Promise.all(
-			course.instructors.map(async user_id => {
-				const { name } = await User.findOne({_id:user_id}).select('name')
+			course.instructors.map(async (user_id) => {
+				const { name } = await User.findOne({ _id: user_id }).select('name');
 				return name;
 			})
 		);
 
-		const instructor_index = course.instructors.findIndex(x => x.equals(user_id));
+		const instructor_index = course.instructors.findIndex((x) =>
+			x.equals(user_id)
+		);
 
 		// Is an instructor for the course
 		if (instructor_index !== -1)
-			return Object.assign({}, course.toObject(), { instructors } ,{ isAdmin: true })
+			return { ...course.toObject(), instructors, isAdmin: true };
 
-		return Object.assign({}, course.toObject(), { instructors });
+		return { ...course.toObject(), instructors };
 	});
 
 	const courses = await Promise.all(coursePromises);
 	return {
-			courses: courses,
-			curDate: calcCurDate()
-	}
-}
+		courses,
+		curDate: calcCurDate(),
+	};
+};
 
-exports.updateAccess = async function(user_id, role, instructor_for) {
-  const user = await User.findOneAndUpdate(
-		{ _id: user_id }, 
-		{ role }
-	);
+exports.updateAccess = async function (user_id, role, instructor_for) {
+	const user = await User.findOneAndUpdate({ _id: user_id }, { role });
 
 	// Update role as instructor
 	if (instructor_for) {
-		 await Course.updateOne(
+		await Course.updateOne(
 			{
-				name: instructor_for
+				name: instructor_for,
 			},
 			{
 				$addToSet: {
-					 instructors: user._id
-				 }
+					instructors: user._id,
+				},
 			}
-		)
+		);
 	}
-}
+};
 
-exports.search = function(query) {
-	if (!query)
-		return [];
+exports.search = function (query) {
+	if (!query) return [];
 
-	const re = new RegExp(`${query}.*`, 'i')
+	const re = new RegExp(`${query}.*`, 'i');
 	re.ignoreCase = true;
 
 	return User.find({
-		$or: [
-			{ name: re },
-			{ email: re }
-		]
-	}).select("name email").limit(5);
+		$or: [{ name: re }, { email: re }],
+	})
+		.select('name email')
+		.limit(5);
+};
 
-}
-
-exports.searchPaginated = function(query, page) {
+exports.searchPaginated = function (query, page) {
 	let searchObject = {};
 	page = page || 1;
 
 	if (query) {
-		const re = new RegExp(`${query}.*`, 'i')
+		const re = new RegExp(`${query}.*`, 'i');
 		re.ignoreCase = true;
-		searchObject = { name: re } 
+		searchObject = { name: re };
 	}
 
 	return User.paginate(searchObject, {
 		page,
-		limit: 10
+		limit: 10,
 	});
-}
+};

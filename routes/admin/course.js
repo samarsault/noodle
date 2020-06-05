@@ -3,6 +3,7 @@
 // Course_id: req.course_id
 //
 const express = require('express');
+
 const router = express.Router();
 const courseService = require('../../services/course');
 const response = require('../../util/response');
@@ -15,8 +16,7 @@ const { Uploads, CoursePage } = require('../../models');
 //
 router.get('/students', async function (req, res) {
 	const users = await courseService.getRegistered(req.course_id);
-	if (users)
-		return res.json(users);
+	if (users) return res.json(users);
 	return res.status(500);
 });
 
@@ -31,8 +31,7 @@ router.get('/students/download', async function (req, res) {
 
 // Add a resource to course
 router.post('/upload', upload.single('res'), async function (req, res) {
-	if (!req.file && !link)
-			return res.status(400).send('Missing');
+	if (!req.file && !link) return res.status(400).send('Missing');
 
 	const url = req.file ? `/uploads/${req.file.filename}` : link;
 	// History of uploads
@@ -40,87 +39,84 @@ router.post('/upload', upload.single('res'), async function (req, res) {
 		name: req.file.originalname,
 		course: req.course_id,
 		user: req.session.passport.user,
-		url
-	})
+		url,
+	});
 	res.send({ name: upload.name, url });
 });
 
 router.post('/page/create', async function (req, res) {
 	const coursePage = await CoursePage.create({
 		name: req.body.name,
-		course: req.course_id
+		course: req.course_id,
 	});
 	return res.send(coursePage);
-})
+});
 
 router.post('/page/save', async function (req, res) {
-	await CoursePage.updateOne({
-		_id: req.body._id
-	}, {
-		doc: JSON.stringify(req.body.doc)
-	});
+	await CoursePage.updateOne(
+		{
+			_id: req.body._id,
+		},
+		{
+			doc: JSON.stringify(req.body.doc),
+		}
+	);
 	return res.send({
-		success: true
+		success: true,
 	});
-})
+});
 // Initialize Quiz Creation
-router.post('/quiz/init', async function(req, res, next) {
+router.post('/quiz/init', async function (req, res, next) {
 	const { name } = req.body;
 	try {
-		const quiz = await quizzer.createQuiz(name, req.course_id, [])
+		const quiz = await quizzer.createQuiz(name, req.course_id, []);
 		return res.json({
 			success: true,
-			quiz
-		})
+			quiz,
+		});
 	} catch (e) {
 		return res.json({
-			success: false
-		})
+			success: false,
+		});
 	}
-})
+});
 
-router.post('/quiz/destroy', async function(req, res, next) {
+router.post('/quiz/destroy', async function (req, res, next) {
 	const { _id, name } = req.body;
 	try {
 		await quizzer.deleteQuiz(_id, name);
 		return res.json({
-			success: true
-		})
+			success: true,
+		});
 	} catch (e) {
 		return res.json({
-			success: false
-		})
+			success: false,
+		});
 	}
-})
+});
 
 //
-router.post('/quiz/update', async function(req, res, next) {
+router.post('/quiz/update', async function (req, res, next) {
 	const { quiz_id, question_id, type, data } = req.body;
 	try {
 		if (type == 'add') {
-			await quizzer.addQuestion(quiz_id, data)
-		}
-		else if (type == 'update') {
-			await quizzer.updateQuestion(question_id, data)
-		}
-		else if (type == 'delete') {
-			await quizzer.deleteQuestion(quiz_id, question_id)
-		}
-		else {
+			await quizzer.addQuestion(quiz_id, data);
+		} else if (type == 'update') {
+			await quizzer.updateQuestion(question_id, data);
+		} else if (type == 'delete') {
+			await quizzer.deleteQuestion(quiz_id, question_id);
+		} else {
 			return res.json({
 				success: false,
-				message: 'Invalid/Blank operation type'
-			})
+				message: 'Invalid/Blank operation type',
+			});
 		}
-		return res.json(
-			{ success: true}
-		)
+		return res.json({ success: true });
 	} catch (e) {
 		return res.json({
-			success: false
-		})
+			success: false,
+		});
 	}
-
-})
+});
 
 module.exports = router;

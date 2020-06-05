@@ -2,82 +2,80 @@
 // Server rendered pages
 //
 const express = require('express');
+
 const router = express.Router();
 
 const renderView = require('../util/renderView');
 const courseService = require('../services/course');
 
-//Current Date Calculation
-const calcCurDate  = require('../util/calcCurDate')
+// Current Date Calculation
+const calcCurDate = require('../util/calcCurDate');
 
 async function renderCourses(req, res, period) {
 	const courses = await courseService.getFromHistory(period);
 
-	renderView(req, res, 'catalog', { 
-		courses
-	})
+	renderView(req, res, 'catalog', {
+		courses,
+	});
 }
 // Home Page
-router.get('/', function(req, res, next) {
-	return renderView(req, res, 'index', { title: 'CTE' })
+router.get('/', function (req, res, next) {
+	return renderView(req, res, 'index', { title: 'CTE' });
 });
 
 // Team
-router.get('/team', function(req, res) {
+router.get('/team', function (req, res) {
 	return renderView(req, res, 'team');
 });
 
 // FAQ
-router.get('/faq', function(req, res) {
+router.get('/faq', function (req, res) {
 	const faq = require('../faq');
 	const topics = Object.keys(faq);
 	return renderView(req, res, 'faq', { faq, topics });
-})
+});
 
 // Courses Page
-router.get('/courses', async function(req, res) {
+router.get('/courses', async function (req, res) {
 	const current = calcCurDate();
-	await renderCourses(req, res, current);	
-})
+	await renderCourses(req, res, current);
+});
 
 router.get('/terms', function (req, res) {
 	return renderView(req, res, 'agreement', { hideAgreement: true });
-})
+});
 
 // Course Page
 router.get('/courses/:course_id/view', async function (req, res, next) {
 	let course;
-	if(req.isAuthenticated()){
-		course = await courseService.getCourseView(req.params.course_id, req.session.passport.user);
-	}else{
+	if (req.isAuthenticated()) {
+		course = await courseService.getCourseView(
+			req.params.course_id,
+			req.session.passport.user
+		);
+	} else {
 		course = await courseService.getCourseView(req.params.course_id, null);
 	}
-  renderView(
-    req,
-    res,
-    'course',
-    course
-  )
-
+	renderView(req, res, 'course', course);
 });
 
 // Archives
-router.get('/archives', function(req, res) {
-  const start = [2019, 1], end = calcCurDate();
-  const periods = courseService.getArchives(start, end);
-  renderView(req, res, 'archives', { 
-    periods
-  })
-})
+router.get('/archives', function (req, res) {
+	const start = [2019, 1];
+	const end = calcCurDate();
+	const periods = courseService.getArchives(start, end);
+	renderView(req, res, 'archives', {
+		periods,
+	});
+});
 
-
-router.get('/archives/:year/:sem', async function(req, res) {
+router.get('/archives/:year/:sem', async function (req, res) {
 	const year = parseInt(req.params.year);
 	const sem = parseInt(req.params.sem);
 
 	if (!isNaN(year) && !isNaN(sem)) {
-		const period = [ year, sem ];
-		await renderCourses(req, res, period)
+		const period = [year, sem];
+		await renderCourses(req, res, period);
 	}
 	// TODO: Render error view
 });
@@ -85,8 +83,8 @@ router.get('/archives/:year/:sem', async function(req, res) {
 router.get('/loginError', function (req, res) {
 	return renderView(req, res, 'error', {
 		title: 'Error Signing you Up',
-		message: 'Please ensure you are using your BITS Mail to Sign Up'
-	})
-})
+		message: 'Please ensure you are using your BITS Mail to Sign Up',
+	});
+});
 
 module.exports = router;

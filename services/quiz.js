@@ -5,99 +5,97 @@
 const { QnA, Quiz, QuizAttempt } = require('../models/Quiz');
 
 // @returns Promise
-exports.createQuiz = function(name, course, questions) {
-		return Quiz.create({
-			name,
-			course,
-			questions
-		})
-}
+exports.createQuiz = function (name, course, questions) {
+	return Quiz.create({
+		name,
+		course,
+		questions,
+	});
+};
 
-exports.deleteQuiz = function(_id, name) {
+exports.deleteQuiz = function (_id, name) {
 	// name just for safety
 	return Quiz.deleteOne({
 		_id,
-		name
+		name,
 	});
-}
+};
 
-exports.evaluate = async function(attempt) {
+exports.evaluate = async function (attempt) {
 	try {
-		const { questions } = await Quiz.findOne({ _id: attempt.quiz_id }).select('questions')
-		const correctAnswers = questions.map(q => q.answer);
+		const { questions } = await Quiz.findOne({ _id: attempt.quiz_id }).select(
+			'questions'
+		);
+		const correctAnswers = questions.map((q) => q.answer);
 		const attemptAnswers = attempt.answers;
-		let score = 0
-		for (let i = 0;i < attemptAnswers.length;i++) {
-			if (
-				attemptAnswers[i] && 
-				(attemptAnswers[i] == correctAnswers[i])
-			)
-				score++;
+		let score = 0;
+		for (let i = 0; i < attemptAnswers.length; i++) {
+			if (attemptAnswers[i] && attemptAnswers[i] == correctAnswers[i]) score++;
 		}
 		await QuizAttempt.create({
 			...attempt,
-			...{ score }
-		})
+			...{ score },
+		});
 	} catch (error) {
 		console.log(error);
 	}
-}
+};
 
 // @returns Promise
-exports.addQuestion = function(quizId, QnA) {
-	 return Quiz.update(
+exports.addQuestion = function (quizId, QnA) {
+	return Quiz.update(
 		{
-			_id: quizId
+			_id: quizId,
 		},
 		{
-			'$push': {
-				questions: QnA
-			}
+			$push: {
+				questions: QnA,
+			},
 		}
-	)
-}
+	);
+};
 
-exports.updateQuestion = function(questionId, newQnA) {
+exports.updateQuestion = function (questionId, newQnA) {
 	return Quiz.updateOne(
 		{
-			'questions._id' : questionId
+			'questions._id': questionId,
 		},
 		{
-			'$set': {
+			$set: {
 				'questions.$.question': newQnA.question,
 				'questions.$.options': newQnA.options,
-				'questions.$.answer': newQnA.answer
-			}
+				'questions.$.answer': newQnA.answer,
+			},
 		}
-	)
-}
+	);
+};
 
-exports.deleteQuestion = function(quizId, questionId) {
+exports.deleteQuestion = function (quizId, questionId) {
 	return Quiz.updateOne(
 		{
-			_id: quizId
+			_id: quizId,
 		},
 		{
-			'$pull': {
+			$pull: {
 				questions: {
-					_id: questionId
-				}
-			}
+					_id: questionId,
+				},
+			},
 		}
-	)
-}
+	);
+};
 
-exports.get = async function(course_id) {
+exports.get = async function (course_id) {
 	const quizzes = await Quiz.find({
-		course: course_id
+		course: course_id,
 	}).select('name');
 
 	return quizzes;
-}
+};
 
-exports.getById = async function(quiz_id) {
+exports.getById = async function (quiz_id) {
 	const quiz = await Quiz.findOne({
-		_id: quiz_id
-	})
+		_id: quiz_id,
+	});
 	return quiz;
-}
+};

@@ -3,6 +3,7 @@
 // TODO: Ensure Auth
 //
 const express = require('express');
+
 const router = express.Router();
 
 const courseApiRouter = require('./course');
@@ -10,10 +11,15 @@ const isRegisteredForCourse = require('../../middleware/isRegistered');
 const userService = require('../../services/user');
 const courseService = require('../../services/course');
 
-router.use('/courses/:course_id', (req, res, next) => {
-	req.course_id = req.params.course_id;
-	return next();
-}, isRegisteredForCourse, courseApiRouter);
+router.use(
+	'/courses/:course_id',
+	(req, res, next) => {
+		req.course_id = req.params.course_id;
+		return next();
+	},
+	isRegisteredForCourse,
+	courseApiRouter
+);
 
 router.get('/dashboard', async function (req, res) {
 	const dashboard = await userService.getDashboard(req.session.passport.user);
@@ -27,9 +33,9 @@ router.get('/courseId', async function (req, res) {
 	} catch (e) {
 		return res.send('');
 	}
-})
+});
 
-router.get('/user', async function(req, res) {
+router.get('/user', async function (req, res) {
 	const user = await userService.get(req.session.passport.user);
 	return res.json(user);
 });

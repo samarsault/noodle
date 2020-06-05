@@ -6,19 +6,22 @@ const mongoose = require('mongoose');
 const { User, Course } = require('../../models');
 
 module.exports = {
-	beforeEach: async() => {
+	beforeEach: async () => {
 		await User.deleteMany();
 		await Course.deleteMany();
 		return populateDB();
 	},
 	beforeAll: async () => {
 		mongoose.set('useCreateIndex', true);
-		mongoose.connect(global.MONGO_URL, { dbName: global.MONGO_DB_NAME, useNewUrlParser: true });
+		mongoose.connect(global.MONGO_URL, {
+			dbName: global.MONGO_DB_NAME,
+			useNewUrlParser: true,
+		});
 	},
 	afterAll: async () => {
 		mongoose.connection.close();
-	}
-}
+	},
+};
 
 async function populateDB() {
 	const student = await User.create({
@@ -31,14 +34,14 @@ async function populateDB() {
 		name: 'Instroctor',
 		email: 'instructor@bpgc-cte.org',
 		oauth_id: '8823421',
-		role: 'instructor'
+		role: 'instructor',
 	});
 
 	const admin = await User.create({
 		name: 'Admin',
 		email: 'admin@bpgc-cte.org',
 		oauth_id: '88234211214',
-		role: 'admin'
+		role: 'admin',
 	});
 
 	const course = await Course.create({
@@ -50,13 +53,13 @@ async function populateDB() {
 		offerYear: 2019,
 		offerSem: 2,
 		// topics: [ 'Introduction', 'Endnotes'],
-		instructors: [ instructor._id ]
-	})
-	
+		instructors: [instructor._id],
+	});
+
 	return {
 		student,
 		admin,
 		instructor,
 		course,
-	}
+	};
 }

@@ -51,8 +51,13 @@ describe("Course Service", function () {
 
 	it("Renders course view appropriately", async (done) => {
 		const courseInfo = await courseService.getCourseView(data.course._id);
+<<<<<<< HEAD
 		let real = data.course.toObject();
 		real["instructors"] = ["Instroctor"];
+=======
+		const real = data.course.toObject();
+		real.instructors = ['Instroctor'];
+>>>>>>> 5e2296f... Run eslint --fix on all files
 		expect(courseInfo).toEqual(
 			expect.objectContaining({
 				course: real,
@@ -94,11 +99,16 @@ describe("Course Service", function () {
 			[2040, 2]
 		];
 		const checkCorrectness = async (date) => {
-			let demoCourse = data.course.toObject();
+			const demoCourse = data.course.toObject();
 			demoCourse.offerYear = date[0];
 			demoCourse.offerSem = date[1];
+<<<<<<< HEAD
 			demoCourse.name = "Thing";
 			let histCourse = await courseService.create(demoCourse);
+=======
+			demoCourse.name = 'Thing';
+			const histCourse = await courseService.create(demoCourse);
+>>>>>>> 5e2296f... Run eslint --fix on all files
 			let histCourses = await courseService.getFromHistory(date);
 			histCourses = histCourses.map((c) => c.toObject());
 			expect(histCourses).toEqual(
@@ -107,21 +117,27 @@ describe("Course Service", function () {
 		}
 
 		const checkEmpty = async (date) => {
+<<<<<<< HEAD
 			let coursesEmpty  = await courseService.getFromHistory(date);
 			expect(coursesEmpty).toEqual(
 				expect.arrayContaining([])
 			);
 		}
+=======
+			const coursesEmpty = await courseService.getFromHistory(date);
+			expect(coursesEmpty).toEqual(expect.arrayContaining([]));
+		};
+>>>>>>> 5e2296f... Run eslint --fix on all files
 
-		//Get courses which exist
+		// Get courses which exist
 		await checkCorrectness(demoDates[1]);
 		await checkCorrectness(demoDates[0]);
 
-		//Extreme Past should be empty
+		// Extreme Past should be empty
 		await checkEmpty(demoDates[2]);
 		await checkEmpty(demoDates[3]);
 
-		//Future should be empty
+		// Future should be empty
 		await checkEmpty(demoDates[4]);
 		await checkEmpty(demoDates[5]);
 		
@@ -175,7 +191,7 @@ describe("Course Service", function () {
 		);
 		let users = await courseService.getRegistered(data.course._id);
 		users = users.map((u) => u.toObject());
-		let regStudent = data.student;
+		const regStudent = data.student;
 		regStudent.courses = [data.course._id];
 		expect(users).toEqual(expect.arrayContaining([regStudent.toObject()]));
 		done();
@@ -195,11 +211,19 @@ describe("Course Service", function () {
 		done();
 	});
 
+<<<<<<< HEAD
 	it("Create a course successfully", async (done) => {
 		let course = await courseService.create(data.course);
 		let real = data.course;
 		real["_id"] = null;
 		course["_id"] = null;
+=======
+	it('Create a course successfully', async (done) => {
+		const course = await courseService.create(data.course);
+		const real = data.course;
+		real._id = null;
+		course._id = null;
+>>>>>>> 5e2296f... Run eslint --fix on all files
 		expect(course.toObject()).toStrictEqual(real.toObject());
 		done();
 	});
@@ -211,7 +235,7 @@ describe("Course Service", function () {
 			"What a Course!",
 			"Ok I am out of names",
 		];
-		let c = data.course.toObject();
+		const c = data.course.toObject();
 		newCourses.forEach(async (name) => {
 			c.name = name;
 			await courseService.create(c);

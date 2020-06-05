@@ -1,21 +1,26 @@
 const express = require('express');
+
 const router = express.Router();
 const passport = require('passport');
 const userController = require('../services/user');
 
-router.get('/', passport.authenticate('google', {
-	scope: ['email', 'profile']
-}));
-
-router.get('/callback',
+router.get(
+	'/',
 	passport.authenticate('google', {
-		failureRedirect: '/loginError'
+		scope: ['email', 'profile'],
+	})
+);
+
+router.get(
+	'/callback',
+	passport.authenticate('google', {
+		failureRedirect: '/loginError',
 	}),
 	(req, res) => {
 		res.redirect(req.session.returnTo || '/dashboard');
 		delete req.session.returnTo;
 	}
-)
+);
 
 // Update user with BITS ID, Phone Number
 router.post('/update', async (req, res) => {

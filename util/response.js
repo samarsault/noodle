@@ -1,14 +1,14 @@
 module.exports = {
-	error: function(message) {
+	error(message) {
 		return {
 			success: false,
-			message
-		}	
+			message,
+		};
 	},
-	success: function(message) {
+	success(message) {
 		return {
 			success: true,
-			message
-		}
-	}
-}
+			message,
+		};
+	},
+};

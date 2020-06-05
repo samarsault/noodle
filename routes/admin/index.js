@@ -12,12 +12,16 @@ const isCourseAdmin = require('../../middleware/isCourseAdmin');
 const router = express.Router();
 
 // course admin
-router.use('/courses/:course_id', (req, res, next) => {
-	// assign route param
-	req.course_id = req.params.course_id;
-	return next();
-	
-}, isCourseAdmin, courseAdminRouter);
+router.use(
+	'/courses/:course_id',
+	(req, res, next) => {
+		// assign route param
+		req.course_id = req.params.course_id;
+		return next();
+	},
+	isCourseAdmin,
+	courseAdminRouter
+);
 
 // super admin
 router.use('/super', isAdmin, superAdminRouter);

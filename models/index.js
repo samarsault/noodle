@@ -9,5 +9,5 @@ module.exports = {
 	Course,
 	Resource,
 	CoursePage,
-	Uploads
-}
+	Uploads,
+};
