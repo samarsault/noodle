@@ -106,7 +106,7 @@ exports.getArchives = function (start, end) {
 			stamp: `${period1[0]}-${period1[1]}`,
 			link: `/archives/${period1[0]}/${period1[1]}`,
 		});
-		if (!(period1[0] === end[0] && end[1] == 1)) {
+		if (!(period1[0] === end[0] && end[1] === 1)) {
 			periods.push({
 				stamp: `${period2[0]}-${period2[1]}`,
 				link: `/archives/${period2[0]}/${period2[1]}`,

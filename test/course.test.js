@@ -1,9 +1,10 @@
 //
 // Course Service Test
 //
-const basicData = require("./data/basic");
-const courseService = require("../services/course");
-const { User } = require("../models");
+/* global it, describe, expect, beforeAll, beforeEach, afterAll */
+const basicData = require('./data/basic');
+const courseService = require('../services/course');
+const { User } = require('../models');
 
 let data;
 
@@ -12,8 +13,8 @@ beforeEach(async () => {
 	data = await basicData.beforeEach();
 });
 
-describe("Course Service", function () {
-	it("Register a user successfully", async (done) => {
+describe('Course Service', function () {
+	it('Register a user successfully', async (done) => {
 		// Call Function
 		await courseService.register(data.student._id, data.course._id);
 
@@ -23,7 +24,7 @@ describe("Course Service", function () {
 		done();
 	});
 
-	it("Deregister a user successfully", async (done) => {
+	it('Deregister a user successfully', async (done) => {
 		await User.updateOne(
 			{ _id: data.student._id },
 			{ $addToSet: { courses: data.course._id } }
@@ -34,7 +35,7 @@ describe("Course Service", function () {
 		done();
 	});
 
-	it("Check if a user is registered in a course", async (done) => {
+	it('Check if a user is registered in a course', async (done) => {
 		let isReg = await courseService.isRegistered(
 			data.course._id,
 			data.student._id
@@ -49,15 +50,10 @@ describe("Course Service", function () {
 		done();
 	});
 
-	it("Renders course view appropriately", async (done) => {
+	it('Renders course view appropriately', async (done) => {
 		const courseInfo = await courseService.getCourseView(data.course._id);
-<<<<<<< HEAD
-		let real = data.course.toObject();
-		real["instructors"] = ["Instroctor"];
-=======
 		const real = data.course.toObject();
 		real.instructors = ['Instroctor'];
->>>>>>> 5e2296f... Run eslint --fix on all files
 		expect(courseInfo).toEqual(
 			expect.objectContaining({
 				course: real,
@@ -67,13 +63,13 @@ describe("Course Service", function () {
 		done();
 	});
 
-	it("Get a course successfully", async (done) => {
+	it('Get a course successfully', async (done) => {
 		const course = await courseService.get(data.course._id);
 		expect(course.toObject()).toStrictEqual(data.course.toObject());
 		done();
 	});
 
-	it("Get a course by name", async (done) => {
+	it('Get a course by name', async (done) => {
 		const course = (
 			await courseService.getIdByName(data.course.name)
 		).toObject();
@@ -81,53 +77,40 @@ describe("Course Service", function () {
 		done();
 	});
 
-	it("Get props of a Course", async (done) => {
-		const summary = await courseService.getProp(data.course._id, "summary");
+	it('Get props of a Course', async (done) => {
+		const summary = await courseService.getProp(data.course._id, 'summary');
 		expect(summary).toStrictEqual(
 			expect.objectContaining({ summary: data.course.summary })
 		);
 		done();
 	});
 
-	it("Get past courses successfully", async (done) => {
+	it('Get past courses successfully', async (done) => {
 		const demoDates = [
 			[2019, 1],
 			[2019, 2],
 			[2016, 1],
 			[2016, 2],
 			[2040, 1],
-			[2040, 2]
+			[2040, 2],
 		];
 		const checkCorrectness = async (date) => {
 			const demoCourse = data.course.toObject();
 			demoCourse.offerYear = date[0];
 			demoCourse.offerSem = date[1];
-<<<<<<< HEAD
-			demoCourse.name = "Thing";
-			let histCourse = await courseService.create(demoCourse);
-=======
 			demoCourse.name = 'Thing';
 			const histCourse = await courseService.create(demoCourse);
->>>>>>> 5e2296f... Run eslint --fix on all files
 			let histCourses = await courseService.getFromHistory(date);
 			histCourses = histCourses.map((c) => c.toObject());
 			expect(histCourses).toEqual(
 				expect.arrayContaining([histCourse.toObject()])
 			);
-		}
+		};
 
 		const checkEmpty = async (date) => {
-<<<<<<< HEAD
-			let coursesEmpty  = await courseService.getFromHistory(date);
-			expect(coursesEmpty).toEqual(
-				expect.arrayContaining([])
-			);
-		}
-=======
 			const coursesEmpty = await courseService.getFromHistory(date);
 			expect(coursesEmpty).toEqual(expect.arrayContaining([]));
 		};
->>>>>>> 5e2296f... Run eslint --fix on all files
 
 		// Get courses which exist
 		await checkCorrectness(demoDates[1]);
@@ -140,51 +123,53 @@ describe("Course Service", function () {
 		// Future should be empty
 		await checkEmpty(demoDates[4]);
 		await checkEmpty(demoDates[5]);
-		
+
 		done();
 	});
 
-	it("Get Archives successfully", (done) => {
+	it('Get Archives successfully', (done) => {
 		const archivesAsExpected = (want, got) => {
 			expect(want).toEqual(
-				got.map(stamp => expect.objectContaining({ stamp }))
+				got.map((stamp) => expect.objectContaining({ stamp }))
 			);
 		};
 
 		let archives = courseService.getArchives([2017, 1], [2019, 2]);
-		let expected = ["2017-1", "2017-2", "2018-1", "2018-2", "2019-1"]
+		let expected = ['2017-1', '2017-2', '2018-1', '2018-2', '2019-1'];
 		archivesAsExpected(archives, expected);
 
 		archives = courseService.getArchives([2017, 2], [2019, 1]);
-		expected = ["2017-2", "2018-1", "2018-2"]
+		expected = ['2017-2', '2018-1', '2018-2'];
 		archivesAsExpected(archives, expected);
 
 		archives = courseService.getArchives([2017, 2], [2019, 2]);
-		expected = ["2017-2", "2018-1", "2018-2", "2019-1"]
+		expected = ['2017-2', '2018-1', '2018-2', '2019-1'];
 		archivesAsExpected(archives, expected);
 
 		archives = courseService.getArchives([2017, 1], [2019, 1]);
-		expected = ["2017-1", "2017-2", "2018-1", "2018-2"]
+		expected = ['2017-1', '2017-2', '2018-1', '2018-2'];
 		archivesAsExpected(archives, expected);
 
 		archives = courseService.getArchives([2017, 2], [2017, 1]);
-		expect(archives).toEqual([])
+		expect(archives).toEqual([]);
 
 		archives = courseService.getArchives([2017, 1], [2017, 1]);
-		expect(archives).toEqual([])
+		expect(archives).toEqual([]);
 
 		archives = courseService.getArchives([2017, 2], [2017, 2]);
-		expect(archives).toEqual([])
+		expect(archives).toEqual([]);
 
 		archives = courseService.getArchives([2017, 1], [2017, 2]);
-		expect(archives).toEqual([expect.objectContaining({
-		stamp: '2017-1'
-		})])
+		expect(archives).toEqual([
+			expect.objectContaining({
+				stamp: '2017-1',
+			}),
+		]);
 
 		done();
 	});
 
-	it("Get a registered user successfully", async (done) => {
+	it('Get a registered user successfully', async (done) => {
 		await User.updateOne(
 			{ _id: data.student._id },
 			{ $addToSet: { courses: data.course._id } }
@@ -197,13 +182,13 @@ describe("Course Service", function () {
 		done();
 	});
 
-	it("Get a CSV of reg users successfully", async (done) => {
+	it('Get a CSV of reg users successfully', async (done) => {
 		await User.updateOne(
 			{ _id: data.student._id },
 			{ $addToSet: { courses: data.course._id } }
 		);
 		const csv = await courseService.getRegisteredCSV(data.course._id);
-		const check = csv.split("\n").map((items) => items.split(","));
+		const check = csv.split('\n').map((items) => items.split(','));
 		expect(check[0]).toEqual(['name', 'email', 'phone', 'bits_id']);
 		expect(check[1]).toEqual(
 			expect.arrayContaining([data.student.name, data.student.email])
@@ -211,29 +196,21 @@ describe("Course Service", function () {
 		done();
 	});
 
-<<<<<<< HEAD
-	it("Create a course successfully", async (done) => {
-		let course = await courseService.create(data.course);
-		let real = data.course;
-		real["_id"] = null;
-		course["_id"] = null;
-=======
 	it('Create a course successfully', async (done) => {
 		const course = await courseService.create(data.course);
 		const real = data.course;
 		real._id = null;
 		course._id = null;
->>>>>>> 5e2296f... Run eslint --fix on all files
 		expect(course.toObject()).toStrictEqual(real.toObject());
 		done();
 	});
 
-	it("Search for courses successfully", async (done) => {
+	it('Search for courses successfully', async (done) => {
 		const newCourses = [
-			"Course1",
-			"course1",
-			"What a Course!",
-			"Ok I am out of names",
+			'Course1',
+			'course1',
+			'What a Course!',
+			'Ok I am out of names',
 		];
 		const c = data.course.toObject();
 		newCourses.forEach(async (name) => {
@@ -241,23 +218,23 @@ describe("Course Service", function () {
 			await courseService.create(c);
 		});
 
-		//Nothing Matches
-		let names = await courseService.search("Magic");
+		// Nothing Matches
+		let names = await courseService.search('Magic');
 		expect(names).toEqual(expect.arrayContaining([]));
-		//Empty String
-		names = await courseService.search("");
+		// Empty String
+		names = await courseService.search('');
 		expect(names).toEqual(expect.arrayContaining([]));
-		//Case Insenstive
-		names = await courseService.search("course1");
-		expect(names).toEqual(expect.arrayContaining(["Course1", "course1"]));
-		//Not more than 5
-		names = await courseService.search("o");
+		// Case Insenstive
+		names = await courseService.search('course1');
+		expect(names).toEqual(expect.arrayContaining(['Course1', 'course1']));
+		// Not more than 5
+		names = await courseService.search('o');
 		expect(names.length).toEqual(5);
 
 		done();
 	});
 
-	it("Delete a course", async (done) => {
+	it('Delete a course', async (done) => {
 		const newCourse = await courseService.create(data.course);
 		await courseService.del(newCourse._id);
 		const course = await courseService.get(newCourse._id);

@@ -5,24 +5,6 @@
 const mongoose = require('mongoose');
 const { User, Course } = require('../../models');
 
-module.exports = {
-	beforeEach: async () => {
-		await User.deleteMany();
-		await Course.deleteMany();
-		return populateDB();
-	},
-	beforeAll: async () => {
-		mongoose.set('useCreateIndex', true);
-		mongoose.connect(global.MONGO_URL, {
-			dbName: global.MONGO_DB_NAME,
-			useNewUrlParser: true,
-		});
-	},
-	afterAll: async () => {
-		mongoose.connection.close();
-	},
-};
-
 async function populateDB() {
 	const student = await User.create({
 		name: 'Dummy User',
@@ -63,3 +45,21 @@ async function populateDB() {
 		course,
 	};
 }
+
+module.exports = {
+	beforeEach: async () => {
+		await User.deleteMany();
+		await Course.deleteMany();
+		return populateDB();
+	},
+	beforeAll: async () => {
+		mongoose.set('useCreateIndex', true);
+		mongoose.connect(global.MONGO_URL, {
+			dbName: global.MONGO_DB_NAME,
+			useNewUrlParser: true,
+		});
+	},
+	afterAll: async () => {
+		mongoose.connection.close();
+	},
+};

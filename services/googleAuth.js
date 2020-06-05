@@ -22,7 +22,7 @@ async function oauthCallback(accessToken, refreshToken, profile, done) {
 			email,
 			created: Date.now(),
 			// first user is admin
-			role: count == 0 ? 'admin' : 'student',
+			role: count === 0 ? 'admin' : 'student',
 		});
 
 		done(null, newUser);

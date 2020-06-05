@@ -99,11 +99,11 @@ router.post('/quiz/destroy', async function (req, res, next) {
 router.post('/quiz/update', async function (req, res, next) {
 	const { quiz_id, question_id, type, data } = req.body;
 	try {
-		if (type == 'add') {
+		if (type === 'add') {
 			await quizzer.addQuestion(quiz_id, data);
-		} else if (type == 'update') {
+		} else if (type === 'update') {
 			await quizzer.updateQuestion(question_id, data);
-		} else if (type == 'delete') {
+		} else if (type === 'delete') {
 			await quizzer.deleteQuestion(quiz_id, question_id);
 		} else {
 			return res.json({

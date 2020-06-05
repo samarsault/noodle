@@ -30,7 +30,7 @@ exports.evaluate = async function (attempt) {
 		const attemptAnswers = attempt.answers;
 		let score = 0;
 		for (let i = 0; i < attemptAnswers.length; i++) {
-			if (attemptAnswers[i] && attemptAnswers[i] == correctAnswers[i]) score++;
+			if (attemptAnswers[i] && attemptAnswers[i] === correctAnswers[i]) score++;
 		}
 		await QuizAttempt.create({
 			...attempt,
