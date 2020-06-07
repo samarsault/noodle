@@ -7,27 +7,27 @@ const store = Vue.observable({
 	user: {
 		name: '',
 		email: '',
-		role: 'student'
+		role: 'student',
 	},
 	isAdmin: false,
 	isLoading: false,
 	alert: {
 		status: '',
 		message: '',
-		show: false
+		show: false,
 	},
 	uploadBox: {
 		show: false,
-		onSuccess: null
+		onSuccess: null,
 	},
-})
+});
 
 export const getters = {
 	user: () => store.user,
 	isLoading: () => store.isLoading,
 	alert: () => store.alert,
 	uploadBox: () => store.uploadBox,
-}
+};
 
 export const mutations = {
 	setUser(user) {
@@ -40,7 +40,7 @@ export const mutations = {
 		store.alert = {
 			status,
 			message,
-			show: true
+			show: true,
 		};
 	},
 	hideAlert() {
@@ -50,4 +50,4 @@ export const mutations = {
 		store.uploadBox.show = value;
 		store.uploadBox.onSuccess = cb;
 	},
-}
+};

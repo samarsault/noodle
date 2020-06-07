@@ -1,22 +1,21 @@
 <template>
-  <div>
-    <Tabs title="Super Admin">
+	<div>
+		<Tabs title="Super Admin">
+			<Tab name="Add Course">
+				<div class="form-container">
+					<AddCourse />
+				</div>
+			</Tab>
 
-      <Tab name="Add Course">
-        <div class="form-container">
-          <AddCourse /> 
-        </div>
-      </Tab>
-
-      <Tab name="Access Management">
-        <Access /> 
-      </Tab>
+			<Tab name="Access Management">
+				<Access />
+			</Tab>
 
 			<Tab name="Registrations">
-        <Registrations /> 
-      </Tab>
-    </Tabs>
-  </div>
+				<Registrations />
+			</Tab>
+		</Tabs>
+	</div>
 </template>
 
 <script>
@@ -30,23 +29,23 @@ import Access from './Super/Access.vue';
 import Registrations from './Super/Registrations.vue';
 
 export default {
-  components: {
-    Tabs,
-    Tab,
-    AddCourse,
+	components: {
+		Tabs,
+		Tab,
+		AddCourse,
 		Access,
-		Registrations
+		Registrations,
 	},
 	methods: {
-		...mutations
+		...mutations,
 	},
 	mounted() {
 		if (this.$route.query.success) {
-			if (this.$route.query.success === '1') 
+			if (this.$route.query.success === '1')
 				this.setAlert('success', 'Operation succesful');
 			else if (this.$route.query.success === '0')
-				this.setAlert('error', 'Operation was not successful')
-		} 
-	}
-}
+				this.setAlert('error', 'Operation was not successful');
+		}
+	},
+};
 </script>

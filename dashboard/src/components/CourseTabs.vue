@@ -1,54 +1,54 @@
 <template>
-  <div class="course-items">
-    <div class="topics">
-      <h4>Topics</h4>
-      <ul>
-        <li
-          v-for="(tab, index) in tabs"
-          :class="{ 'is-active': tab.isActive }"
-          v-bind:key="index"
-	  @click="selectTab(tab)"
-        >
-          <a :href="tab.href">{{ tab.name }}</a>
-        </li>
-      </ul>
-    </div>
+	<div class="course-items">
+		<div class="topics">
+			<h4>Topics</h4>
+			<ul>
+				<li
+					v-for="(tab, index) in tabs"
+					:class="{ 'is-active': tab.isActive }"
+					v-bind:key="index"
+					@click="selectTab(tab)"
+				>
+					<a :href="tab.href">{{ tab.name }}</a>
+				</li>
+			</ul>
+		</div>
 
-    <div class="resources">
-      <slot></slot>
-    </div>
-  </div>
+		<div class="resources">
+			<slot></slot>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: "Tabs",
-  data() {
-    return { tabs: [] };
-  },
+	name: 'Tabs',
+	data() {
+		return { tabs: [] };
+	},
 
-  created() {
-    this.tabs = this.$children;
-  },
-  methods: {
-    selectTab(selectedTab) {
-      this.tabs.forEach(tab => {
-        tab.isActive = tab.name == selectedTab.name;
-      });
-    }
-  }
+	created() {
+		this.tabs = this.$children;
+	},
+	methods: {
+		selectTab(selectedTab) {
+			this.tabs.forEach((tab) => {
+				tab.isActive = tab.name == selectedTab.name;
+			});
+		},
+	},
 };
 </script>
 
 <style lang="scss">
 .course-items {
 	display: flex;
-	@media screen and (max-width: 960px){
+	@media screen and (max-width: 960px) {
 		display: block;
 	}
 }
 .topics {
-	box-shadow: 0 0 1px 0 rgba(0,0,0,0.35);
+	box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
 	background-color: #fff;
 	color: #020202;
 
@@ -63,7 +63,7 @@ export default {
 		padding: 15px 20px;
 		margin: 0;
 	}
-	
+
 	ul {
 		padding: 0;
 		margin: 0;
@@ -71,7 +71,7 @@ export default {
 		overflow: hidden;
 		overflow-x: scroll;
 		@media screen and (max-width: 960px) {
-			display: flex;	
+			display: flex;
 			background-color: #fff;
 		}
 
@@ -86,7 +86,7 @@ export default {
 	}
 }
 
-.resources{
+.resources {
 	flex: 1;
 	@media screen and (max-width: 960px) {
 		margin-top: 20px;

@@ -2,27 +2,46 @@
 	<main>
 		<aside class="flex-centre">
 			<h1>Welcome</h1>
-			<p>Please complete the following info to complete your sign up. It is required that you input the correct information for hassle-free registration.</p>
+			<p>
+				Please complete the following info to complete your sign up. It is
+				required that you input the correct information for hassle-free
+				registration.
+			</p>
 		</aside>
 		<section>
 			<form method="POST" action="/auth/update">
 				<label for="bits_id">BITS ID</label>
-				<input name="bits_id" type="text" placeholder="Your 13 digit BITS ID. For example, 2018A8PS0414G" pattern='\d{4}[ABH](A|[0-9])(PS|([ABH]|[0-9])(A|[0-9]))\d{4}G' required>
+				<input
+					name="bits_id"
+					type="text"
+					placeholder="Your 13 digit BITS ID. For example, 2018A8PS0414G"
+					pattern="\d{4}[ABH](A|[0-9])(PS|([ABH]|[0-9])(A|[0-9]))\d{4}G"
+					required
+				/>
 				<label for="phone">Phone</label>
-				<input name="phone" type="number" placeholder="10 Digit Phone" pattern="\\d{10}" required>
-				<button class="primary icon-button"><span class="icon-right">Let's Go</span><Go :size="28"/></button>
-			</form>	
+				<input
+					name="phone"
+					type="number"
+					placeholder="10 Digit Phone"
+					pattern="\\d{10}"
+					required
+				/>
+				<button class="primary icon-button">
+					<span class="icon-right">Let's Go</span><Go :size="28" />
+				</button>
+			</form>
 		</section>
 	</main>
 </template>
 
 <script>
 import Go from 'vue-material-design-icons/AccountArrowRight';
+
 export default {
 	components: {
-		Go
-	}
-}
+		Go,
+	},
+};
 </script>
 
 <style lang="scss" scoped>
@@ -32,7 +51,7 @@ form {
 	margin: auto;
 	margin-top: 60px;
 	@media screen and (max-width: 640px) {
-		margin-top:20px;
+		margin-top: 20px;
 		padding: 40px 20px;
 	}
 	input {
@@ -48,22 +67,23 @@ main {
 section {
 	max-width: 600px;
 	flex-basis: 40%;
-	@media screen and (min-width: 640px) and (max-width: 880px){
-		flex-basis: 50%;	
+	@media screen and (min-width: 640px) and (max-width: 880px) {
+		flex-basis: 50%;
 	}
 }
 @media screen and (max-width: 640px) {
-	section, aside {
+	section,
+	aside {
 		flex-basis: 100%;
 	}
 }
 aside {
 	flex-basis: 60%;
 	@media screen and (min-width: 640px) and (max-width: 880px) {
-		flex-basis: 50%
+		flex-basis: 50%;
 	}
-	
-	@media screen  and (max-width: 640px) {
+
+	@media screen and (max-width: 640px) {
 		min-height: 480px;
 	}
 	background-image: url('/images/welcome.svg');

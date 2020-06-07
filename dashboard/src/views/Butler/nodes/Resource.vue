@@ -35,11 +35,11 @@ export default {
   },
 
   computed: {
-    src: function() {
+    src() {
       return this.node && this.node.attrs.src
     },
 
-    title: function() {
+    title() {
       return this.node && this.node.attrs.title
     }
   }

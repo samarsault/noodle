@@ -13,7 +13,7 @@ export default (editor) => [
 	{
 		id: 0,
 		name: 'Image',
-		onCommand: function () {
+		onCommand() {
 			const src = prompt('URL:');
 			editor.commands.image({ src });
 		},
@@ -21,14 +21,14 @@ export default (editor) => [
 	{
 		id: 1,
 		name: 'Code Block',
-		onCommand: function () {
+		onCommand() {
 			editor.commands.code_block();
 		},
 	},
 	{
 		id: 2,
 		name: 'Upload',
-		onCommand: function () {
+		onCommand() {
 			mutations.toggleUploadBox(true, (data) => {
 				editor.commands.resource({ src: data[0].url, title: data[0].name });
 			});
@@ -37,7 +37,7 @@ export default (editor) => [
 	{
 		id: 3,
 		name: 'Youtube Video',
-		onCommand: function () {
+		onCommand() {
 			const videoURL = prompt('URL:');
 			const src = getYoutubeWatchId(videoURL);
 			editor.commands.iframe({ src });

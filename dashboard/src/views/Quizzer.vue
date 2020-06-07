@@ -1,26 +1,30 @@
 <template>
 	<div class="container">
-			<h2>{{ quiz.name }}</h2>
-			<div v-for="(question,i) in quiz.questions">
-				<p class="big-type">{{ question.question }}</p>
-				<ol class="options" type="A">
-					<li 
-						v-for="(option,j) in question.options" 
-						v-bind:key="j"
-						@click="selectOption(i, j)"
-						:class="{ 'selected': selected[i] == j }"
-					>
-						<span class="option">{{ String.fromCharCode('A'.charCodeAt(0) + j)}}</span>
-						<span class="option-value">{{ option }}</span>
-					</li>
-				</ol>
-			</div>
-			<button class="primary" style="margin-bottom: 20px" @click="submitQuiz">Submit</button>
+		<h2>{{ quiz.name }}</h2>
+		<div v-for="(question, i) in quiz.questions">
+			<p class="big-type">{{ question.question }}</p>
+			<ol class="options" type="A">
+				<li
+					v-for="(option, j) in question.options"
+					v-bind:key="j"
+					@click="selectOption(i, j)"
+					:class="{ selected: selected[i] == j }"
+				>
+					<span class="option">{{
+						String.fromCharCode('A'.charCodeAt(0) + j)
+					}}</span>
+					<span class="option-value">{{ option }}</span>
+				</li>
+			</ol>
+		</div>
+		<button class="primary" style="margin-bottom: 20px;" @click="submitQuiz">
+			Submit
+		</button>
 	</div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
 	data() {
@@ -32,14 +36,15 @@ export default {
 			selected: [],
 			quiz_id: this.$route.params.quiz_id,
 			course_id: this.$route.params.course_id,
-		}	
+		};
 	},
 	mounted() {
-		axios.get(`/api/courses/${this.course_id}/quiz/${this.quiz_id}`)
-			.then( ({ data }) => {
+		axios
+			.get(`/api/courses/${this.course_id}/quiz/${this.quiz_id}`)
+			.then(({ data }) => {
 				this.quiz = data;
 				this.selected = Array(data.questions.length).fill(-1);
-		})
+			});
 	},
 	methods: {
 		selectOption(questionIndex, optionIndex) {
@@ -53,11 +58,11 @@ export default {
 		submitQuiz() {
 			axios.post(`/api/courses/${this.course_id}/quiz/submit`, {
 				quiz_id: this.quiz_id,
-				answers: this.selected
-			})
-		}
-	}
-}
+				answers: this.selected,
+			});
+		},
+	},
+};
 </script>
 
 <style lang="scss" scoped>

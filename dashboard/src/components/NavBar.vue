@@ -9,23 +9,23 @@ block menu
 </template>
 
 <script>
-import { getters } from '../utils/store'
+import { getters } from '../utils/store';
 
 export default {
 	name: 'NavBar',
-	data () {
+	data() {
 		return {
-      isAdmin: false,
-			burgerNavActive: false
-		}
+			isAdmin: false,
+			burgerNavActive: false,
+		};
 	},
 	computed: {
-		...getters
+		...getters,
 	},
 	methods: {
-		toggleMobileNav () {
+		toggleMobileNav() {
 			this.burgerNavActive = !this.burgerNavActive;
-		}
-	}
-}
+		},
+	},
+};
 </script>

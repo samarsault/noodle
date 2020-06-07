@@ -1,5 +1,5 @@
 <template>
-<transition name="modal">
+	<transition name="modal">
 		<div class="modal-mask">
 			<div class="modal-wrapper">
 				<div class="modal-container" :style="`width: ${size}px`">
@@ -15,9 +15,11 @@
 					</div>
 
 					<div class="modal-footer">
-							<slot name="footer">
-									<button type="button" class="secondary" @click="$emit('ok')">OK</button>
-							</slot>
+						<slot name="footer">
+							<button type="button" class="secondary" @click="$emit('ok')">
+								OK
+							</button>
+						</slot>
 					</div>
 				</div>
 			</div>
@@ -29,15 +31,15 @@
 import CloseIcon from 'vue-material-design-icons/Close';
 
 export default {
-		name: "Modal",
-		props: {
-			title: String,
-			size: Number
-		},
-		components: {
-			CloseIcon
-		}
-}
+	name: 'Modal',
+	props: {
+		title: String,
+		size: Number,
+	},
+	components: {
+		CloseIcon,
+	},
+};
 </script>
 
 <style lang="scss">
@@ -73,7 +75,7 @@ export default {
 
 .modal-header,
 .modal-footer {
-	background-color:$gray;
+	background-color: $gray;
 	padding: 15px 20px;
 }
 
