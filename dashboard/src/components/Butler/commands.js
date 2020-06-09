@@ -12,7 +12,8 @@ const getYoutubeWatchId = (url) => {
 export default (editor) => [
   {
     id: 0,
-    name: "Image",
+		name: "Image",
+		description: "Insert an image",
     onCommand: function() {
       const src = prompt('URL:');
       editor.commands.image({ src });
@@ -20,7 +21,8 @@ export default (editor) => [
   },
   {
     id: 1,
-    name: "Code Block",
+		name: "Code Block",
+		description: "C/C++, Javascript, Python",
     onCommand: function() {
 			editor.commands.code_block();
     }

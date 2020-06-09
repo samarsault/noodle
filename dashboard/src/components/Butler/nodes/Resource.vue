@@ -10,7 +10,6 @@
       <button style="margin-right:30px" class="secondary">Download</button>
     </a>
     </div>
-  </div>
 </template>
 
 <script>

@@ -1,12 +1,9 @@
-code {
-	display: block;
+pre > code {
 	overflow-x: auto;
-	padding: 1em;
-	border-radius: 4px;
 	background: #2e3440;
-	font-family: Monaco, Consolas, 'Roboto Mono', 'Ubuntu Monospaced';
 	font-size: 16px;
 	line-height: 24px;
+	color: #fff;
 }
 
 .hljs,
