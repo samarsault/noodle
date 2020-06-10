@@ -1,7 +1,7 @@
 <template>
   <div id="editor-container">
     <div class="editor">
-			<editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
+      <editor-menu-bar v-if="edit" :editor="editor" v-slot="{ commands, isActive }">
       <div
         class="menubar"
       >
@@ -104,25 +104,8 @@
       <editor-content class="editor__content" :editor="editor" />
     </div>
 
-    <div class="suggestion-list" v-show="showSuggestions" ref="suggestions">
-      <template v-if="hasResults">
-        <div
-          v-for="(command, index) in filteredCommands"
-          :key="command.id"
-          class="suggestion-list__item"
-          :class="{ 'is-selected': currentCommand === index }"
-          @click="selectCommand(command)"
-        >
-          {{ command.name }}
-        </div>
-      </template>
-      <div v-else class="suggestion-list__item is-empty">
-        No matching commands
-      </div>
-    </div>
-
     <UploadModal v-if="uploadBox.show" :course_id="course_id" v-on:close="toggleUploadBox(false, null)"/>
-		<SelectItem v-if="showCommands" :items="commands" @select="selectCommand" @close="showCommands = false"/>
+    <SelectItem title="Insert" v-if="showCommands" :items="commands" @select="selectCommand" @close="showCommands = false"/>
   </div>
 </template>
 <script>
@@ -137,14 +120,14 @@ import {
   Code,
   CodeBlockHighlight,
   Bold,
-	Italic,
-	Underline,
-	Image,
-	BulletList,
-	OrderedList,
-	ListItem,
-	Placeholder,
-	Blockquote
+  Italic,
+  Underline,
+  Image,
+  BulletList,
+  OrderedList,
+  ListItem,
+  Placeholder,
+  Blockquote
 } from 'tiptap-extensions'
 import Iframe from './Butler/nodes/iframe';
 import Resources from './Butler/nodes/resource';
@@ -169,43 +152,33 @@ import IconBlockquote from 'vue-material-design-icons/FormatQuoteClose'
 
 export default {
   // Implment v-model
-  props: [ 'value' ],
+  props: [ 'value', 'edit' ],
   components: {
-		// Tiptap
-		EditorContent,
-		EditorMenuBar,
-		// Utilities
-		UploadModal,
-		SelectItem,
-		// Icons
-		IconBold,
-		IconItalic,
-		IconUnderline,
-		IconList,
-		IconListNumber,
-		IconCode,
-		IconBlockquote
+    // Tiptap
+    EditorContent,
+    EditorMenuBar,
+    // Utilities
+    UploadModal,
+    SelectItem,
+    // Icons
+    IconBold,
+    IconItalic,
+    IconUnderline,
+    IconList,
+    IconListNumber,
+    IconCode,
+    IconBlockquote
   },
   data() {
     return {
       editor: null,
-			emitAfterOnUpdate: false,
-			commands: [],
-			showCommands: false,
-      query: null,
-      suggestionRange: null,
-      filteredCommands: [],
-      currentCommand: 0
+      emitAfterOnUpdate: false,
+      commands: [],
+      showCommands: false,
     }
   },
   computed: {
     ...getters,
-    hasResults() {
-      return this.filteredCommands.length
-    },
-    showSuggestions() {
-      return this.query || this.hasResults
-    }
   },
   watch: {
     value (val) {
@@ -215,16 +188,21 @@ export default {
         return
       }
       if (this.editor) this.editor.setContent(val)
-    }
+    },
+    edit() {
+      this.editor.setOptions({
+        editable: this.edit,
+      })
+    },
   },
   mounted() {
     this.editor = new Editor({
       extensions: [
-				new HardBreak(),
-				new Blockquote(),
-				new BulletList(),
-				new OrderedList(),
-				new ListItem(),
+        new HardBreak(),
+        new Blockquote(),
+        new BulletList(),
+        new OrderedList(),
+        new ListItem(),
         new Heading({ levels: [1, 2, 3] }),
         new Image(),
         new CodeBlockHighlight({
@@ -239,8 +217,8 @@ export default {
         }),
         new History(),
         new Iframe(),
-				new Resources(),
-				new Placeholder({
+        new Resources(),
+        new Placeholder({
           emptyEditorClass: 'is-editor-empty',
           emptyNodeClass: 'is-empty',
           emptyNodeText: 'Write here...',
@@ -255,15 +233,16 @@ export default {
       onUpdate: ({ getHTML }) => {
         this.emitAfterOnUpdate = true;
         this.$emit('input', getHTML())
-      }
+      },
+      editable: this.edit ? true : false
     })
-		this.editor.setContent(this.value);
-		this.commands = ButlerCommands(this.editor);
+    this.editor.setContent(this.value);
+    this.commands = ButlerCommands(this.editor);
   },
   methods: {
     ...mutations,
     selectCommand({ onCommand }) {
-			// Run selected commands
+      // Run selected commands
       onCommand();
       this.editor.focus()
     },

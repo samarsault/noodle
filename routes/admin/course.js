@@ -57,7 +57,7 @@ router.post('/page/save', async function (req, res) {
 	await CoursePage.updateOne({
 		_id: req.body._id
 	}, {
-		doc: JSON.stringify(req.body.doc)
+		doc: req.body.doc
 	});
 	return res.send({
 		success: true

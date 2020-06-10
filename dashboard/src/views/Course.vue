@@ -6,29 +6,30 @@
 	<Plus @click="addPage" style="cursor:pointer"/>
       </div>
       <nav>
-	<router-link 
-	    v-for="page in pages" 
-	    :to="`/course/${course_id}/pages/${page._id}`" 
-	    >
+        <router-link 
+          v-for="page in pages" 
+          :to="`/course/${course_id}/pages/${page._id}`" 
+          >
 	    {{ page.name }}
-	</router-link>
+        </router-link>
       </nav>
       <p style="padding-left: 10px;font-weight: bold">Admin</p>
       <nav>
-	<router-link to="/course/${course_id}/registrations">Registrations</router-link>
+        <router-link :to="`/course/${course_id}/registrations`">Registrations</router-link>
       </nav>
     </div>
     <div class="course-pages">
       <router-view :key="$route.path"/>
     </div>
+    <SelectItem title="Add page" v-if="addModal" @select="itemSelected" @close="addModal = false" :items="itemsToAdd"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import { mutations } from '../utils/store';
-import Pages from '../views/Pages.vue';
-import Registrations from '../views/Students.vue';
+import Modal from '../components/Dialogs/Modal.vue';
+import SelectItem from '../components/SelectItem.vue';
 
 // Icons
 import FallbackIcon from 'vue-material-design-icons/FileDocumentOutline';
@@ -40,8 +41,12 @@ export default {
       course_id: this.$route.params.course_id,
       course: {},
       admin: true,
-      quiz: [],
       pages: [],
+      addModal: false,
+      itemsToAdd: [{
+        name: 'Page',
+        description: 'You can add course content here.'
+      }]
     }
   },
   async created () {
@@ -49,14 +54,8 @@ export default {
     this.setLoading(true);
     try {
       this.course = (await axios.get(`/api/courses/${this.course_id}/view`)).data;
-      this.resources = (await axios.get(`/api/courses/${this.course_id}/resources`)).data
-      this.quiz = (await axios.get(`/api/courses/${this.course_id}/quiz`)).data
       this.pages = (await axios.get(`/api/courses/${this.course_id}/pages`)).data;
 
-      // select 1st item
-      //if (this.$refs.courseTabs.tabs.length > 0) {
-      //this.$refs.courseTabs.tabs[0].isActive = true;
-      //}
       this.setLoading(false);
     } catch (error) {
       console.error(error);
@@ -65,15 +64,19 @@ export default {
   },
   components: {
     Plus,
-    Pages,
-    Registrations
+    SelectItem
   },
   methods: {
     ...mutations,
-    async addPage() {
+    addPage() {
+      this.addModal = true;
+    },
+
+    async itemSelected(value) {
+      alert('Selected ' + value.name);
       const name = prompt('Name:');
       if (!name)
-	return;
+        return;
       const response = await axios.post(`/admin/courses/${this.course_id}/page/create`, {
 	name
       });
@@ -121,6 +124,7 @@ export default {
   display: flex;
 }
 .course-pages {
-  width: 100%;
+	width: 840px;
+	margin: auto;
 }
 </style>

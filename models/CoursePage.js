@@ -1,5 +1,5 @@
 const { model, Schema } = require('mongoose');
-const { r_string, r_num } = require('../util/schemaTypes');
+const { r_string } = require('../util/schemaTypes');
 
 const CoursePageSchema = new Schema({
   name: r_string,
@@ -10,7 +10,7 @@ const CoursePageSchema = new Schema({
   },
   doc: {
     type: String,
-		default: '{}'
+    default: ''
   },
 
 });

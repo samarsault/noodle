@@ -1,8 +1,10 @@
 <template>
   <div>
     <button class="primary" @click="save">Save</button>
-		<!-- <div v-html="page" /> -->
-    <Editor v-model="page"/>
+    <button class="secondary" @click="toggleEdit">
+      {{ editable ? 'Finish': 'Edit' }}
+    </button>
+    <Editor v-model="page" :edit="editable"/>
   </div>
 </template>
 
@@ -20,13 +22,14 @@ export default {
     return {
       course_id: this.$route.params.course_id,
       page_id: this.$route.params.page_id,
-      page: null
+      page: null,
+      editable: false
     }
   },
   async mounted() {
     if (this.page_id) {
-			const page = (await axios.get(`/api/courses/${this.course_id}/pages/${this.page_id}`)).data;
-			this.page = page.doc;
+      const page = (await axios.get(`/api/courses/${this.course_id}/pages/${this.page_id}`)).data;
+      this.page = page.doc;
     }
   },
   methods: {
@@ -39,6 +42,9 @@ export default {
       if (resp.success)
         alert('Success!')
     },
+    toggleEdit() {
+      this.editable = !this.editable;
+    }
   }
 }
 </script>

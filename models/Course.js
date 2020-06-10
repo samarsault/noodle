@@ -19,9 +19,6 @@ const CourseSchema = new Schema({
   coverImage: r_string,
   offerYear: r_num,
   offerSem: r_num,
-  //topics: [
-    //{ type: String }
-  //],
   instructors: [
     {
       type: Schema.Types.ObjectId,
