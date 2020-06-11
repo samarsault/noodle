@@ -8,6 +8,7 @@
       <nav>
         <router-link 
           v-for="page in pages" 
+          v-bind:key="page.name"
           :to="`/course/${course_id}/pages/${page._id}`" 
           >
 	    {{ page.name }}
@@ -16,6 +17,7 @@
       <p style="padding-left: 10px;font-weight: bold">Admin</p>
       <nav>
         <router-link :to="`/course/${course_id}/registrations`">Registrations</router-link>
+        <router-link :to="`/course/${course_id}/questions`">Question Bank</router-link>
       </nav>
     </div>
     <div class="course-pages">
@@ -46,7 +48,15 @@ export default {
       itemsToAdd: [{
         name: 'Page',
         description: 'You can add course content here.'
-      }]
+      }, {
+        name: 'Quiz',
+        description: 'Test your students'
+      },
+        {
+          name: 'Module',
+          description: 'Enclose pages & quiz in a single entity'
+        }
+      ]
     }
   },
   async created () {
@@ -71,16 +81,33 @@ export default {
     addPage() {
       this.addModal = true;
     },
-
-    async itemSelected(value) {
-      alert('Selected ' + value.name);
-      const name = prompt('Name:');
-      if (!name)
-        return;
+    async newQuiz(name) {
+      const { data } = axios.post(`/admin/courses/${this.course_id}/quiz/init`, {
+        name
+      });
+      if (data.success) {
+        this.pages.push(data.quiz.name);
+      }
+    },
+    async newPage(name) {
       const response = await axios.post(`/admin/courses/${this.course_id}/page/create`, {
-	name
+        name
       });
       this.pages.push(response.data);
+    },
+    async itemSelected(value) {
+      // PoC only to be improved
+      if (value.name == 'Page' || value.name == 'Quiz') {
+        const name = prompt('Name:');
+        if (!name)
+          return;
+        if (value.name == 'Page')
+          await this.newPage(name);
+        else if (value.name == 'Quiz')
+          await this.newQuiz(name);
+      } else {
+        alert('Not implemented.');
+      }
     }
   }
 }
@@ -124,7 +151,8 @@ export default {
   display: flex;
 }
 .course-pages {
-	width: 840px;
+        flex-grow: 1;
+	max-width: 840px;
 	margin: auto;
 }
 </style>

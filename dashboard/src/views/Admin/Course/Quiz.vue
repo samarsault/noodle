@@ -7,9 +7,6 @@
 	/>
 	<div v-else class="container">
 		
-		<h3>Create New</h3>
-		<input type="text" placeholder="Name" v-model="qname">
-		<button class="secondary" @click="initQuiz">Make</button>
 		<table>
 			<thead>
 				<tr>
@@ -32,65 +29,33 @@
 
 <script>
 import axios from 'axios'
-import Plus from 'vue-material-design-icons/Plus'
 import Edit from 'vue-material-design-icons/Pencil'
 import Bin from 'vue-material-design-icons/TrashCan'
-import QuizMaker from './QuizMaker'
+//import QuestionBank from './QuestionBank'
 
 export default {
-  props: [ 'course_id' ],
   components: {
-		Edit,
-		Bin,
-		QuizMaker
+    Edit,
+    Bin,
   },
-	mounted() {
-		this.getQuizes()
-	},
-	data() {
-		return {
-			allQuizes: [],
-			qname: '',
-			selectedQuizId: null,
-			showMaker: false
-		}
-	},
-	methods: {
-		initQuiz() {
-			const name = this.qname;
-			axios.post(`/admin/courses/${this.course_id}/quiz/init`, {
-				name
-			})
-			.then(({ data }) => {
-				if (data.success) {
-					this.allQuizes.push(data.quiz)
-				}
-			})
-		},
-		editQuiz(id) {
-			this.selectedQuizId = id;
-			this.showMaker = true;
-		},
-		deleteQuiz(quiz, index) {
-			axios.post(`/admin/courses/${this.course_id}/quiz/destroy`, {
-				_id: quiz._id,
-				name: quiz.name
-			})
-				.then( ({ data }) => {
-					if (data.success) {
-						alert('Deleted successfully')
-						this.allQuizes.splice(index, 1);
-					}
-				})
-		},
-		getQuizes() {
-			axios.get(`/api/courses/${this.course_id}/quiz`)
-				.then( ({ data }) => {
-					this.allQuizes = data;	
-				})
-		}
-	}
- 
+  data() {
+    return {
+      quizId: null,
+      course_id: this.$route.params.course_id,
+    }
+  },
+  methods: {
+    editQuiz(id) {
+      this.selectedQuizId = id;
+      this.showMaker = true;
+    },
+    getQuizes() {
+      axios.get(`/api/courses/${this.course_id}/quiz`)
+        .then( ({ data }) => {
+          this.allQuizes = data;
+        })
+    }
+  }
 }
 </script>
 

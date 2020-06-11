@@ -5,6 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const courseService = require('../../services/course');
+const questionService = require('../../services/questions');
 const response = require('../../util/response');
 const quizzer = require('../../services/quiz');
 const upload = require('../../middleware/upload');
@@ -43,6 +44,26 @@ router.post('/upload', upload.single('res'), async function (req, res) {
 		url
 	})
 	res.send({ name: upload.name, url });
+});
+
+router.post('/questions', async function(req, res) {
+	const question = await questionService.create(req.body.type, req.body);
+	return res.json(question);
+});
+router.delete('/questions/:id', async function(req, res) {
+	const q = await questionService.delete(req.params.id);
+	return res.json(q);
+});
+
+router.put('/questions/:id', async function(req, res) {
+	console.log(req.body);
+	let q = {};
+	try {
+		q = await questionService.update(req.params.id, req.body);
+	} catch (e) {
+		throw e;
+	}
+	return res.json(q);
 });
 
 router.post('/page/create', async function (req, res) {

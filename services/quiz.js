@@ -44,14 +44,14 @@ exports.evaluate = async function(attempt) {
 }
 
 // @returns Promise
-exports.addQuestion = function(quizId, QnA) {
+exports.addQuestion = function(quizId, questionId) {
 	 return Quiz.update(
 		{
 			_id: quizId
 		},
 		{
 			'$push': {
-				questions: QnA
+				questions: questionId
 			}
 		}
 	)
@@ -65,6 +65,7 @@ exports.updateQuestion = function(questionId, newQnA) {
 		{
 			'$set': {
 				'questions.$.question': newQnA.question,
+				'questions.$.mode': newQnA.mode,
 				'questions.$.options': newQnA.options,
 				'questions.$.answer': newQnA.answer
 			}

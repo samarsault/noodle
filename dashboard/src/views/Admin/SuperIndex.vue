@@ -12,7 +12,7 @@
         <Access /> 
       </Tab>
 
-			<Tab name="Registrations">
+      <Tab name="Registrations">
         <Registrations /> 
       </Tab>
     </Tabs>

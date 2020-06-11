@@ -12,7 +12,9 @@ module.exports = model('QuizAttempt', new Schema({
 		ref: 'User',
 		required: true
 	},
-	answers: [ Number ],
+	answers: [ Schema.Types.Mixed ],
 	score: Number,
+	start: Date,
+	end: Date
 	// type: r_string -> Used to show different icons
 }), 'quizAttempts');
