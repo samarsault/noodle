@@ -91,7 +91,7 @@ describe("Course Service", function () {
 			[2016, 1],
 			[2016, 2],
 			[2040, 1],
-			[2040, 2]
+			[2040, 2],
 		];
 		const checkCorrectness = async (date) => {
 			let demoCourse = data.course.toObject();
@@ -104,14 +104,12 @@ describe("Course Service", function () {
 			expect(histCourses).toEqual(
 				expect.arrayContaining([histCourse.toObject()])
 			);
-		}
+		};
 
 		const checkEmpty = async (date) => {
-			let coursesEmpty  = await courseService.getFromHistory(date);
-			expect(coursesEmpty).toEqual(
-				expect.arrayContaining([])
-			);
-		}
+			let coursesEmpty = await courseService.getFromHistory(date);
+			expect(coursesEmpty).toEqual(expect.arrayContaining([]));
+		};
 
 		//Get courses which exist
 		await checkCorrectness(demoDates[1]);
@@ -124,46 +122,48 @@ describe("Course Service", function () {
 		//Future should be empty
 		await checkEmpty(demoDates[4]);
 		await checkEmpty(demoDates[5]);
-		
+
 		done();
 	});
 
 	it("Get Archives successfully", (done) => {
 		const archivesAsExpected = (want, got) => {
 			expect(want).toEqual(
-				got.map(stamp => expect.objectContaining({ stamp }))
+				got.map((stamp) => expect.objectContaining({ stamp }))
 			);
 		};
 
 		let archives = courseService.getArchives([2017, 1], [2019, 2]);
-		let expected = ["2017-1", "2017-2", "2018-1", "2018-2", "2019-1"]
+		let expected = ["2017-1", "2017-2", "2018-1", "2018-2", "2019-1"];
 		archivesAsExpected(archives, expected);
 
 		archives = courseService.getArchives([2017, 2], [2019, 1]);
-		expected = ["2017-2", "2018-1", "2018-2"]
+		expected = ["2017-2", "2018-1", "2018-2"];
 		archivesAsExpected(archives, expected);
 
 		archives = courseService.getArchives([2017, 2], [2019, 2]);
-		expected = ["2017-2", "2018-1", "2018-2", "2019-1"]
+		expected = ["2017-2", "2018-1", "2018-2", "2019-1"];
 		archivesAsExpected(archives, expected);
 
 		archives = courseService.getArchives([2017, 1], [2019, 1]);
-		expected = ["2017-1", "2017-2", "2018-1", "2018-2"]
+		expected = ["2017-1", "2017-2", "2018-1", "2018-2"];
 		archivesAsExpected(archives, expected);
 
 		archives = courseService.getArchives([2017, 2], [2017, 1]);
-		expect(archives).toEqual([])
+		expect(archives).toEqual([]);
 
 		archives = courseService.getArchives([2017, 1], [2017, 1]);
-		expect(archives).toEqual([])
+		expect(archives).toEqual([]);
 
 		archives = courseService.getArchives([2017, 2], [2017, 2]);
-		expect(archives).toEqual([])
+		expect(archives).toEqual([]);
 
 		archives = courseService.getArchives([2017, 1], [2017, 2]);
-		expect(archives).toEqual([expect.objectContaining({
-		stamp: '2017-1'
-		})])
+		expect(archives).toEqual([
+			expect.objectContaining({
+				stamp: "2017-1",
+			}),
+		]);
 
 		done();
 	});
@@ -188,7 +188,7 @@ describe("Course Service", function () {
 		);
 		const csv = await courseService.getRegisteredCSV(data.course._id);
 		const check = csv.split("\n").map((items) => items.split(","));
-		expect(check[0]).toEqual(['name', 'email', 'phone', 'bits_id']);
+		expect(check[0]).toEqual(["name", "email", "phone", "bits_id"]);
 		expect(check[1]).toEqual(
 			expect.arrayContaining([data.student.name, data.student.email])
 		);

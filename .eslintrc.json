@@ -1,0 +1,47 @@
+{
+  "env": {
+    "commonjs": true,
+    "es2020": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "airbnb-base", "prettier"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 11
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "camelcase": "off",
+    "no-underscore-dangle": "off",
+    "no-plusplus": "off",
+    "func-names": "off"
+  },
+  "overrides": [
+    {
+      "files": ["test/*.test.js"],
+      "env": {
+        "jest": true
+      },
+      "extends": ["eslint:recommended", "airbnb-base", "prettier"],
+      "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+      },
+      "parserOptions": {
+        "ecmaVersion": 11
+      },
+      "plugins": ["prettier"],
+      "rules": {
+        "prettier/prettier": "error",
+        "camelcase": "off",
+        "no-underscore-dangle": "off",
+        "no-plusplus": "off",
+        "func-names": "off"
+      }
+    }
+  ]
+}
