@@ -3,7 +3,7 @@
 		<!-- <QuizQuestion :question="formula" :options="option" /> -->
 		<div>
 			<div style="display:flex;justify-content:space-between;align-items:center">
-				<h2>Qustion Bank</h2>
+				<h2>Question Bank</h2>
 				<button style="height:fit-content" class="primary icon-button" @click="showSelect = true"><Plus decorative/><span class="icon-left">Add Question</span></button>
 			</div>
 			<table v-if="questions && questions.length > 0">
