@@ -13,7 +13,7 @@ module.exports = {
 	},
 	beforeAll: async () => {
 		mongoose.set('useCreateIndex', true);
-		mongoose.connect(global.MONGO_URL, { dbName: global.MONGO_DB_NAME, useNewUrlParser: true });
+		mongoose.connect(global.MONGO_URL, { dbName: global.MONGO_DB_NAME, useNewUrlParser: true, useUnifiedTopology: true });
 	},
 	afterAll: async () => {
 		mongoose.connection.close();
