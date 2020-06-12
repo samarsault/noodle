@@ -17,8 +17,12 @@
     "prettier/prettier": "error",
     "camelcase": "off",
     "no-underscore-dangle": "off",
-    "no-plusplus": "off",
-    "func-names": "off"
+		"no-plusplus": "off",
+		"radix": "off",
+		"func-names": "off",
+		"no-restricted-syntax": "off",
+		"prefer-destructuring": ["error", {"object": true, "array": false}],
+		"no-console": "warn"
   },
   "overrides": [
     {
