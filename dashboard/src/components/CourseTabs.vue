@@ -7,7 +7,7 @@
           v-for="(tab, index) in tabs"
           :class="{ 'is-active': tab.isActive }"
           v-bind:key="index"
-	  @click="selectTab(tab)"
+          @click="selectTab(tab)"
         >
           <a :href="tab.href">{{ tab.name }}</a>
         </li>
@@ -32,67 +32,67 @@ export default {
   },
   methods: {
     selectTab(selectedTab) {
-      this.tabs.forEach(tab => {
+      this.tabs.forEach((tab) => {
         tab.isActive = tab.name == selectedTab.name;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 .course-items {
-	display: flex;
-	@media screen and (max-width: 960px){
-		display: block;
-	}
+  display: flex;
+  @media screen and (max-width: 960px) {
+    display: block;
+  }
 }
 .topics {
-	box-shadow: 0 0 1px 0 rgba(0,0,0,0.35);
-	background-color: #fff;
-	color: #020202;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+  background-color: #fff;
+  color: #020202;
 
-	@media screen and (min-width: 960px) {
-		min-height: 480px;
-		width: 300px;
-	}
+  @media screen and (min-width: 960px) {
+    min-height: 480px;
+    width: 300px;
+  }
 
-	h4 {
-		background-color: #f7f7f7;
-		color: #020202 !important;
-		padding: 15px 20px;
-		margin: 0;
-	}
-	
-	ul {
-		padding: 0;
-		margin: 0;
-		list-style-type: none;
-		overflow: hidden;
-		overflow-x: scroll;
-		@media screen and (max-width: 960px) {
-			display: flex;	
-			background-color: #fff;
-		}
+  h4 {
+    background-color: #f7f7f7;
+    color: #020202 !important;
+    padding: 15px 20px;
+    margin: 0;
+  }
 
-		li {
-			cursor: pointer;
-			padding: 25px 30px;
-			border-bottom: 1px solid #f7f7f7;
-			&.is-active {
-				font-weight: bold;
-			}
-		}
-	}
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    overflow: hidden;
+    overflow-x: scroll;
+    @media screen and (max-width: 960px) {
+      display: flex;
+      background-color: #fff;
+    }
+
+    li {
+      cursor: pointer;
+      padding: 25px 30px;
+      border-bottom: 1px solid #f7f7f7;
+      &.is-active {
+        font-weight: bold;
+      }
+    }
+  }
 }
 
-.resources{
-	flex: 1;
-	@media screen and (max-width: 960px) {
-		margin-top: 20px;
-		ul {
-			padding: 0;
-		}
-	}
+.resources {
+  flex: 1;
+  @media screen and (max-width: 960px) {
+    margin-top: 20px;
+    ul {
+      padding: 0;
+    }
+  }
 }
 </style>

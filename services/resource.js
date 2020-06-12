@@ -1,11 +1,11 @@
-const { Resource } = require('../models');
+const { Resource } = require("../models");
 
-exports.create = function(skeleton) {
-	return Resource.create(skeleton)
-}
+exports.create = function (skeleton) {
+  return Resource.create(skeleton);
+};
 
-exports.delete = function(id) {
-	return Resource.deleteOne({
-		_id: id
-	});
-}
+exports.delete = function (id) {
+  return Resource.deleteOne({
+    _id: id,
+  });
+};

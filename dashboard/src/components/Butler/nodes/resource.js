@@ -1,10 +1,9 @@
-import { Node } from 'tiptap';
-import ResourceView from './Resource.vue';
+import { Node } from "tiptap";
+import ResourceView from "./Resource.vue";
 
 export default class ResourceNode extends Node {
-
   get name() {
-    return 'resource'
+    return "resource";
   }
 
   get schema() {
@@ -15,24 +14,29 @@ export default class ResourceNode extends Node {
           default: null,
         },
         title: {
-          default: 'Untitled'
-        }
+          default: "Untitled",
+        },
       },
-      group: 'block',
+      group: "block",
       draggable: true,
       // parseDOM and toDOM is still required to make copy and paste work
-      parseDOM: [{
-        tag: 'resource',
-        getAttrs: dom => ({
-          src: dom.getAttribute('src'),
-          title: dom.getAttribute('title')
-        }),
-      }],
-      toDOM: node => ['resource', {
-        src: node.attrs.src,
-        title: node.attrs.title,
-      }],
-    }
+      parseDOM: [
+        {
+          tag: "resource",
+          getAttrs: (dom) => ({
+            src: dom.getAttribute("src"),
+            title: dom.getAttribute("title"),
+          }),
+        },
+      ],
+      toDOM: (node) => [
+        "resource",
+        {
+          src: node.attrs.src,
+          title: node.attrs.title,
+        },
+      ],
+    };
   }
 
   // return a vue component
@@ -41,7 +45,7 @@ export default class ResourceNode extends Node {
     return ResourceView;
   }
   commands({ type }) {
-    return attrs => (state, dispatch) => {
+    return (attrs) => (state, dispatch) => {
       const { selection } = state;
       const position = selection.$cursor
         ? selection.$cursor.pos
@@ -51,5 +55,4 @@ export default class ResourceNode extends Node {
       dispatch(transaction);
     };
   }
-
 }

@@ -1,17 +1,21 @@
 <template>
   <transition name="fade">
-  <div id="loading">
-    <div class="lds-facebook"><div></div><div></div><div></div></div>
-  </div>
+    <div id="loading">
+      <div class="lds-facebook">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
   </transition>
 </template>
 
 <style lang="scss" scoped>
-@import '../../../styles/include/_vars';
+@import "../../../styles/include/_vars";
 
 #loading {
   position: fixed;
-  background-color: rgba($black, .75);
+  background-color: rgba($black, 0.75);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,13 +55,15 @@
     top: 6px;
     height: 51px;
   }
-  50%, 100% {
+  50%,
+  100% {
     top: 19px;
     height: 26px;
   }
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .75s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.75s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;

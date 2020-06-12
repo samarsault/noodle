@@ -7,19 +7,19 @@ import router from "./router";
 Vue.config.productionTip = false;
 
 axios.interceptors.response.use(
-	response => {
-		return response;
-	},
-	error => {
-		if (error.response && error.response.data && error.response.data.location) {
-			window.location.href = error.response.data.location;
-		} else {
-			return Promise.reject(error);
-		}
-	}
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.data && error.response.data.location) {
+      window.location.href = error.response.data.location;
+    } else {
+      return Promise.reject(error);
+    }
+  }
 );
 
 new Vue({
-	router,
-	render: h => h(App)
+  router,
+  render: (h) => h(App),
 }).$mount("#app");

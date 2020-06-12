@@ -9,20 +9,20 @@ export default class Iframe extends Node {
     return {
       attrs: {
         src: {
-          default: null
-        }
+          default: null,
+        },
       },
       group: "block",
       selectable: false,
       parseDOM: [
         {
           tag: "iframe",
-          getAttrs: dom => ({
-            src: dom.getAttribute("src")
-          })
-        }
+          getAttrs: (dom) => ({
+            src: dom.getAttribute("src"),
+          }),
+        },
       ],
-      toDOM: node => [
+      toDOM: (node) => [
         "iframe",
         {
           src: `https://www.youtube.com/embed/${node.attrs.src}`,
@@ -32,14 +32,14 @@ export default class Iframe extends Node {
             "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
           // You can set the width and height here also
           width: 560,
-          height: 340
-        }
-      ]
+          height: 340,
+        },
+      ],
     };
   }
 
   commands({ type }) {
-    return attrs => (state, dispatch) => {
+    return (attrs) => (state, dispatch) => {
       const { selection } = state;
       const position = selection.$cursor
         ? selection.$cursor.pos

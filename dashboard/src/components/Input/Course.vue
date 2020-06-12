@@ -1,40 +1,38 @@
 <template>
-  <v-select 
-    :options="courseOptions" 
+  <v-select
+    :options="courseOptions"
     @search="searchCourses"
     v-on:input="changed"
   />
 </template>
 
 <script>
-import axios from 'axios';
-import vSelect from 'vue-select';
+import axios from "axios";
+import vSelect from "vue-select";
 
 export default {
   props: {
-    value: { }
+    value: {},
   },
   data() {
     return {
-      courseOptions: []
-    }
+      courseOptions: [],
+    };
   },
   components: {
-    vSelect
+    vSelect,
   },
   methods: {
     searchCourses(search, loading) {
-        loading(true);
-        axios.get(`/admin/super/courses/search?q=${search}`)
-          .then (({data}) => {
-            this.courseOptions = data;
-            loading(false);
-          })
+      loading(true);
+      axios.get(`/admin/super/courses/search?q=${search}`).then(({ data }) => {
+        this.courseOptions = data;
+        loading(false);
+      });
     },
     changed(value) {
-      this.$emit('input', value);
-    }
-  }
-}
+      this.$emit("input", value);
+    },
+  },
+};
 </script>
-
