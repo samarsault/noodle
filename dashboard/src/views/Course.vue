@@ -47,11 +47,9 @@
 <script>
 import axios from "axios";
 import { mutations } from "../utils/store";
-import Modal from "../components/Dialogs/Modal.vue";
 import SelectItem from "../components/SelectItem.vue";
 
 // Icons
-import FallbackIcon from "vue-material-design-icons/FileDocumentOutline";
 import Plus from "vue-material-design-icons/Plus";
 
 export default {
@@ -90,7 +88,7 @@ export default {
 
       this.setLoading(false);
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   },
   components: {

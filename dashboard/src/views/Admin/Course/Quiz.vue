@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(quiz, index) in allQuizes">
+        <tr v-for="quiz in allQuizes" :key="quiz._id">
           <td>{{ quiz.name }}</td>
           <td>
             <button class="small outline" @click="editQuiz(quiz._id)">

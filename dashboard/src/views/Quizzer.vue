@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2>{{ quiz.name }}</h2>
-    <div v-for="(question, i) in quiz.questions">
+    <div v-for="question in quiz.questions" :key="question._id">
       <p class="big-type">{{ question.question }}</p>
       <ol class="options" type="A">
         <li

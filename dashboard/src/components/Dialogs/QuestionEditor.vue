@@ -63,7 +63,7 @@ export default {
       } else {
         req = axios.post(`${baseURL}`, Q);
       }
-      req.then(({ status, data }) => {
+      req.then(({ status }) => {
         if (status == 200) {
           alert("Saved.");
         }

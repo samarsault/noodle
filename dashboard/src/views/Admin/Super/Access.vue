@@ -74,7 +74,6 @@ import CourseInput from "../../../components/Input/Course";
 import NextIcon from "vue-material-design-icons/ArrowRight";
 import PrevIcon from "vue-material-design-icons/ArrowLeft";
 import vSelect from "vue-select";
-import event from "../../../utils/store";
 
 export default {
   components: {
@@ -114,9 +113,13 @@ export default {
           role: this.accessLevel,
           instructor_for: this.instructorFor,
         })
-        .then(({ data }) => {
-          this.updateModal = false;
-          this.setAlert("success", `Updated Access to ${this.accessLevel}`);
+        .then(({ status }) => {
+          if (status === 200) {
+            this.updateModal = false;
+            this.setAlert("success", `Updated Access to ${this.accessLevel}`);
+          } else {
+            this.setAlert("error", `Error updating access`);
+          }
         });
     },
     showUpdateModal(role, _id) {

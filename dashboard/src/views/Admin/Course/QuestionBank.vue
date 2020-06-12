@@ -128,10 +128,11 @@ export default {
           if (data.ok) {
             alert("Item deleted");
             this.questions.splice(index, 1);
-          } else throw "err";
+          }
         })
         .catch((err) => {
           alert(`Error, couldn't delete.`);
+          throw err;
         });
     },
   },

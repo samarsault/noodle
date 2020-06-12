@@ -33,7 +33,7 @@
           <a href="javascript:void(0)" @click="reset()">Upload again</a>
         </p>
         <ul class="list-unstyled">
-          <li v-for="item in uploadedFiles">
+          <li v-for="(item, index) in uploadedFiles" :key="index">
             <img
               :src="item.url"
               class="img-responsive img-thumbnail"
