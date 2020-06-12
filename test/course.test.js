@@ -39,13 +39,13 @@ describe("Course Service", function () {
       data.course._id,
       data.student._id
     );
-    expect(isReg).toBeUndefined();
+    expect(isReg).toBe(false);
     await User.updateOne(
       { _id: data.student._id },
       { $addToSet: { courses: data.course._id } }
     );
     isReg = await courseService.isRegistered(data.course._id, data.student._id);
-    expect(isReg).not.toBeUndefined();
+    expect(isReg).toBe(true);
     done();
   });
 
@@ -57,6 +57,19 @@ describe("Course Service", function () {
       expect.objectContaining({
         course: real,
         isArchive: false,
+        isReg: false,
+      })
+    );
+    await courseService.register(data.student._id, data.course._id);
+    const customCourseInfo = await courseService.getCourseView(
+      data.course._id,
+      data.student._id
+    );
+    expect(customCourseInfo).toEqual(
+      expect.objectContaining({
+        course: real,
+        isArchive: false,
+        isReg: true,
       })
     );
     done();
