@@ -95,8 +95,7 @@ describe("Course Service", function () {
     ];
     const checkCorrectness = async (date) => {
       const demoCourse = data.course.toObject();
-      demoCourse.offerYear = date[0];
-      demoCourse.offerSem = date[1];
+      [demoCourse.offerYear, demoCourse.offerSem] = date;
       demoCourse.name = "Thing";
       const histCourse = await courseService.create(demoCourse);
       let histCourses = await courseService.getFromHistory(date);

@@ -75,9 +75,9 @@ router.post("/quiz/submit", async function (req, res) {
     user_id: user_id.toString(),
     answers: req.body.answers,
   };
-  await quizzer.evaluate(attempt);
+  const QA = await quizzer.evaluate(attempt);
 
-  return res.json(quiz);
+  return res.json(QA);
 });
 
 module.exports = router;

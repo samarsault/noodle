@@ -1,5 +1,4 @@
 const { model, Schema } = require("mongoose");
-const { r_string } = require("../../util/schemaTypes");
 
 module.exports = model(
   "QuizAttempt",

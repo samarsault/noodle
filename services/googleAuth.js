@@ -8,25 +8,24 @@ async function oauthCallback(accessToken, refreshToken, profile, done) {
   const user = await User.findOne({ oauth_id: profile.id });
 
   if (user !== null) {
-    done(null, user);
-  } else {
-    const email = profile.emails[0].value;
-    const count = await User.countDocuments({});
-
-    if (email.split("@")[1] !== "goa.bits-pilani.ac.in")
-      return done(null, false, "Please Sign In using your BITS Goa Email");
-
-    const newUser = await User.create({
-      oauth_id: profile.id,
-      name: profile.displayName,
-      email,
-      created: Date.now(),
-      // first user is admin
-      role: count == 0 ? "admin" : "student",
-    });
-
-    done(null, newUser);
+    return done(null, user);
   }
+  const email = profile.emails[0].value;
+  const count = await User.countDocuments({});
+
+  if (email.split("@")[1] !== "goa.bits-pilani.ac.in")
+    return done(null, false, "Please Sign In using your BITS Goa Email");
+
+  const newUser = await User.create({
+    oauth_id: profile.id,
+    name: profile.displayName,
+    email,
+    created: Date.now(),
+    // first user is admin
+    role: count === 0 ? "admin" : "student",
+  });
+
+  return done(null, newUser);
 }
 
 module.exports = (passport) => {

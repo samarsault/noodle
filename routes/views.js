@@ -19,7 +19,7 @@ async function renderCourses(req, res, period) {
   });
 }
 // Home Page
-router.get("/", function (req, res, next) {
+router.get("/", function (req, res) {
   return renderView(req, res, "index", { title: "CTE" });
 });
 
@@ -30,6 +30,7 @@ router.get("/team", function (req, res) {
 
 // FAQ
 router.get("/faq", function (req, res) {
+  // eslint-disable-next-line
   const faq = require("../faq");
   const topics = Object.keys(faq);
   return renderView(req, res, "faq", { faq, topics });
@@ -46,7 +47,7 @@ router.get("/terms", function (req, res) {
 });
 
 // Course Page
-router.get("/courses/:course_id/view", async function (req, res, next) {
+router.get("/courses/:course_id/view", async function (req, res) {
   let course;
   if (req.isAuthenticated()) {
     course = await courseService.getCourseView(
@@ -73,7 +74,7 @@ router.get("/archives/:year/:sem", async function (req, res) {
   const year = parseInt(req.params.year);
   const sem = parseInt(req.params.sem);
 
-  if (!isNaN(year) && !isNaN(sem)) {
+  if (!Number.isNaN(year) && !Number.isNaN(sem)) {
     const period = [year, sem];
     await renderCourses(req, res, period);
   }

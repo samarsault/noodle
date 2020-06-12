@@ -32,8 +32,8 @@ exports.isRegistered = async (course_id, user_id) => {
 exports.getCourseView = async function (course_id, user_id) {
   const course = await Course.findOne({ _id: course_id });
 
-  const instructorDelegates = course.instructors.map(async (user_id) => {
-    const user = await User.findOne({ _id: user_id }).select("name");
+  const instructorDelegates = course.instructors.map(async (instructor_id) => {
+    const user = await User.findOne({ _id: instructor_id }).select("name");
     return user.name;
   });
   let isReg = false;
@@ -106,7 +106,7 @@ exports.getArchives = function (start, end) {
       stamp: `${period1[0]}-${period1[1]}`,
       link: `/archives/${period1[0]}/${period1[1]}`,
     });
-    if (!(period1[0] === end[0] && end[1] == 1)) {
+    if (!(period1[0] === end[0] && end[1] === 1)) {
       periods.push({
         stamp: `${period2[0]}-${period2[1]}`,
         link: `/archives/${period2[0]}/${period2[1]}`,

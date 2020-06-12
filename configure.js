@@ -20,5 +20,5 @@ module.exports = (app) => {
   mongoose.set("useCreateIndex", true);
   mongoose.connect(dbURL, { useNewUrlParser: true });
 
-  if (process.env.NODE_ENV != "test") app.use(logger("dev"));
+  if (process.env.NODE_ENV !== "test") app.use(logger("dev"));
 };

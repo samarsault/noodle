@@ -4,7 +4,6 @@
 const basicData = require("./data/basic");
 const userService = require("../services/user");
 const courseService = require("../services/course");
-const { User } = require("../models");
 
 let data;
 

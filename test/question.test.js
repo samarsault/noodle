@@ -4,7 +4,6 @@
 const basicData = require("./data/basic");
 const questions = require("../services/questions");
 const Question = require("../models/Question");
-const MCQ = require("../models/Question/MCQ");
 const Numeric = require("../models/Question/Numeric");
 
 let data;

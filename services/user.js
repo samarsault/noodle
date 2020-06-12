@@ -27,8 +27,10 @@ exports.getDashboard = async function (user_id) {
 
     // Intructor Id to Name
     const instructors = await Promise.all(
-      course.instructors.map(async (user_id) => {
-        const { name } = await User.findOne({ _id: user_id }).select("name");
+      course.instructors.map(async (instructor_id) => {
+        const { name } = await User.findOne({ _id: instructor_id }).select(
+          "name"
+        );
         return name;
       })
     );
@@ -86,9 +88,9 @@ exports.search = function (query) {
     .limit(5);
 };
 
-exports.searchPaginated = function (query, page) {
+exports.searchPaginated = function (query, pageNumber) {
   let searchObject = {};
-  page = page || 1;
+  const page = pageNumber || 1;
 
   if (query) {
     const re = new RegExp(`${query}.*`, "i");
