@@ -26,7 +26,9 @@ exports.deregister = async function (user_email, course_name) {
 
 exports.isRegistered = async (course_id, user_id) => {
   const userCourses = (await User.findOne({ _id: user_id })).courses;
-  return userCourses.find((user_course_id) => user_course_id.equals(course_id));
+  return !!userCourses.find((user_course_id) =>
+    user_course_id.equals(course_id)
+  );
 };
 
 exports.getCourseView = async function (course_id, user_id) {
@@ -116,23 +118,6 @@ exports.getArchives = function (start, end) {
   // remove end, i.e. the curent period
   periods.pop();
   return periods;
-};
-
-exports.getResources = async function (course_id) {
-  const resources = await Resource.find({
-    course: course_id,
-  });
-
-  const responseObject = {};
-
-  for (const resource of resources) {
-    if (!responseObject[resource.topic]) {
-      responseObject[resource.topic] = [];
-    }
-    responseObject[resource.topic].push(resource);
-  }
-
-  return responseObject;
 };
 
 exports.getRegistered = function (course_id) {
