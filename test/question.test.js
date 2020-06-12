@@ -76,7 +76,7 @@ describe("Question", function () {
     const newQ = await questions.create("MCQ", mcqEx);
     await questions.parts(data.numQuestion._id).add(newQ._id);
     const numQ = await Question.findOne({ _id: data.numQuestion._id });
-
+    expect(numQ.parts).toContainEqual(newQ._id);
     done();
   });
 
