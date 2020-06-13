@@ -16,7 +16,7 @@
         <router-link
           v-for="page in pages"
           v-bind:key="page.name"
-          :to="`/course/${course_id}/pages/${page._id}`"
+          :to="`/course/${course_id}/${page.type}/${page._id}`"
         >
           {{ page.name }}
         </router-link>
@@ -37,7 +37,7 @@
     <SelectItem
       title="Add page"
       v-if="addModal"
-      @select="itemSelected"
+      @select="newPage"
       @close="addModal = false"
       :items="itemsToAdd"
     />
@@ -62,7 +62,7 @@ export default {
       addModal: false,
       itemsToAdd: [
         {
-          name: "Page",
+          name: "Article",
           description: "You can add course content here.",
         },
         {
@@ -111,25 +111,19 @@ export default {
         this.pages.push(data.quiz.name);
       }
     },
-    async newPage(name) {
+    async newPage(value) {
+      const type = value.name;
+      const name = prompt("Name:");
+      if (!name) return;
       const response = await axios.post(
-        `/admin/courses/${this.course_id}/page/create`,
+        `/admin/courses/${this.course_id}/page`,
         {
           name,
+          course: this.course_id,
+          type,
         }
       );
       this.pages.push(response.data);
-    },
-    async itemSelected(value) {
-      // PoC only to be improved
-      if (value.name == "Page" || value.name == "Quiz") {
-        const name = prompt("Name:");
-        if (!name) return;
-        if (value.name == "Page") await this.newPage(name);
-        else if (value.name == "Quiz") await this.newQuiz(name);
-      } else {
-        alert("Not implemented.");
-      }
     },
   },
 };

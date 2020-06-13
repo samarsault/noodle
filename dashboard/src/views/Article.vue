@@ -37,10 +37,10 @@ export default {
   methods: {
     async save() {
       const docData = this.page;
-      const resp = await axios.post(
-        `/admin/courses/${this.course_id}/page/save`,
+      const resp = await axios.put(
+        `/admin/courses/${this.course_id}/page/${this.page_id}`,
         {
-          _id: this.page_id,
+          type: "Article",
           doc: docData,
         }
       );

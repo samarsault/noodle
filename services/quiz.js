@@ -2,24 +2,8 @@
 // Quizing Platform
 // (Promise based)
 //
-const { Quiz, QuizAttempt } = require("../models/Quiz");
-
-// @returns Promise
-exports.createQuiz = function (name, course, questions) {
-  return Quiz.create({
-    name,
-    course,
-    questions,
-  });
-};
-
-exports.deleteQuiz = function (_id, name) {
-  // name just for safety
-  return Quiz.deleteOne({
-    _id,
-    name,
-  });
-};
+const Quiz = require("../models/Page/Quiz");
+const QuizAttempt = require("../models/Page/QuizAttempt");
 
 exports.evaluate = async function (attempt) {
   try {
@@ -56,22 +40,6 @@ exports.addQuestion = function (quizId, questionId) {
   );
 };
 
-exports.updateQuestion = function (questionId, newQnA) {
-  return Quiz.updateOne(
-    {
-      "questions._id": questionId,
-    },
-    {
-      $set: {
-        "questions.$.question": newQnA.question,
-        "questions.$.mode": newQnA.mode,
-        "questions.$.options": newQnA.options,
-        "questions.$.answer": newQnA.answer,
-      },
-    }
-  );
-};
-
 exports.deleteQuestion = function (quizId, questionId) {
   return Quiz.updateOne(
     {
@@ -85,14 +53,6 @@ exports.deleteQuestion = function (quizId, questionId) {
       },
     }
   );
-};
-
-exports.get = async function (course_id) {
-  const quizzes = await Quiz.find({
-    course: course_id,
-  }).select("name");
-
-  return quizzes;
 };
 
 exports.getById = async function (quiz_id) {

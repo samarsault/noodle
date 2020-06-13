@@ -7,9 +7,10 @@ const express = require("express");
 const router = express.Router();
 const courseService = require("../../services/course");
 const questionService = require("../../services/questions");
+const pageService = require("../../services/page");
 const quizzer = require("../../services/quiz");
 const upload = require("../../middleware/upload");
-const { Uploads, CoursePage } = require("../../models");
+const { Uploads } = require("../../models");
 
 //
 // Fetch students registered to course
@@ -58,23 +59,13 @@ router.put("/questions/:id", async function (req, res) {
   return res.json(q);
 });
 
-router.post("/page/create", async function (req, res) {
-  const coursePage = await CoursePage.create({
-    name: req.body.name,
-    course: req.course_id,
-  });
-  return res.send(coursePage);
+router.post("/page", async function (req, res) {
+  const page = await pageService.create(req.body.type, req.body);
+  return res.json(page);
 });
 
-router.post("/page/save", async function (req, res) {
-  await CoursePage.updateOne(
-    {
-      _id: req.body._id,
-    },
-    {
-      doc: req.body.doc,
-    }
-  );
+router.put("/page/:id", async function (req, res) {
+  await pageService.update(req.params.id, req.body);
   return res.send({
     success: true,
   });

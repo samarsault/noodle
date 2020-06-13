@@ -6,6 +6,7 @@ const express = require("express");
 
 const router = express.Router();
 const courseService = require("../../services/course");
+const pageService = require("../../services/page");
 const quizzer = require("../../services/quiz");
 const questions = require("../../services/questions");
 const { CoursePage } = require("../../models");
@@ -39,9 +40,7 @@ router.get("/resources", async function (req, res) {
 });
 
 router.get("/pages", async function (req, res) {
-  const pages = await CoursePage.find({
-    course: req.course_id,
-  }).select("name");
+  const pages = await pageService.getAll(req.course_id);
   return res.send(pages);
 });
 

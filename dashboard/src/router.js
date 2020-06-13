@@ -5,7 +5,7 @@ import Course from "./views/Course.vue";
 import Admin from "./views/Admin/SuperIndex.vue";
 import SignUp from "./views/SignUp";
 import Quizzer from "./views/Quizzer.vue";
-import Pages from "./views/Pages";
+import Article from "./views/Article";
 import Registrations from "./views/Students.vue";
 import QuestionBank from "./views/Admin/Course/QuestionBank.vue";
 import { getters } from "./utils/store";
@@ -27,15 +27,15 @@ const router = new Router({
       component: Course,
       children: [
         {
-          path: "pages/:page_id",
-          component: Pages,
+          path: "Article/:page_id",
+          component: Article,
         },
         {
           path: "registrations",
           component: Registrations,
         },
         {
-          path: "quiz/:quiz_id",
+          path: "Quiz/:quiz_id",
           component: Quizzer,
         },
 
