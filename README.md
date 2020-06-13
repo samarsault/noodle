@@ -1,4 +1,6 @@
 # cte
+![CI](https://github.com/thelehhman/cte/workflows/CI/badge.svg)
+
 The dashboard is built using Vue, rest of the pages are rendered by the server.
 
 ## Installation
