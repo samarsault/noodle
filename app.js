@@ -88,7 +88,9 @@ app.get("/dashboard/*", function (req, res) {
 
 if (process.env.NODE_ENV !== "production") {
   // error handler
-  app.use(function (err, req, res) {
+  // https://github.com/thelehhman/cte/issues/67
+  // eslint-disable-next-line
+  app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
