@@ -47,7 +47,7 @@ exports.addQuestion = function (quizId, questionId) {
       _id: quizId,
     },
     {
-      $push: {
+      $addToSet: {
         questions: questionId,
       },
     }
