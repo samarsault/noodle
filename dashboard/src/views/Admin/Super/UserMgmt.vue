@@ -1,5 +1,12 @@
 <template>
-  <div>
+  <div
+    style="
+      padding-top: 40px;
+      padding-bottom: 40px;
+      padding-left: 200px;
+      padding-right: 200px;
+    "
+  >
     <Modal
       v-if="updateModal"
       title="Update Access Level"

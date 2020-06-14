@@ -3,6 +3,9 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Course from "./views/Course.vue";
 import Admin from "./views/Admin/SuperIndex.vue";
+import CourseMgmt from "./views/Admin/Super/CourseMgmt.vue";
+import UserMgmt from "./views/Admin/Super/UserMgmt.vue";
+import EditCourse from "./views/Admin/Super/EditCourse.vue";
 import SignUp from "./views/SignUp";
 import Article from "./views/Course/Article";
 import Registrations from "./views/Students.vue";
@@ -63,8 +66,23 @@ const router = new Router({
     },
     {
       path: "/admin",
+      redirect: "/admin/cmgt",
       name: "admin",
       component: Admin,
+      children: [
+        {
+          path: "cmgt",
+          component: CourseMgmt,
+        },
+        {
+          path: "umgt",
+          component: UserMgmt,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        { path: "cmgt/:course_id", component: EditCourse },
+      ],
       meta: {
         requiresAuth: true,
       },

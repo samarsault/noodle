@@ -36,6 +36,17 @@ router.get("/faq", function (req, res) {
   return renderView(req, res, "faq", { faq, topics });
 });
 
+router.get("/courses/search/", async function (req, res) {
+  const courses = await courseService.search(req.query.q);
+  res.send(courses);
+});
+
+router.get("/courses/all", async function (req, res) {
+  const current = calcCurDate();
+  const courses = await courseService.getFromHistory(current);
+  res.send(courses);
+});
+
 // Courses Page
 router.get("/courses", async function (req, res) {
   const current = calcCurDate();

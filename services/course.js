@@ -214,9 +214,10 @@ exports.search = async function (query) {
   const re = new RegExp(`${query}.*`, "i");
   re.ignoreCase = true;
   const courses = await Course.find({ name: re }).limit(5);
-  const names = courses.map((course) => course.name);
+  return courses;
+  // const names = courses.map((course) => course.name);
 
-  return names;
+  // return names;
 };
 
 exports.del = function (course_id) {
