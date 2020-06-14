@@ -49,8 +49,8 @@
 // Quizes
 //
 import axios from "axios";
-import MCQ from "../components/Questions/MCQ/View.vue";
-import Numeric from "../components/Questions/Numeric/View.vue";
+import MCQ from "@/components/Questions/MCQ/View.vue";
+import Numeric from "@/components/Questions/Numeric/View.vue";
 
 export default {
   data() {
@@ -125,7 +125,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../styles/include/_vars.scss";
+@import "../../../../styles/include/_vars.scss";
 .quiz-container {
   max-width: 1024px;
   margin: 20px auto;

@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../styles/include/_vars";
+@import "../../../../styles/include/_vars";
 .options {
   list-style-type: none;
   padding: 0;

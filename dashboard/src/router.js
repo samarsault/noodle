@@ -4,11 +4,12 @@ import Home from "./views/Home.vue";
 import Course from "./views/Course.vue";
 import Admin from "./views/Admin/SuperIndex.vue";
 import SignUp from "./views/SignUp";
-import Quizzer from "./views/Quizzer.vue";
-import Article from "./views/Article";
+import Quizzer from "./views/Course/Quizzer.vue";
+import Article from "./views/Course/Article";
 import Registrations from "./views/Students.vue";
-import QuestionBank from "./views/Admin/Course/QuestionBank.vue";
-import Quiz from "./views/Quiz.vue";
+import QuestionBank from "./views/Course/QuestionBank.vue";
+import Quiz from "./views/Course/Quiz.vue";
+import Welcome from "./views/Course/Welcome.vue";
 import { getters } from "./utils/store";
 
 Vue.use(Router);
@@ -20,7 +21,7 @@ const router = new Router({
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: Home
     },
     {
       path: "/course/:course_id",
@@ -28,41 +29,45 @@ const router = new Router({
       component: Course,
       children: [
         {
+          path: "/",
+          component: Welcome
+        },
+        {
           path: "Article/:page_id",
-          component: Article,
+          component: Article
         },
         {
           path: "registrations",
-          component: Registrations,
+          component: Registrations
         },
         {
           path: "Quiz/:quiz_id",
-          component: Quiz,
+          component: Quiz
         },
         {
           path: "Quizzer/:quiz_id",
-          component: Quizzer,
+          component: Quizzer
         },
         {
           path: "questions",
-          component: QuestionBank,
-        },
-      ],
+          component: QuestionBank
+        }
+      ]
     },
     {
       path: "/admin",
       name: "admin",
       component: Admin,
       meta: {
-        requiresAuth: true,
-      },
+        requiresAuth: true
+      }
     },
     {
       path: "/signup",
       name: "signup",
-      component: SignUp,
-    },
-  ],
+      component: SignUp
+    }
+  ]
 });
 
 router.beforeEach((to, from, next) => {
@@ -70,7 +75,7 @@ router.beforeEach((to, from, next) => {
     const user = getters.user();
     if (user.role === "student") {
       next({
-        name: "home",
+        name: "home"
       });
     } else {
       next();
