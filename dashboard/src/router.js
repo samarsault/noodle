@@ -21,7 +21,7 @@ const router = new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
     },
     {
       path: "/course/:course_id",
@@ -30,44 +30,44 @@ const router = new Router({
       children: [
         {
           path: "/",
-          component: Welcome
+          component: Welcome,
         },
         {
           path: "Article/:page_id",
-          component: Article
+          component: Article,
         },
         {
           path: "registrations",
-          component: Registrations
+          component: Registrations,
         },
         {
           path: "Quiz/:quiz_id",
-          component: Quiz
+          component: Quiz,
         },
         {
           path: "Quizzer/:quiz_id",
-          component: Quizzer
+          component: Quizzer,
         },
         {
           path: "questions",
-          component: QuestionBank
-        }
-      ]
+          component: QuestionBank,
+        },
+      ],
     },
     {
       path: "/admin",
       name: "admin",
       component: Admin,
       meta: {
-        requiresAuth: true
-      }
+        requiresAuth: true,
+      },
     },
     {
       path: "/signup",
       name: "signup",
-      component: SignUp
-    }
-  ]
+      component: SignUp,
+    },
+  ],
 });
 
 router.beforeEach((to, from, next) => {
@@ -75,7 +75,7 @@ router.beforeEach((to, from, next) => {
     const user = getters.user();
     if (user.role === "student") {
       next({
-        name: "home"
+        name: "home",
       });
     } else {
       next();

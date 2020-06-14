@@ -4,15 +4,7 @@
     <div v-if="started" class="quizzer">
       <div class="quizzer-question">
         <form @submit="nextQuestion">
-          <div v-html="activeQuestion.question" />
-          <MCQ
-            v-if="activeQuestion.type == 'MCQ'"
-            :question="activeQuestion"
-            :answer="answers[activeIndex]"
-            :onAnswer="setAnswer"
-          />
-          <Numeric
-            v-if="activeQuestion.type == 'Numeric'"
+          <QuestionView
             :question="activeQuestion"
             :answer="answers[activeIndex]"
             :onAnswer="setAnswer"
@@ -49,8 +41,7 @@
 // Quizes
 //
 import axios from "axios";
-import MCQ from "@/components/Questions/MCQ/View.vue";
-import Numeric from "@/components/Questions/Numeric/View.vue";
+import QuestionView from "@/components/Questions/View";
 
 export default {
   data() {
@@ -73,8 +64,7 @@ export default {
     },
   },
   components: {
-    MCQ,
-    Numeric,
+    QuestionView,
   },
   created() {
     axios

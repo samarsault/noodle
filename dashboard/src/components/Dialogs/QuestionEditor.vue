@@ -7,7 +7,7 @@
       </div>
       <div v-if="preview">
         <!--<QuizQuestion :question="question" :options="options" />-->
-        <h1>Preview</h1>
+        <QuestionView :question="question" />
       </div>
       <div v-else>
         <label>Question</label>
@@ -27,7 +27,7 @@
 import axios from "axios";
 import Modal from "./Modal";
 import Editor from "../Editor.vue";
-
+import QuestionView from "../Questions/View.vue";
 import MCQEdit from "../Questions/MCQ/Edit";
 import NumericEdit from "../Questions/Numeric/Edit";
 
@@ -38,6 +38,7 @@ export default {
     Editor,
     MCQEdit,
     NumericEdit,
+    QuestionView,
   },
   props: ["preset"],
   data() {
@@ -98,9 +99,6 @@ select {
 .icon-button {
   border: 1px solid #ddd;
   padding: 7px 15px;
-  margin: 0;
-}
-ol {
   margin: 0;
 }
 </style>
