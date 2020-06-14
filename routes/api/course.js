@@ -63,7 +63,7 @@ router.get("/quiz", async function (req, res) {
 
 // note: sends answer as well
 router.get("/quiz/:quiz_id", async function (req, res) {
-  const quiz = quizzer.getById(req.params.quiz_id);
+  const quiz = await quizzer.getById(req.params.quiz_id);
   return res.json(quiz);
 });
 
@@ -76,7 +76,7 @@ router.post("/quiz/submit", async function (req, res) {
   };
   const QA = await quizzer.evaluate(attempt);
 
-  return res.json(QA);
+  return res.status(200).json(QA);
 });
 
 module.exports = router;

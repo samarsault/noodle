@@ -4,17 +4,31 @@
 //
 const Quiz = require("../models/Page/Quiz");
 const QuizAttempt = require("../models/Page/QuizAttempt");
+const Question = require("../models/Question");
+
+function resolveQuestions(questionIds) {
+  return Promise.all(
+    questionIds.map((id) =>
+      Question.findOne({
+        _id: id,
+      })
+    )
+  );
+}
 
 exports.evaluate = async function (attempt) {
   try {
-    const { questions } = await Quiz.findOne({ _id: attempt.quiz_id }).select(
-      "questions"
-    );
+    const { questions: questionIds } = await Quiz.findOne({
+      _id: attempt.quiz_id,
+    }).select("questions");
+    const questions = await resolveQuestions(questionIds);
     const correctAnswers = questions.map((q) => q.answer);
     const attemptAnswers = attempt.answers;
     let score = 0;
     for (let i = 0; i < attemptAnswers.length; i++) {
-      if (attemptAnswers[i] && attemptAnswers[i] === correctAnswers[i]) score++;
+      if (attemptAnswers[i] && attemptAnswers[i] === correctAnswers[i]) {
+        score += questions[i].points;
+      }
     }
     return QuizAttempt.create({
       ...attempt,
@@ -28,7 +42,7 @@ exports.evaluate = async function (attempt) {
 
 // @returns Promise
 exports.addQuestion = function (quizId, questionId) {
-  return Quiz.update(
+  return Quiz.updateOne(
     {
       _id: quizId,
     },
@@ -47,9 +61,7 @@ exports.deleteQuestion = function (quizId, questionId) {
     },
     {
       $pull: {
-        questions: {
-          _id: questionId,
-        },
+        questions: questionId,
       },
     }
   );
@@ -59,5 +71,9 @@ exports.getById = async function (quiz_id) {
   const quiz = await Quiz.findOne({
     _id: quiz_id,
   });
-  return quiz;
+  const questions = await resolveQuestions(quiz.questions);
+  return {
+    ...quiz.toObject(),
+    questions,
+  };
 };

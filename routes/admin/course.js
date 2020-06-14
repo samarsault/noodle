@@ -70,35 +70,6 @@ router.put("/page/:id", async function (req, res) {
     success: true,
   });
 });
-// Initialize Quiz Creation
-router.post("/quiz/init", async function (req, res) {
-  const { name } = req.body;
-  try {
-    const quiz = await quizzer.createQuiz(name, req.course_id, []);
-    return res.json({
-      success: true,
-      quiz,
-    });
-  } catch (e) {
-    return res.json({
-      success: false,
-    });
-  }
-});
-
-router.post("/quiz/destroy", async function (req, res) {
-  const { _id, name } = req.body;
-  try {
-    await quizzer.deleteQuiz(_id, name);
-    return res.json({
-      success: true,
-    });
-  } catch (e) {
-    return res.json({
-      success: false,
-    });
-  }
-});
 
 //
 router.post("/quiz/update", async function (req, res) {

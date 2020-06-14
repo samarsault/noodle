@@ -1,96 +1,164 @@
 <template>
-  <div class="container">
-    <h2>{{ quiz.name }}</h2>
-    <div v-for="question in quiz.questions" :key="question._id">
-      <p class="big-type">{{ question.question }}</p>
-      <ol class="options" type="A">
-        <li
-          v-for="(option, j) in question.options"
-          v-bind:key="j"
-          @click="selectOption(i, j)"
-          :class="{ selected: selected[i] == j }"
-        >
-          <span class="option">{{
-            String.fromCharCode("A".charCodeAt(0) + j)
-          }}</span>
-          <span class="option-value">{{ option }}</span>
-        </li>
-      </ol>
+  <div class="quiz-container">
+    <h1>{{ quiz.name }}</h1>
+    <div v-if="started" class="quizzer">
+      <div class="quizzer-question">
+        <form @submit="nextQuestion">
+          <div v-html="activeQuestion.question" />
+          <MCQ
+            v-if="activeQuestion.type == 'MCQ'"
+            :question="activeQuestion"
+            :answer="answers[activeIndex]"
+            :onAnswer="setAnswer"
+          />
+          <Numeric
+            v-if="activeQuestion.type == 'Numeric'"
+            :question="activeQuestion"
+            :answer="answers[activeIndex]"
+            :onAnswer="setAnswer"
+          />
+          <button class="primary">
+            {{ lastQuestion ? "Finish" : "Next" }}
+          </button>
+        </form>
+      </div>
+      <div class="quizzer-panel">
+        <p>Time: 19:32</p>
+        <div class="quizzer-nav">
+          <div
+            v-for="n in quiz.questions.length"
+            :key="n"
+            @click="showQuestion(n - 1)"
+            :class="{ marked: answers[n - 1] }"
+          >
+            {{ n }}
+          </div>
+        </div>
+      </div>
     </div>
-    <button class="primary" style="margin-bottom: 20px;" @click="submitQuiz">
-      Submit
-    </button>
+    <div v-else>
+      <p>Once, you are ready, click below to start the quiz.</p>
+      <button class="primary" @click="startQuiz">Start</button>
+    </div>
   </div>
 </template>
 
 <script>
+//
+// Responsible for Taking
+// Quizes
+//
 import axios from "axios";
+import MCQ from "../components/Questions/MCQ/View.vue";
+import Numeric from "../components/Questions/Numeric/View.vue";
 
 export default {
   data() {
     return {
+      quiz_id: this.$route.params.quiz_id,
+      course_id: this.$route.params.course_id,
       quiz: {
         name: "",
         questions: [],
       },
-      selected: [],
-      quiz_id: this.$route.params.quiz_id,
-      course_id: this.$route.params.course_id,
+      started: false,
+      answers: [],
+      activeIndex: 0,
+      activeQuestion: {},
     };
   },
-  mounted() {
+  computed: {
+    lastQuestion() {
+      return this.activeIndex == this.quiz.questions.length - 1;
+    },
+  },
+  components: {
+    MCQ,
+    Numeric,
+  },
+  created() {
     axios
       .get(`/api/courses/${this.course_id}/quiz/${this.quiz_id}`)
       .then(({ data }) => {
         this.quiz = data;
-        this.selected = Array(data.questions.length).fill(-1);
+        if (this.answers.length !== this.quiz.questions.length)
+          this.answers = new Array(this.quiz.questions.length).fill("");
       });
   },
   methods: {
-    selectOption(questionIndex, optionIndex) {
-      if (this.selected[questionIndex] == optionIndex) {
-        // already selected
-        this.$set(this.selected, questionIndex, -1);
+    startQuiz() {
+      this.started = true;
+      this.showQuestion(0);
+    },
+    showQuestion(n) {
+      this.activeIndex = n;
+      this.activeQuestion = this.quiz.questions[n];
+    },
+    nextQuestion(e) {
+      e.preventDefault();
+      if (this.lastQuestion) {
+        alert("Submitting for evaluation");
+        this.submitQuiz();
       } else {
-        this.$set(this.selected, questionIndex, optionIndex);
+        this.showQuestion(this.activeIndex + 1);
       }
     },
     submitQuiz() {
-      axios.post(`/api/courses/${this.course_id}/quiz/submit`, {
-        quiz_id: this.quiz_id,
-        answers: this.selected,
-      });
+      axios
+        .post(`/api/courses/${this.course_id}/quiz/submit`, {
+          quiz_id: this.quiz_id,
+          answers: this.answers,
+        })
+        .then(({ status, data }) => {
+          if (status === 200) {
+            alert(`Score: ${data.score}`);
+          } else {
+            alert("Submission error");
+          }
+        });
+    },
+    setAnswer(answer) {
+      this.$set(this.answers, this.activeIndex, answer);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../../../styles/include/_vars";
-.options {
-  list-style-type: none;
-  padding: 0;
-  li {
-    background-color: #fff;
-    padding: 15px 20px;
-    border-bottom: 1px solid #ddd;
-    &.selected {
-      background-color: #d6eed4;
-    }
-    &:hover {
-      cursor: pointer;
+@import "../../../styles/include/_vars.scss";
+.quiz-container {
+  max-width: 1024px;
+  margin: 20px auto;
+}
+.quizzer {
+  display: flex;
+  justify-content: space-around;
+  min-height: 400px;
+}
+.quizzer-question {
+  flex-grow: 1;
+  margin-right: 25px;
+}
+.quizzer-nav {
+  display: flex;
+  > div {
+    width: 40px;
+    height: 40px;
+    background-color: #111;
+    color: #fff;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 100%;
+    margin: 5px;
+    cursor: pointer;
+    &.marked {
+      background-color: $tealBlue;
     }
   }
 }
-.option {
-  background-color: $tealBlue;
-  color: #fff;
-  padding: 10px;
-  display: inline-block;
-  width: 38px;
-  height: 38px;
-  text-align: center;
-  border-radius: 100%;
-  margin-right: 15px;
+.quizzer-panel {
+  border: 1px solid #ccc;
+  padding: 5px 20px;
+  height: 100%;
 }
 </style>

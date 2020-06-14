@@ -8,6 +8,7 @@ import Quizzer from "./views/Quizzer.vue";
 import Article from "./views/Article";
 import Registrations from "./views/Students.vue";
 import QuestionBank from "./views/Admin/Course/QuestionBank.vue";
+import Quiz from "./views/Quiz.vue";
 import { getters } from "./utils/store";
 
 Vue.use(Router);
@@ -36,9 +37,12 @@ const router = new Router({
         },
         {
           path: "Quiz/:quiz_id",
+          component: Quiz,
+        },
+        {
+          path: "Quizzer/:quiz_id",
           component: Quizzer,
         },
-
         {
           path: "questions",
           component: QuestionBank,
