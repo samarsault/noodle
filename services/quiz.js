@@ -5,6 +5,7 @@
 const Quiz = require("../models/Page/Quiz");
 const QuizAttempt = require("../models/Page/QuizAttempt");
 const Question = require("../models/Question");
+const userService = require("./user");
 
 function resolveQuestions(questionIds) {
   return Promise.all(
@@ -16,8 +17,42 @@ function resolveQuestions(questionIds) {
   );
 }
 
+exports.getAttempts = async function (quiz_id) {
+  const attempts = await QuizAttempt.find({
+    quiz_id,
+  });
+  return Promise.all(
+    attempts.map(async (attempt) => {
+      const user = await userService.get(attempt.user_id);
+      return {
+        ...attempt.toObject(),
+        user,
+      };
+    })
+  );
+};
+
+//
+// Start a quiz attempt
+//
+exports.attempt = async function (attempt) {
+  const { user_id, quiz_id } = attempt;
+  return QuizAttempt.create({
+    quiz_id,
+    user_id,
+    start: Date.now(),
+  });
+};
+
+//
+// attempt: {
+//    quiz_id,
+//    answers: list of answers,
+//    _id: attempt id
+// }
 exports.evaluate = async function (attempt) {
   try {
+    // Calculate Score
     const { questions: questionIds } = await Quiz.findOne({
       _id: attempt.quiz_id,
     }).select("questions");
@@ -25,15 +60,31 @@ exports.evaluate = async function (attempt) {
     const correctAnswers = questions.map((q) => q.answer);
     const attemptAnswers = attempt.answers;
     let score = 0;
+    let unansweredQs = 0;
+    let correctQs = 0;
     for (let i = 0; i < attemptAnswers.length; i++) {
-      if (attemptAnswers[i] && attemptAnswers[i] === correctAnswers[i]) {
+      if (attemptAnswers[i] === "") {
+        unansweredQs++;
+      } else if (attemptAnswers[i] === correctAnswers[i]) {
         score += questions[i].points;
+        correctQs++;
       }
     }
-    return QuizAttempt.create({
-      ...attempt,
-      ...{ score },
-    });
+    // Ending
+    const end = Date.now();
+    await QuizAttempt.updateOne(
+      {
+        _id: attempt._id,
+      },
+      {
+        answers: attemptAnswers,
+        unansweredQs,
+        correctQs,
+        score,
+        end,
+      }
+    );
+    return QuizAttempt.findOne({ _id: attempt._id });
   } catch (error) {
     console.log(error);
     return null;

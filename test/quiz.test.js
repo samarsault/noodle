@@ -5,6 +5,7 @@
 const basicData = require("./data/basic");
 const quizService = require("../services/quiz");
 const Quiz = require("../models/Page/Quiz");
+const QuizAttempt = require("../models/Page/QuizAttempt");
 const Numeric = require("../models/Question/Numeric");
 
 let data;
@@ -23,8 +24,13 @@ beforeEach(async () => {
     course: data.course._id,
     questions: [data.numQuestion._id],
   });
+  data.attempt = (
+    await QuizAttempt.create({
+      user_id: data.student._id,
+      quiz_id: data.quiz._id,
+    })
+  ).toObject();
 });
-
 describe("Quiz Access", function () {
   it("Can get quiz questions with type", async (done) => {
     const quiz = await quizService.getById(data.quiz._id);
@@ -41,17 +47,25 @@ describe("Quiz Access", function () {
 });
 
 describe("Quiz Attempt", function () {
+  it("Creates attempt properly", async (done) => {
+    const attempt = await quizService.attempt({
+      user_id: data.student._id,
+      quiz_id: data.quiz._id,
+    });
+    expect(attempt.start).toBeDefined();
+    expect(attempt.quiz_id).toBe(data.quiz._id);
+    done();
+  });
+
   it("Evaluates a quiz properly", async (done) => {
     const evaluation = await quizService.evaluate({
-      quiz_id: data.quiz._id,
+      ...data.attempt,
       answers: [5],
-      user_id: data.student._id,
     });
     expect(evaluation.score).toBe(1);
     const evaluation2 = await quizService.evaluate({
-      quiz_id: data.quiz._id,
+      ...data.attempt,
       answers: [3],
-      user_id: data.student._id,
     });
     expect(evaluation2.score).toBe(0);
     done();

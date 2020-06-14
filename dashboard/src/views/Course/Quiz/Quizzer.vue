@@ -56,6 +56,7 @@ export default {
       answers: [],
       activeIndex: 0,
       activeQuestion: {},
+      attempt: {},
     };
   },
   computed: {
@@ -77,8 +78,19 @@ export default {
   },
   methods: {
     startQuiz() {
-      this.started = true;
-      this.showQuestion(0);
+      axios
+        .post(`/api/courses/${this.course_id}/quiz/attempt`, {
+          quiz_id: this.quiz_id,
+        })
+        .then(({ data, status }) => {
+          if (status === 200) {
+            this.attempt = data;
+            this.started = true;
+            this.showQuestion(0);
+          } else {
+            alert("Error attempting quiz.");
+          }
+        });
     },
     showQuestion(n) {
       this.activeIndex = n;
@@ -96,7 +108,7 @@ export default {
     submitQuiz() {
       axios
         .post(`/api/courses/${this.course_id}/quiz/submit`, {
-          quiz_id: this.quiz_id,
+          ...this.attempt,
           answers: this.answers,
         })
         .then(({ status, data }) => {

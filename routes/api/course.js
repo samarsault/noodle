@@ -67,14 +67,16 @@ router.get("/quiz/:quiz_id", async function (req, res) {
   return res.json(quiz);
 });
 
-router.post("/quiz/submit", async function (req, res) {
-  const user_id = req.user._id;
-  const attempt = {
+router.post("/quiz/attempt", async function (req, res) {
+  const quizAttempt = await quizzer.attempt({
+    user_id: req.user._id,
     quiz_id: req.body.quiz_id,
-    user_id: user_id.toString(),
-    answers: req.body.answers,
-  };
-  const QA = await quizzer.evaluate(attempt);
+  });
+  return res.status(200).json(quizAttempt);
+});
+
+router.post("/quiz/submit", async function (req, res) {
+  const QA = await quizzer.evaluate(req.body);
 
   return res.status(200).json(QA);
 });

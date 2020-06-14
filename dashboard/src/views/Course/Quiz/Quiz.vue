@@ -2,16 +2,25 @@
   <div class="container">
     <h2>{{ quiz.name }}</h2>
     <router-link :to="`/course/${course_id}/Quizzer/${quiz._id}`">
-      <button class="primary">Attempt</button>
+      <button class="primary">Take</button>
+    </router-link>
+    <router-link :to="`/course/${course_id}/attempts/${quiz._id}`">
+      <button class>View Attempts</button>
     </router-link>
     <button class="secondary" @click="edit">Add Question</button>
+    <router-view />
     <QuestionManager
       :questions="quiz.questions"
       :course_id="course_id"
       :onDelete="deleteFromQuiz"
       :showExisting="true"
     />
-    <Modal v-if="editing" title="Add Question" @close="editing = false">
+    <Modal
+      v-if="editing"
+      title="Add Question"
+      @close="editing = false"
+      @ok="editing = false"
+    >
       <template slot="body">
         <div
           v-for="question in availableQuestions"
@@ -58,21 +67,29 @@ export default {
   },
   methods: {
     edit() {
-      this.editing = true;
       if (this.availableQuestions.length === 0) {
         axios
           .get(`/api/courses/${this.course_id}/questions`)
           .then(({ data }) => {
-            this.availableQuestions = data;
+            // Filter available questions to hide questions which
+            // have already been added
+            this.availableQuestions = data.filter((qId) => {
+              return !this.quiz.questions.find((x) => x._id == qId._id);
+            });
           });
       }
+      this.editing = true;
     },
     async addToQuiz(question) {
-      await axios.post(`/admin/courses/${this.course_id}/quiz/update`, {
-        type: "add",
-        data: question._id,
-        quiz_id: this.quiz_id,
-      });
+      const { data } = await axios.post(
+        `/admin/courses/${this.course_id}/quiz/update`,
+        {
+          type: "add",
+          data: question._id,
+          quiz_id: this.quiz_id,
+        }
+      );
+      if (data.success) this.quiz.questions.push(question);
     },
     async deleteFromQuiz(question) {
       const { data } = await axios.post(

@@ -15,7 +15,12 @@ module.exports = model(
     },
     answers: [Schema.Types.Mixed],
     score: Number,
-    start: Date,
+    unansweredQs: Number,
+    correctQs: Number,
+    start: {
+      type: Date,
+      deafult: Date.now(),
+    },
     end: Date,
     // type: r_string -> Used to show different icons
   }),

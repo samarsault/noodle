@@ -11,6 +11,7 @@ import Welcome from "./views/Course/Welcome.vue";
 import Quizzer from "./views/Course/Quiz/Quizzer.vue";
 import QuestionBank from "./views/Course/Quiz/QuestionBank.vue";
 import Quiz from "./views/Course/Quiz/Quiz.vue";
+import QuizAttempts from "./views/Course/Quiz/Attempts.vue";
 
 import { getters } from "./utils/store";
 
@@ -45,6 +46,10 @@ const router = new Router({
         {
           path: "Quiz/:quiz_id",
           component: Quiz,
+        },
+        {
+          path: "attempts/:quiz_id",
+          component: QuizAttempts,
         },
         {
           path: "Quizzer/:quiz_id",

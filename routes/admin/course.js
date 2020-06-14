@@ -71,6 +71,11 @@ router.put("/page/:id", async function (req, res) {
   });
 });
 
+router.get("/quiz/:id/attempts", async function (req, res) {
+  const quiz_id = req.params.id;
+  const attempts = await quizzer.getAttempts(quiz_id);
+  return res.status(200).json(attempts);
+});
 //
 router.post("/quiz/update", async function (req, res) {
   const { quiz_id, question_id, type, data } = req.body;
