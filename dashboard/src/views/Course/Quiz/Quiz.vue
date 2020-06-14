@@ -90,7 +90,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../styles/include/_vars";
+@import "../../../../../styles/include/_vars";
 .question {
   background-color: #fff;
   padding: 5px 15px;

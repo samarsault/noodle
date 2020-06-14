@@ -2,7 +2,11 @@
   <div>
     <h2>Question Bank</h2>
     <p>You can add questions for later here.</p>
-    <QuestionManager :questions="questions" :course_id="course_id" :showAdd="true"/>
+    <QuestionManager
+      :questions="questions"
+      :course_id="course_id"
+      :showAdd="true"
+    />
   </div>
 </template>
 

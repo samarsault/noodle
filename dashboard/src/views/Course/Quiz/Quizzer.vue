@@ -115,7 +115,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../styles/include/_vars.scss";
+@import "../../../../../styles/include/_vars.scss";
 .quiz-container {
   max-width: 1024px;
   margin: 20px auto;
