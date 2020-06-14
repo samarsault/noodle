@@ -78,6 +78,10 @@ exports.getProp = async function (course_id, toSelect) {
   );
 };
 
+exports.getAll = function () {
+  return Course.find({}).limit(10);
+};
+
 exports.getFromHistory = function (period) {
   return Course.find({
     offerYear: period[0],

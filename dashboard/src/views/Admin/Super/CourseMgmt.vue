@@ -40,7 +40,7 @@ export default {
   async mounted() {
     console.log(this.$router);
     console.log("Wassup!");
-    this.courses = (await axios.get("/courses/all")).data;
+    this.courses = (await axios.get("/admin/super/courses/all")).data;
     console.log(this.courses);
   },
   methods: {
@@ -50,11 +50,11 @@ export default {
     async search() {
       if (!this.searchField) {
         console.log("I am here!!");
-        this.courses = (await axios.get("/courses/all")).data;
+        this.courses = (await axios.get("/admin/super/courses/all")).data;
         console.log(this.courses);
       } else {
         this.courses = (
-          await axios.get(`/courses/search/?q=${this.searchField}`)
+          await axios.get(`/admin/super/courses/search/?q=${this.searchField}`)
         ).data;
         console.log(this.courses);
       }

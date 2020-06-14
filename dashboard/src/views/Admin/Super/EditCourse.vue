@@ -16,7 +16,7 @@
           <button @click="toggleEdit()" v-if="isEdit">
             Save
           </button>
-          <button class="error">
+          <button class="error" @click="delCourse(course._id)">
             Delete
           </button>
           <router-link to="/admin/cmgt" tag="button">View All</router-link>
@@ -80,7 +80,7 @@
           <button @click="toggleEdit()" v-if="isEdit">
             Save
           </button>
-          <button class="error">
+          <button class="error" @click="delCourse(course._id)">
             Delete
           </button>
           <button>
@@ -152,13 +152,22 @@ export default {
   },
   async mounted() {
     console.log("Wassup!");
-    const courses = (await axios.get("/courses/search?q=DemoCourse1")).data;
-    this.course = courses[0];
+    console.log(this.$route.params.course_id);
+    this.course = (
+      await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)
+    ).data;
     console.log(this.course);
   },
   methods: {
     toggleEdit() {
       this.isEdit = !this.isEdit;
+    },
+    async delCourse(id) {
+      console.log("hittn frontend del");
+      const res = (
+        await axios.put(`/admin/super/courses/${this.$route.params.course_id}`)
+      ).data;
+      console.log(res);
     },
   },
 };

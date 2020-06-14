@@ -1,6 +1,6 @@
 <template>
   <div class="admin-header">
-    <h2>Admin Panel</h2>
+    <!-- <h2>Admin Panel</h2> -->
     <div class="nav">
       <router-link :to="'/admin/cmgt'">
         Course Management

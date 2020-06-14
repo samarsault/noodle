@@ -5,6 +5,8 @@ const express = require("express");
 const upload = require("../../middleware/upload");
 const response = require("../../util/response");
 const courseService = require("../../services/course");
+const calcCurDate = require("../../util/calcCurDate");
+
 const userService = require("../../services/user");
 
 const router = express.Router();
@@ -63,6 +65,27 @@ router.get("/courses/search", async function (req, res) {
   return res.json(courses);
 });
 
+router.get("/courses/all", async function (req, res) {
+  const current = calcCurDate();
+  const courses = await courseService.getAll(current);
+  res.send(courses);
+});
+
+router.get("/courses/:course_id", async function (req, res) {
+  const course = await courseService.get(req.params.course_id);
+  res.send(course);
+});
+
+router.put("courses/:course_id", async function (req, res) {
+  try {
+    console.log("hitting del");
+    const ans = await courseService.del(req.params.course_id);
+    console.log(ans);
+    res.status(200).send("Deleted Succelffully");
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
 //
 // Upgrade Access Level of User
 //
