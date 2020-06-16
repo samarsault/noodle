@@ -76,12 +76,12 @@ router.get("/courses/:course_id", async function (req, res) {
   res.send(course);
 });
 
-router.put("courses/:course_id", async function (req, res) {
+router.delete("/courses/:course_id", async function (req, res) {
   try {
     console.log("hitting del");
     const ans = await courseService.del(req.params.course_id);
     console.log(ans);
-    res.status(200).send("Deleted Succelffully");
+    res.send("Deleted Sucessfully");
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }

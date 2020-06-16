@@ -165,16 +165,17 @@ export default {
     async delCourse(id) {
       console.log("hittn frontend del");
       const res = (
-        await axios.put(`/admin/super/courses/${this.$route.params.course_id}`)
+        await axios.delete(`/admin/super/courses/${this.$route.params.course_id}`)
       ).data;
-      console.log(res);
+			console.log(res);
+			this.$router.push({path: '/admin'})
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "/home/think__tech/Desktop/cte/styles/include/vars";
+@import "../../../../../styles/include/vars";
 
 form {
   display: flex;

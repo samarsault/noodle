@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "/home/think__tech/Desktop/cte/styles/include/vars";
+@import "../../../../styles/include/vars";
 .nav {
   grid-row: 2;
   display: flex;

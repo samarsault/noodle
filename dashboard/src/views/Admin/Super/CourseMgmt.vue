@@ -8,12 +8,18 @@
       <button @click="filter()">
         <FilterVariant />
       </button>
+      <router-link
+        :to="`/admin/cmgt/add`"
+        tag="button"
+        style="display: inline-flex;"
+      >
+        <Plus /> Add Course</router-link
+      >
     </div>
     <div class="courses">
       <Card v-for="course in courses" :key="course._id" :course="course" />
     </div>
     <router-view :key="$route.path" />
-    <!-- <EditCourse /> -->
   </div>
 </template>
 
@@ -21,6 +27,7 @@
 import axios from "axios";
 import Magnify from "vue-material-design-icons/Magnify";
 import FilterVariant from "vue-material-design-icons/FilterVariant";
+import Plus from "vue-material-design-icons/Plus";
 import Card from "../../../components/Card";
 import EditCourse from "./EditCourse";
 
@@ -28,6 +35,7 @@ export default {
   components: {
     FilterVariant,
     Magnify,
+    Plus,
     Card,
     EditCourse,
   },
@@ -44,9 +52,6 @@ export default {
     console.log(this.courses);
   },
   methods: {
-    editCourse() {
-      console.log("pushed me");
-    },
     async search() {
       if (!this.searchField) {
         console.log("I am here!!");
@@ -64,7 +69,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "/home/think__tech/Desktop/cte/styles/include/vars";
+@import "../../../../../styles/include/vars";
 
 .mainWrapper {
   display: grid;

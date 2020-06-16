@@ -6,6 +6,7 @@ import Admin from "./views/Admin/SuperIndex.vue";
 import CourseMgmt from "./views/Admin/Super/CourseMgmt.vue";
 import UserMgmt from "./views/Admin/Super/UserMgmt.vue";
 import EditCourse from "./views/Admin/Super/EditCourse.vue";
+import AddCourse from "./views/Admin/Super/AddCourse.vue";
 import SignUp from "./views/SignUp";
 import Article from "./views/Course/Article";
 import Registrations from "./views/Students.vue";
@@ -81,6 +82,7 @@ const router = new Router({
             requiresAuth: true,
           },
         },
+        { path: "cmgt/add", component: AddCourse },
         { path: "cmgt/:course_id", component: EditCourse },
       ],
       meta: {
