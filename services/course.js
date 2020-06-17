@@ -176,14 +176,14 @@ exports.create = async function (body) {
     offerYear,
     offerSem,
   });
-
   // Update instructor & roles
-  const updateDelegates = instructorsArr.map(async (id) => {
-    const user = await User.findOne({
-      _id: id,
-    }).select("role");
 
-    // don't degrede admin
+  const updateDelegates = instructorsArr.map(async (email) => {
+    const user = await User.findOne({
+      email,
+    });
+    console.log(user, "userFound");
+    // don't degrade admin
     if (user.role !== "admin") {
       await User.updateOne(
         {
@@ -226,4 +226,50 @@ exports.search = async function (query) {
 
 exports.del = function (course_id) {
   return Course.deleteOne({ _id: course_id });
+};
+
+exports.update = async function (course_id, newCourse) {
+  const modCourse = newCourse;
+
+  const { instructors } = modCourse;
+  delete modCourse.instructors;
+
+  const course = await Course.findByIdAndUpdate(course_id, modCourse, {
+    new: true,
+  });
+  if (instructors) {
+    const instructorsArr = instructors.toString().split(",");
+
+    const updateDelegates = instructorsArr.map(async (email) => {
+      const user = await User.findOne({
+        email,
+      });
+      console.log(user, "userFound");
+      // don't degrade admin
+      if (user.role !== "admin") {
+        await User.updateOne(
+          {
+            _id: user._id,
+          },
+          {
+            role: "instructor",
+            instructor_for: course._id,
+          }
+        );
+      }
+
+      await Course.updateOne(
+        {
+          _id: course._id,
+        },
+        {
+          $addToSet: {
+            instructors: user._id,
+          },
+        }
+      );
+    });
+    await Promise.all(updateDelegates);
+  }
+  return Course.findOne({ _id: course._id });
 };

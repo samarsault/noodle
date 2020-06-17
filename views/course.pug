@@ -20,7 +20,7 @@ block content
 								a(href='/dashboard/course/' + course._id)
 									button.primary View Course
 							else if isArchive
-								form(action='/courses/' + course._id + '/register', method='POST')
+								form(action='/courses/' + course._id + '/register' method='POST')
 									button.primary Audit Course								
 							else
 								a(href='/courses/' + course._id + '/register/')
@@ -34,11 +34,6 @@ block content
 				h3 Description
 				p #{course.description}
 			div
-				.card
-					h3 Topics
-					ul
-						each topic in course.topics
-							li #{topic}
 				.card
 					h3 Instructors
 					ul

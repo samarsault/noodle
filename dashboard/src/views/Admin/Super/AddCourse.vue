@@ -3,7 +3,7 @@
     <div class="content" v-if="true">
       <div class="heading">
         <div class="buttons">
-          <button v-if="isEdit" class="primary" form="addForm">
+          <button class="primary" form="addForm">
             Add
           </button>
           <router-link to="/admin/cmgt" tag="button">View All</router-link>
@@ -11,7 +11,7 @@
       </div>
 
       <form
-			id="addForm"
+        id="addForm"
         method="post"
         action="/admin/super/addCourse"
         enctype="multipart/form-data"
@@ -59,14 +59,24 @@ import axios from "axios";
 import Magnify from "vue-material-design-icons/Magnify";
 import FilterVariant from "vue-material-design-icons/FilterVariant";
 import Card from "../../../components/Card";
-
+import UserInput from "../../../components/Input/User";
 const emailExtract = /<(.*)>/;
 
 export default {
   components: {
     FilterVariant,
+    UserInput,
     Magnify,
     Card,
+  },
+  computed: {
+    instructorStr: function () {
+      return this.instructors
+        .map((x) => {
+          return x.match(emailExtract)[1];
+        })
+        .join(",");
+    },
   },
   data() {
     return {
@@ -79,12 +89,12 @@ export default {
         offerSem: null,
         offerYear: null,
         summary: null,
-      },
-      isEdit: true,
+			},
+			instructors: []
     };
   },
   methods: {
-		formEnter: function (e) {
+    formEnter: function (e) {
       if (e.target.localName !== "textarea") {
         e.preventDefault();
       }
@@ -149,20 +159,20 @@ form {
   font-weight: 500;
 }
 
-.no-edit {
-  width: 100%;
-  padding: 0px;
-  color: inherit;
-  margin: 0px;
-  background-color: inherit;
-}
+// .no-edit {
+//   width: 100%;
+//   padding: 0px;
+//   color: inherit;
+//   margin: 0px;
+//   background-color: inherit;
+// }
 
-.edit {
-  width: 100%;
-  padding: 0px;
-  color: inherit;
-  margin: 0px;
-}
+// .edit {
+//   width: 100%;
+//   padding: 0px;
+//   color: inherit;
+//   margin: 0px;
+// }
 
 label {
   display: block;

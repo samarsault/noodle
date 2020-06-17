@@ -104,7 +104,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 // catch 404 and forward to error handler
 app.use(function (req, res) {
-  res.render("404");
+  res.status(404).render("404");
 });
 
 module.exports = app;

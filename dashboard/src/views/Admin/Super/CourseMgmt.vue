@@ -19,7 +19,10 @@
     <div class="courses">
       <Card v-for="course in courses" :key="course._id" :course="course" />
     </div>
-    <router-view :key="$route.path" />
+    <div class="not-found" v-if="courses.length == 0">
+      <img src="/images/empty.png" />
+      <h4>We looked every where but couldn't find your course, try checking the spelling :D</h4>
+    </div>
   </div>
 </template>
 
@@ -30,7 +33,7 @@ import FilterVariant from "vue-material-design-icons/FilterVariant";
 import Plus from "vue-material-design-icons/Plus";
 import Card from "../../../components/Card";
 import EditCourse from "./EditCourse";
-
+import { mutations } from "../../../utils/store";
 export default {
   components: {
     FilterVariant,
@@ -46,12 +49,15 @@ export default {
     };
   },
   async mounted() {
+    this.setLoading(true);
     console.log(this.$router);
     console.log("Wassup!");
     this.courses = (await axios.get("/admin/super/courses/all")).data;
     console.log(this.courses);
+    this.setLoading(false);
   },
   methods: {
+    ...mutations,
     async search() {
       if (!this.searchField) {
         console.log("I am here!!");
@@ -76,14 +82,23 @@ export default {
 }
 .header {
   display: flex;
-  grid-row: 3;
+  grid-row: 1;
   align-items: center;
   justify-content: center;
 }
 .courses {
-  grid-row: 4;
+  grid-row: 2;
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: center;
 }
+// .not-found {
+// 	grid: ;
+//   display: inline-block;
+//   width: 140px;
+//   height: 140px;
+//   margin-right: 20px;
+//   border-radius: 100%;
+// }
 </style>
