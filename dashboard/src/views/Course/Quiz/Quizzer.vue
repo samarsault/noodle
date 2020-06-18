@@ -12,10 +12,14 @@
           <button class="primary">
             {{ lastQuestion ? "Finish" : "Next" }}
           </button>
+          <p>Time: {{ times[activeIndex] | stringTime }}</p>
         </form>
       </div>
       <div class="quizzer-panel">
-        <p>Time: 19:32</p>
+        <p>Time: {{ totalTime | stringTime }}</p>
+        <button @click="alert('You can continue anytime in coming 5 days.')">
+          Pause
+        </button>
         <div class="quizzer-nav">
           <div
             v-for="n in quiz.questions.length"
@@ -52,12 +56,21 @@ export default {
         name: "",
         questions: [],
       },
+      totalTime: 0,
       started: false,
       answers: [],
+      times: [],
       activeIndex: 0,
       activeQuestion: {},
       attempt: {},
     };
+  },
+  filters: {
+    stringTime: (val) => {
+      const base = `${val % 60}s`;
+      if (val > 60) return `${Math.floor(val / 60)}m ${base}`;
+      return base;
+    },
   },
   computed: {
     lastQuestion() {
@@ -72,8 +85,10 @@ export default {
       .get(`/api/courses/${this.course_id}/quiz/${this.quiz_id}`)
       .then(({ data }) => {
         this.quiz = data;
-        if (this.answers.length !== this.quiz.questions.length)
+        if (this.answers.length !== this.quiz.questions.length) {
           this.answers = new Array(this.quiz.questions.length).fill("");
+          this.times = new Array(this.quiz.questions.length).fill(0);
+        }
       });
   },
   methods: {
@@ -87,10 +102,15 @@ export default {
             this.attempt = data;
             this.started = true;
             this.showQuestion(0);
+            this.timer = setInterval(this.loopTime, 1000);
           } else {
             alert("Error attempting quiz.");
           }
         });
+    },
+    loopTime() {
+      this.$set(this.times, this.activeIndex, this.times[this.activeIndex] + 1);
+      this.totalTime += 1;
     },
     showQuestion(n) {
       this.activeIndex = n;
@@ -99,13 +119,13 @@ export default {
     nextQuestion(e) {
       e.preventDefault();
       if (this.lastQuestion) {
-        alert("Submitting for evaluation");
         this.submitQuiz();
       } else {
         this.showQuestion(this.activeIndex + 1);
       }
     },
     submitQuiz() {
+      clearInterval(this.timer);
       axios
         .post(`/api/courses/${this.course_id}/quiz/submit`, {
           ...this.attempt,
@@ -113,7 +133,9 @@ export default {
         })
         .then(({ status, data }) => {
           if (status === 200) {
-            alert(`Score: ${data.score}`);
+            this.$router.push({
+              path: `/course/${this.course_id}/Quiz/${this.quiz_id}`
+            })
           } else {
             alert("Submission error");
           }

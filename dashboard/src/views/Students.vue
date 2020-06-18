@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="registered.length > 0">
     <table>
       <thead>
         <tr>
@@ -25,6 +25,9 @@
         >
       </button>
     </a>
+  </div>
+  <div v-else>
+    <h1>No student registered.</h1>
   </div>
 </template>
 

@@ -4,6 +4,10 @@
     <router-link :to="`/course/${course_id}/Quizzer/${quiz._id}`">
       <button class="primary">Take</button>
     </router-link>
+    <div v-if="attempts.length > 0">
+      <h3>My Attempts</h3>
+      <AttemptView :attempts="attempts" :quiz="quiz"/>
+    </div>
     <div v-if="isAdmin">
       <h3>Admin</h3>
       <router-link :to="`/course/${course_id}/attempts/${quiz._id}`">
@@ -42,6 +46,7 @@
 import axios from "axios";
 import Modal from "@/components/Dialogs/Modal";
 import QuestionManager from "@/components/Questions/Manager";
+import AttemptView from "@/components/AttemptView";
 
 export default {
   props: {
@@ -53,6 +58,7 @@ export default {
         name: "",
         questions: [],
       },
+      attempts: [],
       availableQuestions: [],
       editing: false,
       selected: [],
@@ -63,6 +69,7 @@ export default {
   components: {
     Modal,
     QuestionManager,
+    AttemptView
   },
   mounted() {
     axios
@@ -70,6 +77,11 @@ export default {
       .then(({ data }) => {
         this.quiz = data;
       });
+    axios
+      .get(`/api/courses/${this.course_id}/quiz/${this.quiz_id}/attempt`)
+      .then(({ data }) => {
+        this.attempts = data;
+      })
   },
   methods: {
     edit() {

@@ -80,6 +80,13 @@ router.get("/quiz/:quiz_id", async function (req, res) {
   return res.json(quiz);
 });
 
+router.get("/quiz/:quiz_id/attempt", async function (req, res) {
+  const quizAttempt = await quizzer.getUserAttempt(
+    req.params.quiz_id,
+    req.user._id
+  );
+  return res.status(200).json(quizAttempt);
+});
 router.post("/quiz/attempt", async function (req, res) {
   const quizAttempt = await quizzer.attempt({
     user_id: req.user._id,

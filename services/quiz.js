@@ -17,19 +17,39 @@ function resolveQuestions(questionIds) {
   );
 }
 
+function getStringTime(ms) {
+  const seconds = Math.round(ms / 1000);
+  if (seconds > 60) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+  return `${seconds} s`;
+}
+
+function resolveAttempts(attempts) {
+  return Promise.all(
+    attempts.map(async (attempt) => {
+      const user = await userService.get(attempt.user_id);
+      const time = getStringTime(attempt.end - attempt.start);
+      return {
+        ...attempt.toObject(),
+        user,
+        time,
+      };
+    })
+  );
+}
+
+exports.getUserAttempt = async function (quiz_id, user_id) {
+  const attempts = await QuizAttempt.find({
+    quiz_id,
+    user_id,
+  });
+  return resolveAttempts(attempts);
+};
+
 exports.getAttempts = async function (quiz_id) {
   const attempts = await QuizAttempt.find({
     quiz_id,
   });
-  return Promise.all(
-    attempts.map(async (attempt) => {
-      const user = await userService.get(attempt.user_id);
-      return {
-        ...attempt.toObject(),
-        user,
-      };
-    })
-  );
+  return resolveAttempts(attempts);
 };
 
 //

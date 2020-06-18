@@ -21,7 +21,7 @@
         </thead>
         <tbody>
           <tr v-bind:key="index" v-for="(question, index) in questions">
-            <td v-html="question.question" />
+            <td v-html="question.question" class="manager-question" />
             <td>
               <button class="small outline" @click="editQuestion(index)">
                 <Edit />
@@ -152,5 +152,12 @@ button {
 }
 td {
   padding: inherit;
+}
+</style>
+<style lang="scss">
+.manager-question {
+  img {
+    max-width: 200px;
+  }
 }
 </style>
