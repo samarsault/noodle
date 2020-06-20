@@ -1,11 +1,16 @@
 <template>
   <div class="mainWrapper">
     <div class="header">
-      <input type="text" placeholder="Search by Name" v-model="searchField" />
-      <button @click="search()">
+      <input
+        type="text"
+        placeholder="Search by Name"
+        v-model="searchField"
+        v-on:keydown.enter="search()"
+      />
+      <button @click="search()" type="submit" ref="submitBtn">
         <Magnify />
       </button>
-      <button @click="filter()">
+      <button @click="showAlert">
         <FilterVariant />
       </button>
       <router-link
@@ -21,7 +26,10 @@
     </div>
     <div class="not-found" v-if="courses.length == 0">
       <img src="/images/empty.png" />
-      <h4>We looked every where but couldn't find your course, try checking the spelling :D</h4>
+      <h4>
+        We looked every where but couldn't find your course, try checking the
+        spelling :D
+      </h4>
     </div>
   </div>
 </template>
@@ -34,6 +42,7 @@ import Plus from "vue-material-design-icons/Plus";
 import Card from "../../../components/Card";
 import EditCourse from "./EditCourse";
 import { mutations } from "../../../utils/store";
+
 export default {
   components: {
     FilterVariant,

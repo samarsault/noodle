@@ -14,6 +14,9 @@
           <button @click="toggleEdit()" v-if="!isEdit">
             Edit
           </button>
+          <button @click="toggleEdit()" v-if="isEdit">
+            Discard
+          </button>
           <div style="padding: 0px; margin: 0px;" v-if="isEdit">
             <button class="primary" form="editForm">
               Save
@@ -26,14 +29,26 @@
         </div>
       </div>
 
-      <img :src="course.coverImage" :alt="course.name" class="courseImage" />
+      <img
+        :src="course.coverImage"
+        v-if="!url"
+        :alt="course.name"
+        class="courseImage"
+      />
+      <img v-if="url" :src="url" />
       <form
         id="editForm"
         method="post"
         :action="`/admin/super/courses/update/${this.course._id}`"
         enctype="multipart/form-data"
       >
-        <input type="file" name="coverImage" v-if="isEdit" value="Icon" />
+        <input
+          type="file"
+          name="coverImage"
+          @change="onImgChange"
+          v-if="isEdit"
+          value="Icon"
+        />
         <div class="info">
           <h4>
             <b>
@@ -131,6 +146,7 @@ export default {
       isEdit: false,
       instNames: [],
       instructors: [],
+      url: null,
     };
   },
   computed: {
@@ -169,13 +185,20 @@ export default {
         e.preventDefault();
       }
     },
-    toggleEdit() {
-      // this.$swal("Hello dss world!!!", {
+    onImgChange(e) {
+      const file = e.target.files[0];
+      this.url = URL.createObjectURL(file);
+    },
+    async toggleEdit() {
+      // this.$this.$swal("Hello dss world!!!", {
       //   confirmButtonColor: "#41b882",
       //   cancelButtonColor: "#ff7674",
       // });
       this.isEdit = !this.isEdit;
       console.log(this.course);
+      this.course = (
+        await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)
+      ).data;
     },
     async saveCourse() {
       this.course = (
@@ -187,13 +210,40 @@ export default {
     },
     async delCourse() {
       console.log("hittn frontend del");
-      const res = (
-        await axios.delete(
-          `/admin/super/courses/${this.$route.params.course_id}`
-        )
-      ).data;
-      console.log(res);
-      this.$router.push({ path: "/admin" });
+      // Use sweetalert2
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "This is a non reversible operation",
+          icon: "error",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, keep it",
+        })
+        .then(async (result) => {
+          if (result.value) {
+            this.$swal.fire(
+              "Deleted!",
+              "The course is successfully deleted",
+              "success"
+            );
+            const res = (
+              await axios.delete(
+                `/admin/super/courses/${this.$route.params.course_id}`
+              )
+            ).data;
+            console.log(res);
+            this.$router.push({ path: "/admin" });
+            // For more information about handling dismissals please visit
+            // https://sweetalert2.github.io/#handling-dismissals
+          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+            this.$swal.fire(
+              "Cancelled",
+              "Your imaginary file is safe :)",
+              "error"
+            );
+          }
+        });
     },
   },
 };
