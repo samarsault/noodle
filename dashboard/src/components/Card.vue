@@ -37,6 +37,7 @@ export default {
   margin: 20px;
   border-radius: 10px;
   overflow: hidden;
+	background-color: white;
 }
 
 .card:hover {
@@ -44,6 +45,7 @@ export default {
 }
 
 .container {
+	background-color: white;
   width: 100%;
   display: inline-flex;
   flex-direction: column;

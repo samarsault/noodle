@@ -25,17 +25,17 @@
           <button class="error" @click="delCourse(course._id)">
             Delete
           </button>
-          <router-link to="/admin/cmgt" tag="button">View All</router-link>
+          <router-link to="/admin/cmgt" tag="button">Back</router-link>
         </div>
       </div>
 
       <img
         :src="course.coverImage"
-        v-if="!url"
+        v-if="!isEdit || !url"
         :alt="course.name"
         class="courseImage"
       />
-      <img v-if="url" :src="url" />
+      <img v-if="url && isEdit" :src="url" class="courseImage"/>
       <form
         id="editForm"
         method="post"
@@ -52,16 +52,16 @@
         <div class="info">
           <h4>
             <b>
-              Summary
+              Subtitle
             </b>
           </h4>
           <textarea
-            name="summary"
-            placeholder="Course summary in 200-250 characters"
-            :val="course.summary"
-            minlength="200"
-            maxlength="250"
-            v-model="course.summary"
+            name="subtitle"
+            placeholder="Course subtitle in 50-100 characters"
+            :val="course.subtitle"
+            minlength="50"
+            maxlength="100"
+            v-model="course.subtitle"
             :disabled="!isEdit"
             :class="{ 'no-edit': !isEdit, edit: isEdit }"
           >
@@ -190,10 +190,6 @@ export default {
       this.url = URL.createObjectURL(file);
     },
     async toggleEdit() {
-      // this.$this.$swal("Hello dss world!!!", {
-      //   confirmButtonColor: "#41b882",
-      //   cancelButtonColor: "#ff7674",
-      // });
       this.isEdit = !this.isEdit;
       console.log(this.course);
       this.course = (
@@ -286,6 +282,8 @@ form {
 }
 .courseImage {
   padding: 20px;
+	width: 200px;
+	height: auto;
 }
 .mainWrapper h2 {
   padding: 0px;

@@ -90,9 +90,9 @@ describe("Course Service", function () {
   });
 
   it("Get props of a Course", async (done) => {
-    const summary = await courseService.getProp(data.course._id, "summary");
-    expect(summary).toStrictEqual(
-      expect.objectContaining({ summary: data.course.summary })
+    const subtitle = await courseService.getProp(data.course._id, "subtitle");
+    expect(subtitle).toStrictEqual(
+      expect.objectContaining({ subtitle: data.course.subtitle })
     );
     done();
   });

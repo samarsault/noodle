@@ -14,7 +14,7 @@ block content
 					div
 						img(src=course.coverImage, alt="Thumbnail", width=360, height=240)
 					div.info
-						p #{course.summary}	
+						p #{course.subtitle}	
 						.controls
 							if isReg
 								a(href='/dashboard/course/' + course._id)

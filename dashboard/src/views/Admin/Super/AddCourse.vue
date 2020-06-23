@@ -6,7 +6,7 @@
           <button class="primary" form="addForm">
             Add
           </button>
-          <router-link to="/admin/cmgt" tag="button">View All</router-link>
+          <router-link to="/admin/cmgt" tag="button">Back</router-link>
         </div>
       </div>
 
@@ -19,13 +19,13 @@
       >
         <label for="name">Name</label>
         <input type="text" name="name" />
-        <label>Summary</label>
+        <label>Subtitle</label>
         <textarea
-          name="summary"
+          name="subtitle"
           rows="7"
-          placeholder="Course summary in 200-250 characters"
-          minlength="200"
-          maxlength="250"
+          placeholder="Course subtitle in 200-250 characters"
+          minlength="50"
+          maxlength="100"
         />
 
         <label>Description</label>
@@ -88,7 +88,7 @@ export default {
         name: null,
         offerSem: null,
         offerYear: null,
-        summary: null,
+        subtitle: null,
 			},
 			instructors: []
     };

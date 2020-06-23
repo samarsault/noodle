@@ -156,7 +156,7 @@ exports.getRegisteredCSV = async function (course_id) {
 exports.create = async function (body) {
   const {
     name,
-    summary,
+    subtitle,
     description,
     offerYear,
     offerSem,
@@ -169,7 +169,7 @@ exports.create = async function (body) {
 
   const course = await Course.create({
     name,
-    summary,
+    subtitle,
     description,
     handout,
     coverImage,

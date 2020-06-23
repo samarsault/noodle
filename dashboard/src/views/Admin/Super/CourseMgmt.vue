@@ -21,6 +21,9 @@
         <Plus /> Add Course</router-link
       >
     </div>
+    <div v-if="showRes" class="showing-res">
+      Showing results for {{ searchField }}
+    </div>
     <div class="courses">
       <Card v-for="course in courses" :key="course._id" :course="course" />
     </div>
@@ -55,6 +58,7 @@ export default {
     return {
       courses: [],
       searchField: "",
+      showRes: false,
     };
   },
   async mounted() {
@@ -69,14 +73,14 @@ export default {
     ...mutations,
     async search() {
       if (!this.searchField) {
-        console.log("I am here!!");
         this.courses = (await axios.get("/admin/super/courses/all")).data;
-        console.log(this.courses);
+        this.showRes = false;
       } else {
         this.courses = (
           await axios.get(`/admin/super/courses/search/?q=${this.searchField}`)
         ).data;
         console.log(this.courses);
+        this.showRes = true;
       }
     },
   },
@@ -96,11 +100,17 @@ export default {
   justify-content: center;
 }
 .courses {
-  grid-row: 2;
+  grid-row: 3;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
   justify-content: center;
+}
+.showing-res {
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 // .not-found {
 // 	grid: ;

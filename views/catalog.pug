@@ -7,7 +7,7 @@ mixin courseCard(course)
         img(src=course.coverImage, alt="Thumbnail")
         h2 #{course.name}
       .card-body
-        p #{course.summary}
+        p #{course.subtitle}
       .card-footer
         a.regBtn(href='/courses/' + course.id + '/view/')
           button.secondary View
