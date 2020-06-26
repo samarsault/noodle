@@ -214,7 +214,9 @@ export default {
         new Heading({ levels: [1, 2, 3] }),
         new Image(),
         new CodeBlockHighlight({
-          languages: [javascript, css, xml, python, java, clike],
+          options: {
+            languages: { javascript, css, xml, python, java, clike },
+          }
         }),
         new History(),
         new Iframe(),
