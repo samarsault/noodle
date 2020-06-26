@@ -1,5 +1,5 @@
 <template>
-  <div id="editor-container">
+  <div id="editor-container" :class="{ editing: edit == true }">
     <div class="editor">
       <editor-menu-bar
         v-if="edit"
@@ -183,6 +183,7 @@ export default {
       emitAfterOnUpdate: false,
       commands: [],
       showCommands: false,
+      course_id: ""
     };
   },
   computed: {
@@ -297,9 +298,12 @@ pre {
 
 #editor-container {
   position: relative;
-  background-color: #fff;
   padding: 6px 13px;
   margin: 10px 0;
+}
+
+.editing {
+  background-color: #fff;
   border: 1px solid #ccc;
 }
 
