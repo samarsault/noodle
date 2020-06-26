@@ -223,11 +223,13 @@ describe("Course Service", function () {
       "What a Course!",
       "Ok I am out of names",
     ];
+    /* eslint-disable no-await-in-loop */
     const c = data.course.toObject();
-    newCourses.forEach(async (name) => {
-      c.name = name;
-      await courseService.create(c);
-    });
+    for (const course of newCourses) {
+      const newCourse = { ...c, name: course };
+      await courseService.create(newCourse);
+    }
+    /* eslint-enable no-await-in-loop */
 
     // Nothing Matches
     let names = await courseService.search("Magic");
