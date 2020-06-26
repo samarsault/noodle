@@ -147,7 +147,10 @@ button {
   margin-top: 10px;
   margin-bottom: 10px;
   &.small {
-    padding: 10px;
+    padding: 6px;
   }
+}
+td {
+  padding: inherit;
 }
 </style>

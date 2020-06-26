@@ -28,11 +28,11 @@ const router = new Router({
     },
     {
       path: "/course/:course_id",
-      name: "course",
       component: Course,
       children: [
         {
           path: "/",
+          name: "course",
           component: Welcome,
         },
         {

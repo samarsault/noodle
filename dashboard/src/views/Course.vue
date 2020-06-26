@@ -1,6 +1,6 @@
 <template>
   <div class="course-main">
-    <div class="sidebar">
+    <div :class="`sidebar ${sidebarHidden ? 'hidden-mobile' : ''}`">
       <div
         style="
           display: flex;
@@ -65,7 +65,7 @@
         </nav>
       </div>
     </div>
-    <div class="course-pages">
+    <div :class="`course-pages ${sidebarHidden ? '' : 'hidden-mobile'}`">
       <router-view :isAdmin="isAdmin" :key="$route.path" />
     </div>
     <SelectItem
@@ -91,6 +91,13 @@ import FolderOpen from "vue-material-design-icons/FolderOpen";
 export default {
   computed: {
     ...getters,
+    sidebarHidden() {
+      if (this.$route.name && this.$route.name === "course") {
+        // Navigation page
+        return false;
+      }
+      return true;
+    },
     modules() {
       return this.pages.filter((x) => x.type === "Module");
     },
@@ -198,10 +205,23 @@ export default {
 <style lang="scss" scoped>
 @import "../../../styles/include/_vars";
 
+@media screen and (max-width: $burgerToggleWidth) {
+  .hidden-mobile {
+    display: none;
+  }
+}
+
 .sidebar {
   background-color: #222;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
   color: #fff;
+  @media screen and (max-width: $burgerToggleWidth) {
+    flex-basis: 100%;
+    width: 100%;
+    &.hidden-mobile {
+      display: none;
+    }
+  }
   flex-basis: 300px;
   min-width: 300px;
   user-select: none;
@@ -245,6 +265,11 @@ export default {
   padding: 30px 100px;
   overflow: scroll;
   height: 100%;
+  @media screen and (max-width: $burgerToggleWidth) {
+    padding: 30px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
 }
 .icon-centre {
   display: flex !important;

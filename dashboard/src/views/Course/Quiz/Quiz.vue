@@ -11,6 +11,7 @@
       </router-link>
       <button class="secondary" @click="edit">Add Question</button>
       <QuestionManager
+        style="margin-top: 15px;"
         :questions="quiz.questions"
         :course_id="course_id"
         :onDelete="deleteFromQuiz"
