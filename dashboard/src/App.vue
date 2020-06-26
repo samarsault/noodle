@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app-container">
     <Modal
       v-if="alert.show"
       :title="alert.status"
@@ -11,10 +11,9 @@
       </template>
     </Modal>
     <Loading v-if="isLoading" />
-    <div :class="{ 'app-loading': isLoading }">
+    <div :class="{ 'app-loading': isLoading }" id="app">
       <NavBar />
       <router-view />
-      <Footer />
     </div>
   </div>
 </template>
@@ -29,7 +28,6 @@
 import axios from "axios";
 
 import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
 import Modal from "./components/Dialogs/Modal";
 import Loading from "./components/Loading";
 
@@ -42,7 +40,6 @@ export default {
   components: {
     Loading,
     NavBar,
-    Footer,
     Modal,
   },
   methods: {
@@ -60,5 +57,13 @@ export default {
 <style lang="scss">
 .app-loading {
   filter: blur(5px);
+}
+#app {
+  display: flex;
+  flex-direction: column;
+}
+#app-container,
+#app {
+  height: 100%;
 }
 </style>

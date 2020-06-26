@@ -203,6 +203,7 @@ export default {
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
   color: #fff;
   flex-basis: 300px;
+  min-width: 300px;
   user-select: none;
   h4 {
     color: #fff;
@@ -235,11 +236,15 @@ export default {
 }
 .course-main {
   display: flex;
+  flex-grow: 1;
+  overflow: hidden;
 }
 .course-pages {
   flex-grow: 1;
-  max-width: 840px;
-  margin: auto;
+  position: relative;
+  padding: 30px 100px;
+  overflow: scroll;
+  height: 100%;
 }
 .icon-centre {
   display: flex !important;

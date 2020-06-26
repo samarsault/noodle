@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <h2>{{ quiz.name }}</h2>
     <router-link :to="`/course/${course_id}/Quizzer/${quiz._id}`">
       <button class="primary">Take</button>
