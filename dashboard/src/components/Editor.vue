@@ -183,7 +183,7 @@ export default {
       emitAfterOnUpdate: false,
       commands: [],
       showCommands: false,
-      course_id: ""
+      course_id: "",
     };
   },
   computed: {
@@ -217,7 +217,7 @@ export default {
         new CodeBlockHighlight({
           options: {
             languages: { javascript, css, xml, python, java, clike },
-          }
+          },
         }),
         new History(),
         new Iframe(),

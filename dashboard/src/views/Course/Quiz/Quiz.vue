@@ -4,34 +4,36 @@
     <router-link :to="`/course/${course_id}/Quizzer/${quiz._id}`">
       <button class="primary">Take</button>
     </router-link>
-    <router-link :to="`/course/${course_id}/attempts/${quiz._id}`">
-      <button class>View Attempts</button>
-    </router-link>
-    <button class="secondary" @click="edit">Add Question</button>
-    <router-view />
-    <QuestionManager
-      :questions="quiz.questions"
-      :course_id="course_id"
-      :onDelete="deleteFromQuiz"
-      :showExisting="true"
-    />
-    <Modal
-      v-if="editing"
-      title="Add Question"
-      @close="editing = false"
-      @ok="editing = false"
-    >
-      <template slot="body">
-        <div
-          v-for="question in availableQuestions"
-          :key="question._id"
-          class="flexy"
-        >
-          <div v-html="question.question" />
-          <a href="#" @click="addToQuiz(question)">Add</a>
-        </div>
-      </template>
-    </Modal>
+    <div v-if="isAdmin">
+      <h3>Admin</h3>
+      <router-link :to="`/course/${course_id}/attempts/${quiz._id}`">
+        <button class>View Attempts</button>
+      </router-link>
+      <button class="secondary" @click="edit">Add Question</button>
+      <QuestionManager
+        :questions="quiz.questions"
+        :course_id="course_id"
+        :onDelete="deleteFromQuiz"
+        :showExisting="true"
+      />
+      <Modal
+        v-if="editing"
+        title="Add Question"
+        @close="editing = false"
+        @ok="editing = false"
+      >
+        <template slot="body">
+          <div
+            v-for="question in availableQuestions"
+            :key="question._id"
+            class="flexy"
+          >
+            <div v-html="question.question" />
+            <a href="#" @click="addToQuiz(question)">Add</a>
+          </div>
+        </template>
+      </Modal>
+    </div>
   </div>
 </template>
 
@@ -41,6 +43,9 @@ import Modal from "@/components/Dialogs/Modal";
 import QuestionManager from "@/components/Questions/Manager";
 
 export default {
+  props: {
+    isAdmin: Boolean,
+  },
   data() {
     return {
       quiz: {

@@ -34,7 +34,12 @@
             >
               {{ page.name }}
             </router-link>
-            <a href="#" @click="addPage(module._id)" class="icon-centre">
+            <a
+              v-if="isAdmin"
+              href="#"
+              @click="addPage(module._id)"
+              class="icon-centre"
+            >
               <Plus />
               Add
             </a>
@@ -48,18 +53,20 @@
           <li>{{ page.name }}</li>
         </router-link>
       </nav>
-      <p style="padding-left: 10px; font-weight: bold;">Admin</p>
-      <nav>
-        <router-link :to="`/course/${course_id}/registrations`"
-          >Registrations</router-link
-        >
-        <router-link :to="`/course/${course_id}/questions`"
-          >Question Bank</router-link
-        >
-      </nav>
+      <div v-if="isAdmin">
+        <p style="padding-left: 10px; font-weight: bold;">Admin</p>
+        <nav>
+          <router-link :to="`/course/${course_id}/registrations`"
+            >Registrations</router-link
+          >
+          <router-link :to="`/course/${course_id}/questions`"
+            >Question Bank</router-link
+          >
+        </nav>
+      </div>
     </div>
     <div class="course-pages">
-      <router-view :key="$route.path" />
+      <router-view :isAdmin="isAdmin" :key="$route.path" />
     </div>
     <SelectItem
       title="Add page"
@@ -73,7 +80,7 @@
 
 <script>
 import axios from "axios";
-import { mutations } from "../utils/store";
+import { mutations, getters } from "../utils/store";
 import SelectItem from "../components/SelectItem.vue";
 
 // Icons
@@ -83,18 +90,22 @@ import FolderOpen from "vue-material-design-icons/FolderOpen";
 
 export default {
   computed: {
+    ...getters,
     modules() {
       return this.pages.filter((x) => x.type === "Module");
     },
     content() {
       return this.pages.filter((x) => x.type !== "Module");
     },
+    isAdmin() {
+      if (!this.course.instructors) return false;
+      return this.course.instructors.indexOf(this.user._id) != -1;
+    },
   },
   data() {
     return {
       course_id: this.$route.params.course_id,
       course: {},
-      admin: true,
       pages: [],
       modulePages: [],
       addModal: false,

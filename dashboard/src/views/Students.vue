@@ -32,10 +32,10 @@
 import axios from "axios";
 import DownloadIcon from "vue-material-design-icons/FileDownload";
 export default {
-  props: ["course_id"],
   data() {
     return {
       registered: [],
+      course_id: this.$route.params.course_id,
     };
   },
   components: {

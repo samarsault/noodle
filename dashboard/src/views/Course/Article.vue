@@ -1,10 +1,12 @@
 <template>
   <div>
-    <button class="primary" @click="save">Save</button>
-    <button class="secondary" @click="toggleEdit">
-      {{ editable ? "Finish" : "Edit" }}
-    </button>
-    <Editor v-model="page" :edit="editable" />
+    <div v-if="isAdmin">
+      <button class="primary" @click="save">Save</button>
+      <button class="secondary" @click="toggleEdit">
+        {{ editable ? "Finish" : "Edit" }}
+      </button>
+    </div>
+    <Editor v-model="page" :edit="editable" :course_id="course_id" />
   </div>
 </template>
 
@@ -25,6 +27,9 @@ export default {
       page: null,
       editable: false,
     };
+  },
+  props: {
+    isAdmin: Boolean,
   },
   async mounted() {
     if (this.page_id) {
