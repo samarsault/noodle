@@ -10,15 +10,42 @@
         "
       >
         <p style="font-weight: bold;">{{ course.name }}</p>
-        <Plus @click="addPage" style="cursor: pointer;" />
+        <Plus v-if="isAdmin" @click="addPage()" style="cursor: pointer;" />
       </div>
       <nav>
+        <div v-for="module in modules" :key="module._id">
+          <a
+            :key="module._id"
+            class="icon-centre"
+            v-on:click="toggleModule(module)"
+          >
+            <FolderOpen
+              v-if="module._id === activeModule"
+              style="margin-right: 10px;"
+            />
+            <Folder v-else style="margin-right: 10px;" />
+            {{ module.name }}
+          </a>
+          <div class="module-content" v-if="module._id == activeModule">
+            <router-link
+              v-for="page in modulePages"
+              v-bind:key="page.name"
+              :to="`/course/${course_id}/${page.type}/${page._id}`"
+            >
+              {{ page.name }}
+            </router-link>
+            <a href="#" @click="addPage(module._id)" class="icon-centre">
+              <Plus />
+              Add
+            </a>
+          </div>
+        </div>
         <router-link
-          v-for="page in pages"
+          v-for="page in content"
           v-bind:key="page.name"
           :to="`/course/${course_id}/${page.type}/${page._id}`"
         >
-          {{ page.name }}
+          <li>{{ page.name }}</li>
         </router-link>
       </nav>
       <p style="padding-left: 10px; font-weight: bold;">Admin</p>
@@ -51,15 +78,29 @@ import SelectItem from "../components/SelectItem.vue";
 
 // Icons
 import Plus from "vue-material-design-icons/Plus";
+import Folder from "vue-material-design-icons/Folder";
+import FolderOpen from "vue-material-design-icons/FolderOpen";
 
 export default {
+  computed: {
+    modules() {
+      return this.pages.filter((x) => x.type === "Module");
+    },
+    content() {
+      return this.pages.filter((x) => x.type !== "Module");
+    },
+  },
   data() {
     return {
       course_id: this.$route.params.course_id,
       course: {},
       admin: true,
       pages: [],
+      modulePages: [],
       addModal: false,
+      // Which module is active right now
+      activeModule: null,
+      addToModule: null,
       itemsToAdd: [
         {
           name: "Article",
@@ -94,21 +135,33 @@ export default {
   components: {
     Plus,
     SelectItem,
+    Folder,
+    FolderOpen,
   },
   methods: {
     ...mutations,
-    addPage() {
+    addPage(parent) {
+      if (parent) {
+        this.addToModule = parent;
+      } else {
+        this.addToModule = null;
+      }
       this.addModal = true;
     },
-    async newQuiz(name) {
-      const { data } = axios.post(
-        `/admin/courses/${this.course_id}/quiz/init`,
-        {
-          name,
-        }
-      );
-      if (data.success) {
-        this.pages.push(data.quiz.name);
+    async toggleModule(page) {
+      if (this.activeModule === page._id) {
+        this.activeModule = null;
+      } else {
+        const { data } = await axios.get(
+          `/api/courses/${this.course_id}/pages/${page._id}`,
+          {
+            params: {
+              parent: page._id,
+            },
+          }
+        );
+        this.modulePages = data;
+        this.activeModule = page._id;
       }
     },
     async newPage(value) {
@@ -121,9 +174,11 @@ export default {
           name,
           course: this.course_id,
           type,
+          parent: this.addToModule ? this.activeModule : null,
         }
       );
-      this.pages.push(response.data);
+      if (this.addToModule) this.modulePages.push(response.data);
+      else this.pages.push(response.data);
     },
   },
 };
@@ -137,6 +192,7 @@ export default {
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
   color: #fff;
   flex-basis: 300px;
+  user-select: none;
   h4 {
     color: #fff;
   }
@@ -144,6 +200,9 @@ export default {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    .module-content a {
+      background: #111;
+    }
     a {
       display: block;
       padding: 15px;
@@ -157,7 +216,7 @@ export default {
       &:focus {
         outline: none;
       }
-      &.router-link-exact-active {
+      &.router-link-active {
         border-left-color: $green;
       }
     }
@@ -170,5 +229,9 @@ export default {
   flex-grow: 1;
   max-width: 840px;
   margin: auto;
+}
+.icon-centre {
+  display: flex !important;
+  align-items: center;
 }
 </style>

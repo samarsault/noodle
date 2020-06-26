@@ -10,6 +10,11 @@ const CoursePageSchema = new Schema(
       ref: "Course",
       required: true,
     },
+    parent: {
+      type: Schema.Types.ObjectId,
+      ref: "CoursePage",
+      default: null,
+    },
     created: {
       type: Date,
       default: Date.now(),

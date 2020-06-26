@@ -40,15 +40,28 @@ router.get("/resources", async function (req, res) {
 });
 
 router.get("/pages", async function (req, res) {
-  const pages = await pageService.getAll(req.course_id);
-  return res.send(pages);
+  const parent = req.query.parent || null;
+  const pages = await pageService.getAll(req.course_id, parent);
+  return res.json(pages);
 });
 
 router.get("/pages/:id", async function (req, res) {
   const page = await CoursePage.findOne({
     _id: req.params.id,
   });
+  // Resolve module pages
+  if (page.type === "Module") {
+    const pages = await pageService.getAll(req.course_id, page._id);
+    return res.json(pages);
+  }
   return res.json(page);
+});
+
+router.get("/module/:id", async function (req, res) {
+  const module = await pageService
+    .get("Module", req.params.id)
+    .populate("pages");
+  return res.json(module);
 });
 
 router.get("/questions", async function (req, res) {

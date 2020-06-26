@@ -4,21 +4,27 @@
 const Page = require("../models/CoursePage");
 const Article = require("../models/Page/Article");
 const Quiz = require("../models/Page/Quiz");
+const Module = require("../models/Page/Module");
 
 const PageModels = {
   Article,
+  Module,
   Quiz,
 };
 // console.log(Question.discriminators)
 
-exports.getAll = function (course) {
-  return Page.find({ course });
+exports.getAll = function (course, level) {
+  const parent = level || null;
+  return Page.find({ course, parent });
+};
+
+exports.get = function (type, _id) {
+  return PageModels[type].findOne({ _id });
 };
 
 exports.create = function (type, pageObject) {
-  console.log(type, pageObject);
   if (PageModels[type]) return PageModels[type].create(pageObject);
-  return null;
+  return Page.create(pageObject);
 };
 
 exports.update = function (pageId, updateObject) {
