@@ -3,7 +3,8 @@
     <input
       type="number"
       :value="answer"
-      @input="onAnswer(parseInt($event.target.value))"
+      step="any"
+      @input="onAnswer(parseFloat($event.target.value))"
     />
   </div>
 </template>

@@ -89,11 +89,11 @@ export default {
   },
   methods: {
     questionTypeSelect(item) {
-      (this.preset = {
+      this.preset = {
         course: this.course_id,
         type: item.name,
-      }),
-        (this.showEditor = true);
+      }
+      this.showEditor = true;
     },
     editQuestion(index) {
       this.presetIndex = index;
@@ -104,7 +104,7 @@ export default {
     editQuestionSuccessful(question) {
       if (this.presetIndex >= 0 && this.preset) {
         // its an update
-        this.questions[this.presetIndex] = question;
+       this.$set(this.questions, this.presetIndex, question);
 
         // reset
         this.presetIndex = -1;

@@ -5,13 +5,13 @@
       <input
         type="number"
         :value="local.answer"
-        @input="update('answer', parseInt($event.target.value))"
+        @input="update('answer', $event.target.value)"
       />
       <label>Allowed Error</label>
       <input
         type="number"
         :value="local.error"
-        @input="update('error', parseInt($event.target.value))"
+        @input="update('error', $event.target.value)"
       />
     </div>
   </div>
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     update(key, value) {
-      this.$emit("input", { ...this.local, [key]: value });
+      this.$emit("input", { ...this.local, [key]: parseFloat(value) });
     },
   },
 };
