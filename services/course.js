@@ -1,6 +1,6 @@
 //
 //
-const { User, Course } = require("../models");
+const { User, Course, Resource, CoursePage, Uploads } = require("../models");
 const calcCurDate = require("../util/calcCurDate");
 
 exports.register = function (user_id, course_id) {
@@ -224,7 +224,25 @@ exports.search = async function (query) {
   // return names;
 };
 
-exports.del = function (course_id) {
+exports.del = async function (course_id) {
+  let users = await User.find({
+    courses: course_id,
+  });
+  users = users.map(async (user) => {
+    return User.updateOne(
+      {
+        _id: user._id,
+      },
+      {
+        $pull: {
+          courses: course_id,
+        },
+      }
+    );
+  });
+  await Promise.all(users);
+  await CoursePage.deleteMany({ course: course_id });
+  await Uploads.deleteMany({ course: course_id });
   return Course.deleteOne({ _id: course_id });
 };
 

@@ -124,6 +124,14 @@
             Handout
           </button>
           <input type="file" name="handout" v-if="isEdit" />
+					<div class="padless">
+						<h4>
+							<b>
+							Registered Students
+							</b>
+						</h4>
+						<Students />
+					</div>
         </div>
       </form>
     </div>
@@ -134,11 +142,14 @@
 import axios from "axios";
 import { mutations } from "../../../utils/store";
 import UserInput from "../../../components/Input/User";
+import Students from "../../../components/Students";
+
 const emailExtract = /<(.*)>/;
 
 export default {
   components: {
-    UserInput,
+		UserInput,
+		Students
   },
   data() {
     return {

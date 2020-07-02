@@ -59,11 +59,14 @@ router.get("/users/search", async function (req, res) {
   return res.json(users);
 });
 
-router.get("/users/searchById", async function (req, res) {
-  console.log("Hitting search by ID");
+router.get("/students", async function (req, res) {
+  const users = await courseService.getRegistered(req.query.course_id);
+  if (users) return res.json(users);
+  return res.status(500);
+});
 
+router.get("/users/searchById", async function (req, res) {
   const user = await userService.get(req.query.q);
-  console.log(user);
   return res.send(user);
 });
 
@@ -96,36 +99,30 @@ router.post(
     },
   ]),
   async function (req, res) {
-    console.log(req.body);
     try {
       // Create Course\
       let courseObject;
       if (req.files.handout && req.files.coverImage) {
-        console.log("1");
         courseObject = {
           ...req.body,
           handout: `/uploads/${req.files.handout[0].filename}`,
           coverImage: `/uploads/${req.files.coverImage[0].filename}`,
         };
       } else if (req.files.coverImage) {
-        console.log("2");
         courseObject = {
           ...req.body,
           coverImage: `/uploads/${req.files.coverImage[0].filename}`,
         };
       } else if (req.files.handout) {
-        console.log("3");
         courseObject = {
           ...req.body,
           handout: `/uploads/${req.files.handout[0].filename}`,
         };
       } else {
-        console.log("4");
         courseObject = {
           ...req.body,
         };
       }
-      console.log(courseObject);
       const course = await courseService.update(
         req.params.course_id,
         courseObject
@@ -143,9 +140,7 @@ router.post(
 
 router.delete("/courses/:course_id", async function (req, res) {
   try {
-    console.log("hitting del");
     const ans = await courseService.del(req.params.course_id);
-    console.log(ans);
     res.send("Deleted Sucessfully");
   } catch (error) {
     res.status(500).send("Internal Server Error");

@@ -7,6 +7,7 @@ import CourseMgmt from "./views/Admin/Super/CourseMgmt.vue";
 import UserMgmt from "./views/Admin/Super/UserMgmt.vue";
 import EditCourse from "./views/Admin/Super/EditCourse.vue";
 import AddCourse from "./views/Admin/Super/AddCourse.vue";
+import EditUser from "./views/Admin/Super/EditUser.vue";
 import SignUp from "./views/SignUp";
 import Article from "./views/Course/Article";
 import Registrations from "./views/Students.vue";
@@ -75,15 +76,13 @@ const router = new Router({
           path: "cmgt",
           component: CourseMgmt,
         },
+        { path: "cmgt/add", component: AddCourse },
+        { path: "cmgt/:course_id", component: EditCourse },
         {
           path: "umgt",
           component: UserMgmt,
-          meta: {
-            requiresAuth: true,
-          },
         },
-        { path: "cmgt/add", component: AddCourse },
-        { path: "cmgt/:course_id", component: EditCourse },
+        { path: "umgt/:user_id", component: EditUser },
       ],
       meta: {
         requiresAuth: true,

@@ -2,7 +2,7 @@ const { User, Course } = require("../models");
 const calcCurDate = require("../util/calcCurDate");
 
 exports.get = async function (user_id) {
-  const user = await User.findOne({ _id: user_id }).select("name email role");
+  const user = await User.findOne({ _id: user_id });
   return user;
 };
 
@@ -102,4 +102,12 @@ exports.searchPaginated = function (query, pageNumber) {
     page,
     limit: 10,
   });
+};
+
+exports.regPerCoursePaginated = async function (course_id, pageNumber) {
+  let searchObject = {};
+  const page = pageNumber || 1;
+  const course = await Course.findOne({ _id: course_id });
+
+  const users = course.users.map();
 };
