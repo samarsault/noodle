@@ -49,7 +49,7 @@ export default {
           doc: docData,
         }
       );
-      if (resp.success) alert("Success!");
+      if (!resp.data.success) alert("Can't save");
     },
     toggleEdit() {
       this.editable = !this.editable;

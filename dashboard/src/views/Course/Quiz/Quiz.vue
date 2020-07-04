@@ -1,8 +1,13 @@
 <template>
   <div>
     <h2>{{ quiz.name }}</h2>
+    <button v-if="isAdmin" class="secondary" @click="saveDescription">
+      Save Description
+    </button>
+    <Editor v-model="quiz.description" :edit="isAdmin" :course_id="course_id" />
+
     <router-link :to="`/course/${course_id}/Quizzer/${quiz._id}`">
-      <button class="primary">Take</button>
+      <button class="primary">Attempt Quiz</button>
     </router-link>
     <div v-if="attempts.length > 0">
       <h3>My Attempts</h3>
@@ -56,7 +61,7 @@ import Modal from "@/components/Dialogs/Modal";
 import GroupInput from "@/components/Input/Group";
 import QuestionManager from "@/components/Questions/Manager";
 import AttemptView from "@/components/AttemptView";
-
+import Editor from "@/components/Editor";
 export default {
   props: {
     isAdmin: Boolean,
@@ -77,6 +82,7 @@ export default {
   },
   components: {
     Modal,
+    Editor,
     QuestionManager,
     AttemptView,
     GroupInput,
@@ -130,6 +136,16 @@ export default {
       this.availableQuestions = data.filter((qId) => {
         return !this.quiz.questions.find((x) => x._id == qId._id);
       });
+    },
+    async saveDescription() {
+      const { data } = await axios.put(
+        `/admin/courses/${this.course_id}/page/${this.quiz_id}`,
+        {
+          type: "Quiz",
+          description: this.quiz.description,
+        }
+      );
+      if (!data.success) alert("Can't save details");
     },
   },
 };

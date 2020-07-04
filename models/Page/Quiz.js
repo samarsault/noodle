@@ -4,6 +4,9 @@ const Options = require("./Options");
 
 const QuizSchema = new Schema(
   {
+    description: {
+      type: String,
+    },
     questions: [
       {
         type: Schema.Types.ObjectId,
