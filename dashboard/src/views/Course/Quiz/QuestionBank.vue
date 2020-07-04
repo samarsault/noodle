@@ -6,6 +6,7 @@
       :questions="questions"
       :course_id="course_id"
       :showAdd="true"
+      :group="group"
     />
   </div>
 </template>
@@ -21,13 +22,20 @@ export default {
   data() {
     return {
       course_id: this.$route.params.course_id,
+      group: this.$route.params.group,
       questions: [],
     };
   },
   mounted() {
-    axios.get(`/api/courses/${this.course_id}/questions`).then(({ data }) => {
-      this.questions = data;
-    });
+    axios
+      .get(`/api/courses/${this.course_id}/questions`, {
+        params: {
+          group: this.group,
+        },
+      })
+      .then(({ data }) => {
+        this.questions = data;
+      });
   },
 };
 </script>

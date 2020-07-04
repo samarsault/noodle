@@ -65,8 +65,8 @@ export default {
         req = axios.post(`${baseURL}`, Q);
       }
       req.then(({ status }) => {
-        if (status == 200) {
-          alert("Saved.");
+        if (status !== 200) {
+          alert("Error saving question");
         }
       });
 

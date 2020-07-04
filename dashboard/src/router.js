@@ -56,7 +56,7 @@ const router = new Router({
           component: Quizzer,
         },
         {
-          path: "questions",
+          path: "questions/:group",
           component: QuestionBank,
         },
       ],

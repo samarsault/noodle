@@ -69,6 +69,7 @@ export default {
   props: {
     questions: Array,
     course_id: String,
+    group: String,
     onDelete: Function,
     showAdd: Boolean,
   },
@@ -84,7 +85,7 @@ export default {
       ],
     };
   },
-  mounted() {
+  async mounted() {
     this.preset.course = this.course_id;
   },
   methods: {
@@ -92,6 +93,7 @@ export default {
       this.preset = {
         course: this.course_id,
         type: item.name,
+        group: this.group,
       };
       this.showEditor = true;
     },

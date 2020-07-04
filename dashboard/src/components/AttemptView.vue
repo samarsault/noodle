@@ -27,7 +27,7 @@
 export default {
   props: {
     attempts: Array,
-    quiz: Object
-  }
-}
+    quiz: Object,
+  },
+};
 </script>

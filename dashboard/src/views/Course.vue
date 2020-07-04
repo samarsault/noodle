@@ -56,11 +56,28 @@
       <div v-if="isAdmin">
         <p style="padding-left: 10px; font-weight: bold;">Admin</p>
         <nav>
+          <!-- Question bank -->
+          <a class="icon-centre" v-on:click="toggleQuestionBank">
+            <FolderOpen v-if="isQuestionBankOpen" style="margin-right: 10px;" />
+            <Folder v-else style="margin-right: 10px;" />
+            Question Bank
+          </a>
+          <div class="module-content" v-if="isQuestionBankOpen">
+            <router-link
+              v-for="group in questionGroups"
+              v-bind:key="group"
+              :to="`/course/${course_id}/questions/${group}`"
+            >
+              {{ group }}
+            </router-link>
+            <a href="#" @click="addQuestionGroup" class="icon-centre">
+              <Plus />
+              Add Group
+            </a>
+          </div>
+          <!-- Registrations -->
           <router-link :to="`/course/${course_id}/registrations`"
             >Registrations</router-link
-          >
-          <router-link :to="`/course/${course_id}/questions`"
-            >Question Bank</router-link
           >
         </nav>
       </div>
@@ -108,6 +125,9 @@ export default {
       if (!this.course.instructors) return false;
       return this.course.instructors.indexOf(this.user._id) != -1;
     },
+    isQuestionBankOpen() {
+      return this.activeModule === "qb";
+    },
   },
   data() {
     return {
@@ -119,6 +139,7 @@ export default {
       // Which module is active right now
       activeModule: null,
       addToModule: null,
+      questionGroups: [],
       itemsToAdd: [
         {
           name: "Article",
@@ -166,6 +187,23 @@ export default {
       }
       this.addModal = true;
     },
+    async toggleQuestionBank() {
+      if (this.activeModule === "qb") {
+        this.activeModule = null;
+      } else {
+        this.activeModule = "qb";
+        if (this.questionGroups.length === 0) {
+          const { data } = await axios.get(
+            `/api/courses/${this.course_id}/questions/groups`
+          );
+          this.questionGroups = data;
+        }
+      }
+    },
+    addQuestionGroup() {
+      const name = prompt("Name:");
+      this.questionGroups = [...this.questionGroups, name];
+    },
     async toggleModule(page) {
       if (this.activeModule === page._id) {
         this.activeModule = null;
@@ -186,6 +224,7 @@ export default {
       const type = value.name;
       const name = prompt("Name:");
       if (!name) return;
+      if (type === "Module" && this.addToModule) return;
       const response = await axios.post(
         `/admin/courses/${this.course_id}/page`,
         {
@@ -232,12 +271,16 @@ export default {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    .module-content a {
-      background: #111;
+    .module-content > a {
+      background: #222;
+      &:not(:last-child) {
+        border-bottom: 1px solid #444;
+      }
     }
     a {
       display: block;
       padding: 15px;
+      border-bottom: 1px solid #222;
       background-color: #0d0d0d;
       border-left: 3px solid #0d0d0d;
       cursor: pointer;

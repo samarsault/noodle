@@ -131,11 +131,11 @@ export default {
           ...this.attempt,
           answers: this.answers,
         })
-        .then(({ status, data }) => {
+        .then(({ status }) => {
           if (status === 200) {
             this.$router.push({
-              path: `/course/${this.course_id}/Quiz/${this.quiz_id}`
-            })
+              path: `/course/${this.course_id}/Quiz/${this.quiz_id}`,
+            });
           } else {
             alert("Submission error");
           }

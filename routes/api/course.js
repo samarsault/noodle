@@ -65,7 +65,12 @@ router.get("/module/:id", async function (req, res) {
 });
 
 router.get("/questions", async function (req, res) {
-  const list = await questions.getAll(req.course_id);
+  const list = await questions.getAll(req.course_id, req.query.group);
+  return res.json(list);
+});
+
+router.get("/questions/groups", async function (req, res) {
+  const list = await questions.getGroups(req.course_id);
   return res.json(list);
 });
 

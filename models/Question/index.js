@@ -25,6 +25,11 @@ module.exports = model(
         type: Number,
         default: 1,
       },
+      // Group the question belongs to
+      group: {
+        type: String,
+        default: "default",
+      },
       // Sub-Parts of the question, if any
       parts: [
         {

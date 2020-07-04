@@ -13,7 +13,7 @@ import AttemptView from "@/components/AttemptView";
 
 export default {
   components: {
-    AttemptView
+    AttemptView,
   },
   data() {
     return {

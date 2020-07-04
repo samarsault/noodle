@@ -11,8 +11,12 @@ const QuestionModels = {
 };
 // console.log(Question.discriminators)
 
-exports.getAll = function (course) {
-  return Question.find({ course });
+exports.getAll = function (course, group = "default") {
+  return Question.find({ course, group });
+};
+
+exports.getGroups = function (course) {
+  return Question.find({ course }).distinct("group");
 };
 
 exports.create = function (type, questionObject) {
