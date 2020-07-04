@@ -1,43 +1,35 @@
 <template>
-  <div>
-    <Tabs title="Super Admin">
-      <Tab name="Add Course">
-        <div class="form-container">
-          <AddCourse />
-        </div>
-      </Tab>
-
-      <Tab name="Access Management">
-        <Access />
-      </Tab>
-
-      <Tab name="Registrations">
-        <Registrations />
-      </Tab>
-    </Tabs>
+  <div class="admin-header">
+    <!-- <h2>Admin Panel</h2> -->
+    <div class="nav">
+      <router-link :to="'/admin/cmgt'">
+        Course Management
+      </router-link>
+      <router-link :to="'/admin/umgt'">
+        User Management
+      </router-link>
+      <router-link :to="'superpower'">
+        Super Power
+      </router-link>
+    </div>
+    <router-view :key="$route.path" />
   </div>
 </template>
 
 <script>
-import Tabs from "../../components/Tabs";
-import Tab from "../../components/Tab";
-import { mutations } from "../../utils/store";
-
-// Super Admin Tabs
-import AddCourse from "./Super/AddCourse.vue";
-import Access from "./Super/Access.vue";
-import Registrations from "./Super/Registrations.vue";
-
 export default {
-  components: {
-    Tabs,
-    Tab,
-    AddCourse,
-    Access,
-    Registrations,
+  data() {
+    return {
+      activeComp: "CM",
+    };
   },
   methods: {
-    ...mutations,
+    setActive(comp) {
+      this.activeComp = comp;
+      this.$router.push({
+        path: "/admin/ec",
+      });
+    },
   },
   mounted() {
     if (this.$route.query.success) {
@@ -49,3 +41,46 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../../../../styles/include/vars";
+.nav {
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav div {
+  margin: 30px;
+  padding-bottom: 10px;
+  // border-bottom: 0.1em solid $green;
+}
+.admin-header h2 {
+  display: flex;
+  justify-content: center;
+}
+.nav a {
+  text-decoration: none;
+  color: inherit;
+  margin: 30px;
+  padding-bottom: 10px;
+}
+.router-link-active {
+  color: $green;
+}
+.nav router-link {
+  color: red;
+  text-decoration: none;
+  color: inherit;
+  margin: 30px;
+  padding-bottom: 10px;
+  border-bottom: 0.1em solid $green;
+}
+.router-link-active {
+  color: $green;
+  border-bottom: 0.1em solid $green;
+}
+.is-active {
+  border-bottom: 0.1em solid $green;
+}
+</style>

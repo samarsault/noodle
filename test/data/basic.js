@@ -28,7 +28,7 @@ async function populateDB() {
 
   const course = await Course.create({
     name: "Dummy Course",
-    summary: new Array(21).join("Dummy....."),
+    subtitle: new Array(10).join("Dummy....."),
     description: new Array(58).join("Long Description."),
     handout: "/something.pdf",
     coverImage: "/something.png",

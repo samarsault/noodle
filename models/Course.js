@@ -3,11 +3,11 @@ const { r_string, r_num } = require("../util/schemaTypes");
 
 const CourseSchema = new Schema({
   name: r_string,
-  summary: {
+  subtitle: {
     type: String,
     required: true,
-    minlength: 200,
-    maxlength: 250,
+    minlength: 50,
+    maxlength: 100,
   },
   description: {
     type: String,

@@ -5,6 +5,8 @@ const express = require("express");
 const upload = require("../../middleware/upload");
 const response = require("../../util/response");
 const courseService = require("../../services/course");
+const calcCurDate = require("../../util/calcCurDate");
+
 const userService = require("../../services/user");
 
 const router = express.Router();
@@ -24,7 +26,6 @@ router.post(
   async function (req, res) {
     if (!req.files || !req.files.coverImage[0] || !req.files.handout)
       return res.json(response.error("Insufficent fields"));
-
     try {
       // Create Course
       const courseObject = {
@@ -32,14 +33,14 @@ router.post(
         handout: `/uploads/${req.files.handout[0].filename}`,
         coverImage: `/uploads/${req.files.coverImage[0].filename}`,
       };
-      await courseService.create(courseObject);
+      const course = await courseService.create(courseObject);
 
-      return res.json(response.success());
+      return res.redirect(`/admin/cmgt/${course._id}`);
     } catch (e) {
       if (process.env.NODE_ENV !== "production")
         return res.json(response.error(e.message));
 
-      return res.json(response.error());
+      return res.json(response.error(e.message));
     }
   }
 );
@@ -58,11 +59,93 @@ router.get("/users/search", async function (req, res) {
   return res.json(users);
 });
 
+router.get("/students", async function (req, res) {
+  const users = await courseService.getRegistered(req.query.course_id);
+  if (users) return res.json(users);
+  return res.status(500);
+});
+
+router.get("/users/searchById", async function (req, res) {
+  const user = await userService.get(req.query.q);
+  return res.send(user);
+});
+
 router.get("/courses/search", async function (req, res) {
   const courses = await courseService.search(req.query.q);
   return res.json(courses);
 });
 
+router.get("/courses/all", async function (req, res) {
+  const current = calcCurDate();
+  const courses = await courseService.getAll(current);
+  res.send(courses);
+});
+
+router.get("/courses/:course_id", async function (req, res) {
+  const course = await courseService.get(req.params.course_id);
+  res.send(course);
+});
+
+router.post(
+  "/courses/update/:course_id",
+  upload.fields([
+    {
+      name: "coverImage",
+      maxCount: 1,
+    },
+    {
+      name: "handout",
+      maxCount: 1,
+    },
+  ]),
+  async function (req, res) {
+    try {
+      // Create Course\
+      let courseObject;
+      if (req.files.handout && req.files.coverImage) {
+        courseObject = {
+          ...req.body,
+          handout: `/uploads/${req.files.handout[0].filename}`,
+          coverImage: `/uploads/${req.files.coverImage[0].filename}`,
+        };
+      } else if (req.files.coverImage) {
+        courseObject = {
+          ...req.body,
+          coverImage: `/uploads/${req.files.coverImage[0].filename}`,
+        };
+      } else if (req.files.handout) {
+        courseObject = {
+          ...req.body,
+          handout: `/uploads/${req.files.handout[0].filename}`,
+        };
+      } else {
+        courseObject = {
+          ...req.body,
+        };
+      }
+      const course = await courseService.update(
+        req.params.course_id,
+        courseObject
+      );
+
+      return res.status(200).redirect(`/dashboard/admin/cmgt/${course._id}`);
+    } catch (e) {
+      if (process.env.NODE_ENV !== "production")
+        return res.json(response.error(e.message));
+
+      return res.json(response.error(e.message));
+    }
+  }
+);
+
+router.delete("/courses/:course_id", async function (req, res) {
+  try {
+    await courseService.del(req.params.course_id);
+    res.send("Deleted Sucessfully");
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
 //
 // Upgrade Access Level of User
 //

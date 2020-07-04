@@ -46,6 +46,7 @@
           <th>Email</th>
           <th>Access Level</th>
           <th>Action</th>
+          <th>Details</th>
         </tr>
       </thead>
       <tbody>
@@ -61,6 +62,11 @@
               Update
             </button>
           </td>
+          <td>
+            <router-link :to="`/admin/umgt/${student._id}`" tag="button"
+              >View</router-link
+            >
+          </td>
         </tr>
       </tbody>
     </table>
@@ -69,13 +75,14 @@
 
 <script>
 import axios from "axios";
-import Modal from "../../../components/Dialogs/Modal";
-import CourseInput from "../../../components/Input/Course";
+import Modal from "./Dialogs/Modal";
+import CourseInput from "./Input/Course";
 import NextIcon from "vue-material-design-icons/ArrowRight";
 import PrevIcon from "vue-material-design-icons/ArrowLeft";
 import vSelect from "vue-select";
 
 export default {
+  props: ["course"],
   components: {
     Modal,
     vSelect,
@@ -102,7 +109,11 @@ export default {
   },
 
   mounted() {
+    // if (this.course) {
     this.goToPage();
+    // } else {
+    // this.goToPageCourse();
+    // }
   },
 
   methods: {
@@ -128,6 +139,7 @@ export default {
       this.selectedUser = _id;
     },
     goToPage(page) {
+      console.log("page", page);
       if (page && (page < 0 || page > this.users.pages)) return;
 
       if (!page || typeof page !== "number") page = 1;
@@ -145,6 +157,19 @@ export default {
           this.isLoading = false;
         });
     },
+    goToPageCourse(page) {
+      if (page && (page < 0 || page > this.users.pages)) return;
+
+      if (!page || typeof page !== "number") page = 1;
+      this.isLoading = true;
+
+      axios
+        .get(`/admin/super/students/?course_id=${this.course._id}`)
+        .then(({ data }) => {
+          this.users = data;
+          this.isLoading = false;
+        });
+    },
   },
 };
 </script>
@@ -157,9 +182,10 @@ export default {
 }
 table {
   width: 100%;
-  thead,
+  thead {
+    display: table-header-group;
+  }
   tbody {
-    display: table;
     width: 100%;
   }
   &.loading {

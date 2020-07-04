@@ -13,7 +13,8 @@ const calcCurDate = require("../util/calcCurDate");
 
 // Register User for course
 router.get("/:course_id/register", async function (req, res) {
-  const course = await courseService.getProp(req.params.course_id, "name");
+  const course = await courseService.get(req.params.course_id);
+  console.log(course, "get request fot agreemetn");
   return renderView(req, res, "agreement", {
     hideAgreement: false,
     course,
@@ -21,7 +22,9 @@ router.get("/:course_id/register", async function (req, res) {
 });
 
 router.post("/:course_id/register", async function (req, res) {
+  console.log("hitting reg");
   const { agreement } = req.body;
+  console.log(req.params);
   const course = await courseService.get(req.params.course_id);
   // TODO: check if toobject required
   const courseObject = course.toObject();

@@ -2,7 +2,7 @@ const { User, Course } = require("../models");
 const calcCurDate = require("../util/calcCurDate");
 
 exports.get = async function (user_id) {
-  const user = await User.findOne({ _id: user_id }).select("name email role");
+  const user = await User.findOne({ _id: user_id });
   return user;
 };
 

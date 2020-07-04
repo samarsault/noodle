@@ -1,6 +1,6 @@
 //
 //
-const { User, Course } = require("../models");
+const { User, Course, CoursePage, Uploads } = require("../models");
 const calcCurDate = require("../util/calcCurDate");
 
 exports.register = function (user_id, course_id) {
@@ -78,6 +78,10 @@ exports.getProp = async function (course_id, toSelect) {
   );
 };
 
+exports.getAll = function () {
+  return Course.find({}).limit(10);
+};
+
 exports.getFromHistory = function (period) {
   return Course.find({
     offerYear: period[0],
@@ -152,7 +156,7 @@ exports.getRegisteredCSV = async function (course_id) {
 exports.create = async function (body) {
   const {
     name,
-    summary,
+    subtitle,
     description,
     offerYear,
     offerSem,
@@ -165,21 +169,20 @@ exports.create = async function (body) {
 
   const course = await Course.create({
     name,
-    summary,
+    subtitle,
     description,
     handout,
     coverImage,
     offerYear,
     offerSem,
   });
-
   // Update instructor & roles
-  const updateDelegates = instructorsArr.map(async (id) => {
-    const user = await User.findOne({
-      _id: id,
-    }).select("role");
 
-    // don't degrede admin
+  const updateDelegates = instructorsArr.map(async (email) => {
+    const user = await User.findOne({
+      email,
+    });
+    // don't degrade admin
     if (user.role !== "admin") {
       await User.updateOne(
         {
@@ -214,11 +217,76 @@ exports.search = async function (query) {
   const re = new RegExp(`${query}.*`, "i");
   re.ignoreCase = true;
   const courses = await Course.find({ name: re }).limit(5);
-  const names = courses.map((course) => course.name);
+  return courses;
+  // const names = courses.map((course) => course.name);
 
-  return names;
+  // return names;
 };
 
-exports.del = function (course_id) {
+exports.del = async function (course_id) {
+  let users = await User.find({
+    courses: course_id,
+  });
+  users = users.map(async (user) => {
+    return User.updateOne(
+      {
+        _id: user._id,
+      },
+      {
+        $pull: {
+          courses: course_id,
+        },
+      }
+    );
+  });
+  await Promise.all(users);
+  await CoursePage.deleteMany({ course: course_id });
+  await Uploads.deleteMany({ course: course_id });
   return Course.deleteOne({ _id: course_id });
+};
+
+exports.update = async function (course_id, newCourse) {
+  const modCourse = newCourse;
+
+  const { instructors } = modCourse;
+  delete modCourse.instructors;
+
+  const course = await Course.findByIdAndUpdate(course_id, modCourse, {
+    new: true,
+  });
+  if (instructors) {
+    const instructorsArr = instructors.toString().split(",");
+
+    const updateDelegates = instructorsArr.map(async (email) => {
+      const user = await User.findOne({
+        email,
+      });
+      console.log(user, "userFound");
+      // don't degrade admin
+      if (user.role !== "admin") {
+        await User.updateOne(
+          {
+            _id: user._id,
+          },
+          {
+            role: "instructor",
+            instructor_for: course._id,
+          }
+        );
+      }
+
+      await Course.updateOne(
+        {
+          _id: course._id,
+        },
+        {
+          $addToSet: {
+            instructors: user._id,
+          },
+        }
+      );
+    });
+    await Promise.all(updateDelegates);
+  }
+  return Course.findOne({ _id: course._id });
 };
