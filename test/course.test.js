@@ -3,7 +3,7 @@
 //
 const basicData = require("./data/basic");
 const courseService = require("../services/course");
-const { User } = require("../models");
+const { User, Course } = require("../models");
 
 let data;
 
@@ -110,9 +110,14 @@ describe("Course Service", function () {
       const demoCourse = data.course.toObject();
       [demoCourse.offerYear, demoCourse.offerSem] = date;
       demoCourse.name = "Thing";
-      const histCourse = await courseService.create(demoCourse);
+      demoCourse._id = null;
+      const histCourse = await Course.create(demoCourse);
       let histCourses = await courseService.getFromHistory(date);
-      histCourses = histCourses.map((c) => c.toObject());
+      histCourses = histCourses.map((c) => {
+        const course = c;
+        course._id = null;
+        return course.toObject();
+      });
       expect(histCourses).toEqual(
         expect.arrayContaining([histCourse.toObject()])
       );
@@ -208,11 +213,16 @@ describe("Course Service", function () {
   });
 
   it("Create a course successfully", async (done) => {
-    const course = await courseService.create(data.course);
-    const real = data.course;
-    real._id = null;
-    course._id = null;
-    expect(course.toObject()).toStrictEqual(real.toObject());
+    const courseToCreate = data.course;
+    courseToCreate.instructors[0] = data.instructor.email;
+    courseToCreate._id = null;
+    const courseRecieved = await courseService.create(courseToCreate);
+    courseRecieved._id = null;
+
+    const courseToExpect = courseToCreate;
+    courseToExpect.instructors = [data.instructor._id];
+    courseToExpect._id = null;
+    expect(courseRecieved.toObject()).toStrictEqual(courseToExpect.toObject());
     done();
   });
 
@@ -227,7 +237,8 @@ describe("Course Service", function () {
     const c = data.course.toObject();
     for (const course of newCourses) {
       const newCourse = { ...c, name: course };
-      await courseService.create(newCourse);
+      newCourse._id = null;
+      await Course.create(newCourse);
     }
     /* eslint-enable no-await-in-loop */
 
@@ -239,7 +250,12 @@ describe("Course Service", function () {
     expect(names).toEqual(expect.arrayContaining([]));
     // Case Insenstive
     names = await courseService.search("course1");
-    expect(names).toEqual(expect.arrayContaining(["Course1", "course1"]));
+    const recievedCourses = names.map((course) => course.toObject());
+    const course1 = await Course.findOne({ name: "course1" });
+    const Course1 = await Course.findOne({ name: "Course1" });
+    expect(recievedCourses).toStrictEqual(
+      expect.arrayContaining([Course1.toObject(), course1.toObject()])
+    );
     // Not more than 5
     names = await courseService.search("o");
     expect(names.length).toEqual(5);
@@ -248,7 +264,7 @@ describe("Course Service", function () {
   });
 
   it("Delete a course", async (done) => {
-    const newCourse = await courseService.create(data.course);
+    const newCourse = await Course.create(data.course);
     await courseService.del(newCourse._id);
     const course = await courseService.get(newCourse._id);
     expect(course).toBeNull();
