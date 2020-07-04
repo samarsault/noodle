@@ -55,19 +55,12 @@
 </template>
 
 <script>
-import axios from "axios";
-import Magnify from "vue-material-design-icons/Magnify";
-import FilterVariant from "vue-material-design-icons/FilterVariant";
-import Card from "../../../components/Card";
 import UserInput from "../../../components/Input/User";
 const emailExtract = /<(.*)>/;
 
 export default {
   components: {
-    FilterVariant,
     UserInput,
-    Magnify,
-    Card,
   },
   computed: {
     instructorStr: function () {
@@ -89,8 +82,8 @@ export default {
         offerSem: null,
         offerYear: null,
         subtitle: null,
-			},
-			instructors: []
+      },
+      instructors: [],
     };
   },
   methods: {

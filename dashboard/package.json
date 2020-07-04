@@ -53,7 +53,8 @@
 			"camelcase": "off",
 			"no-underscore-dangle": "off",
 			"no-plusplus": "off",
-			"func-names": "off"
+			"func-names": "off",
+			"no-console": "warn"
 		},
 		"parserOptions": {
 			"parser": "babel-eslint"

@@ -35,7 +35,7 @@
         :alt="course.name"
         class="courseImage"
       />
-      <img v-if="url && isEdit" :src="url" class="courseImage"/>
+      <img v-if="url && isEdit" :src="url" class="courseImage" />
       <form
         id="editForm"
         method="post"
@@ -124,14 +124,14 @@
             Handout
           </button>
           <input type="file" name="handout" v-if="isEdit" />
-					<div class="padless">
-						<h4>
-							<b>
-							Registered Students
-							</b>
-						</h4>
-						<Students />
-					</div>
+          <div class="padless">
+            <h4>
+              <b>
+                Registered Students
+              </b>
+            </h4>
+            <Students />
+          </div>
         </div>
       </form>
     </div>
@@ -148,8 +148,8 @@ const emailExtract = /<(.*)>/;
 
 export default {
   components: {
-		UserInput,
-		Students
+    UserInput,
+    Students,
   },
   data() {
     return {
@@ -216,7 +216,6 @@ export default {
       this.isEdit = !this.isEdit;
     },
     async delCourse() {
-      console.log("hittn frontend del");
       // Use sweetalert2
       this.$swal
         .fire({
@@ -234,12 +233,11 @@ export default {
               "The course is successfully deleted",
               "success"
             );
-            const res = (
-              await axios.delete(
-                `/admin/super/courses/${this.$route.params.course_id}`
-              )
-            ).data;
-            console.log(res);
+
+            await axios.delete(
+              `/admin/super/courses/${this.$route.params.course_id}`
+            );
+
             this.$router.push({ path: "/admin" });
             // For more information about handling dismissals please visit
             // https://sweetalert2.github.io/#handling-dismissals
@@ -293,8 +291,8 @@ form {
 }
 .courseImage {
   padding: 20px;
-	width: 200px;
-	height: auto;
+  width: 200px;
+  height: auto;
 }
 .mainWrapper h2 {
   padding: 0px;

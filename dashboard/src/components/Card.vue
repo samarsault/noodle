@@ -1,6 +1,10 @@
 <template>
   <div class="card">
-    <img :src="course.coverImage" alt="CTE Course" style="width: 100%; height: 150px;" />
+    <img
+      :src="course.coverImage"
+      alt="CTE Course"
+      style="width: 100%; height: 150px;"
+    />
     <div class="container">
       <h4>
         <b>{{ course.name }}</b>
@@ -27,8 +31,8 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
   padding: 0px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -37,7 +41,7 @@ export default {
   margin: 20px;
   border-radius: 10px;
   overflow: hidden;
-	background-color: white;
+  background-color: white;
 }
 
 .card:hover {
@@ -45,7 +49,7 @@ export default {
 }
 
 .container {
-	background-color: white;
+  background-color: white;
   width: 100%;
   display: inline-flex;
   flex-direction: column;

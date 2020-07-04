@@ -28,11 +28,9 @@
 
 <script>
 import axios from "axios";
-import Students from "../../../components/Students";
+
 export default {
-  components: {
-    Students,
-  },
+  components: {},
   data() {
     return {
       user: null,
@@ -52,12 +50,11 @@ export default {
   },
   methods: {
     async dereg(courseName) {
-      const success = (
-        await axios.post("/admin/super/deregister", {
-          email: this.user.email,
-          course: courseName,
-        })
-      ).data;
+      await axios.post("/admin/super/deregister", {
+        email: this.user.email,
+        course: courseName,
+      });
+
       this.$router.push({ path: `/admin/umgt/${this.user._id}` });
     },
   },

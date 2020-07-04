@@ -103,11 +103,3 @@ exports.searchPaginated = function (query, pageNumber) {
     limit: 10,
   });
 };
-
-exports.regPerCoursePaginated = async function (course_id, pageNumber) {
-  let searchObject = {};
-  const page = pageNumber || 1;
-  const course = await Course.findOne({ _id: course_id });
-
-  const users = course.users.map();
-};

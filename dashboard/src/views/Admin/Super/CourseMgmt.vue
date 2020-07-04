@@ -43,7 +43,6 @@ import Magnify from "vue-material-design-icons/Magnify";
 import FilterVariant from "vue-material-design-icons/FilterVariant";
 import Plus from "vue-material-design-icons/Plus";
 import Card from "../../../components/Card";
-import EditCourse from "./EditCourse";
 import { mutations } from "../../../utils/store";
 
 export default {
@@ -52,7 +51,6 @@ export default {
     Magnify,
     Plus,
     Card,
-    EditCourse,
   },
   data() {
     return {

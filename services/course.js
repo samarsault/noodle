@@ -1,6 +1,6 @@
 //
 //
-const { User, Course, Resource, CoursePage, Uploads } = require("../models");
+const { User, Course, CoursePage, Uploads } = require("../models");
 const calcCurDate = require("../util/calcCurDate");
 
 exports.register = function (user_id, course_id) {

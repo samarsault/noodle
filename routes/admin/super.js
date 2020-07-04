@@ -128,7 +128,7 @@ router.post(
         courseObject
       );
 
-      res.status(200).redirect(`/dashboard/admin/cmgt/${course._id}`);
+      return res.status(200).redirect(`/dashboard/admin/cmgt/${course._id}`);
     } catch (e) {
       if (process.env.NODE_ENV !== "production")
         return res.json(response.error(e.message));
@@ -140,7 +140,7 @@ router.post(
 
 router.delete("/courses/:course_id", async function (req, res) {
   try {
-    const ans = await courseService.del(req.params.course_id);
+    await courseService.del(req.params.course_id);
     res.send("Deleted Sucessfully");
   } catch (error) {
     res.status(500).send("Internal Server Error");

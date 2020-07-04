@@ -2,10 +2,10 @@ import Vue from "vue";
 import axios from "axios";
 import App from "./App.vue";
 import router from "./router";
-import VueSweetalert2 from 'vue-sweetalert2';
+import VueSweetalert2 from "vue-sweetalert2";
 // import 'vue-material-design-icons/styles.css'
 
-import 'sweetalert2/dist/sweetalert2.min.css';
+import "sweetalert2/dist/sweetalert2.min.css";
 
 Vue.use(VueSweetalert2);
 Vue.config.productionTip = false;

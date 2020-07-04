@@ -157,7 +157,7 @@ export default {
           this.isLoading = false;
         });
     },
-    goToPageCourse(page, course) {
+    goToPageCourse(page) {
       if (page && (page < 0 || page > this.users.pages)) return;
 
       if (!page || typeof page !== "number") page = 1;
