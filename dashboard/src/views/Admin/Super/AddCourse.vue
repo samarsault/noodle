@@ -23,7 +23,7 @@
         <textarea
           name="subtitle"
           rows="7"
-          placeholder="Course subtitle in 200-250 characters"
+          placeholder="Course subtitle in 50-100 characters"
           minlength="50"
           maxlength="100"
         />

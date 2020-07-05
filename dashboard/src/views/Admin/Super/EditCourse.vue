@@ -81,32 +81,38 @@
             :disabled="!isEdit"
             :class="{ 'no-edit': !isEdit, edit: isEdit }"
           />
-          <h4>
-            <b>
-              Offer Year
-            </b>
-          </h4>
-          <input
-            type="number"
-            name="offerYear"
-            placeholder="Year"
-            v-model="course.offerYear"
-            :disabled="!isEdit"
-            :class="{ 'no-edit': !isEdit, edit: isEdit }"
-          />
-          <h4>
-            <b>
-              Offer Sem
-            </b>
-          </h4>
-          <input
-            type="number"
-            name="offerSem"
-            placeholder="Semester"
-            v-model="course.offerSem"
-            :disabled="!isEdit"
-            :class="{ 'no-edit': !isEdit, edit: isEdit }"
-          />
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <h4>
+                <b>
+                  Offer Year
+                </b>
+              </h4>
+              <input
+                type="number"
+                name="offerYear"
+                placeholder="Year"
+                v-model="course.offerYear"
+                :disabled="!isEdit"
+                :class="{ 'no-edit': !isEdit, edit: isEdit }"
+              />
+            </div>
+            <div>
+              <h4>
+                <b>
+                  Offer Sem
+                </b>
+              </h4>
+              <input
+                type="number"
+                name="offerSem"
+                placeholder="Semester"
+                v-model="course.offerSem"
+                :disabled="!isEdit"
+                :class="{ 'no-edit': !isEdit, edit: isEdit }"
+              />
+            </div>
+          </div>
           <h4>
             <b>
               Instructors
@@ -276,9 +282,9 @@ form {
 }
 .heading {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-around;
-  padding: 20px;
+  padding: 20px 0;
 }
 
 .buttons {
@@ -290,8 +296,7 @@ form {
   // margin: 5px;
 }
 .courseImage {
-  padding: 20px;
-  width: 200px;
+  width: 300px;
   height: auto;
 }
 .mainWrapper h2 {

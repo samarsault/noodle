@@ -1,10 +1,13 @@
 <template>
   <div class="mainWrapper">
     <div class="heading">
-      <h2>{{ user.name }} ({{ user.bits_id }})</h2>
+      <div>
+        <h2>{{ user.name }}</h2>
+        <p style="color: #999;">{{ user.email }}</p>
+        <p style="color: #999;">{{ user.bits_id }}</p>
+      </div>
 
       <div class="buttons">
-        <a :href="`mailto:${user.email}`"><button>Email</button></a>
         <router-link to="/admin/umgt" tag="button">Back</router-link>
       </div>
     </div>
