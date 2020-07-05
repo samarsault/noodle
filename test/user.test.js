@@ -1,5 +1,5 @@
 //
-// Course Service Test
+// User Service Test
 //
 const basicData = require("./data/basic");
 const userService = require("../services/user");
@@ -48,29 +48,25 @@ describe("User Service", function () {
       email: "updatedone@bpgc-cte.org",
     };
 
-    const updated = await userService.updateInfo(
-      data.student._id,
-      updateObject
-    );
+    await userService.updateInfo(data.student._id, updateObject);
     const user = await User.findOne({ _id: data.student._id });
     expect(user.courses).toContainEqual(data.course._id);
 
     const updateArray = Object.keys(updateObject);
-    for (field of updateArray) {
-      if (user[field] == data.student[field]) {
+    Object.keys(updateObject).forEach((field) => {
+      if (user[field] === data.student[field]) {
         updateArray.splice(updateArray.indexOf(field), 1);
       }
-    }
-
-    for (field of updateArray) {
+    });
+    Object.keys(updateArray).forEach((field) => {
       expect(user[field]).toEqual(updateObject[field]);
-    }
+    });
     done();
   });
 
   it("checks wether it update access or not", async (done) => {
     // For instructor
-    const updateAccessIns = await userService.updateAccess(
+    await userService.updateAccess(
       data.student._id,
       "instructor",
       data.course.name
@@ -83,10 +79,7 @@ describe("User Service", function () {
     );
 
     // For admin
-    const updateAccessAdmin = await userService.updateAccess(
-      data.student._id,
-      "admin"
-    );
+    await userService.updateAccess(data.student._id, "admin");
     user = await User.findOne({ _id: data.student._id });
     expect(user.role).toBe("admin");
 
@@ -102,18 +95,18 @@ describe("User Service", function () {
 
     const name = (item) => item.map((user) => user.name);
 
-    //Nothing Matches
+    // Nothing Matches
     let search = await userService.search("Magic");
     expect(name(search)).toEqual(expect.arrayContaining([]));
-    //Empty String
+    // Empty String
     search = await userService.search("");
     expect(name(search)).toEqual(expect.arrayContaining([]));
-    //Case Insensitive
+    // Case Insensitive
     search = await userService.search("dummy");
     expect(name(search)).toEqual(
       expect.arrayContaining([data.student.name, dummy2.name])
     );
-    //Not more than 5
+    // Not more than 5
     search = await userService.search("bpgc");
     expect(name(search).length).not.toBeGreaterThan(5);
 
@@ -128,18 +121,18 @@ describe("User Service", function () {
     });
 
     const name = (item) => item.map((user) => user.name);
-    //Nothing Matches
-    paginatedSearch = await userService.searchPaginated("Magic");
+    // Nothing Matches
+    let paginatedSearch = await userService.searchPaginated("Magic");
     expect(name(paginatedSearch.docs)).toEqual(expect.arrayContaining([]));
-    //Empty String
+    // Empty String
     paginatedSearch = await userService.searchPaginated("");
     expect(name(paginatedSearch.docs)).toEqual(expect.arrayContaining([]));
-    //Case Insensitive
+    // Case Insensitive
     paginatedSearch = await userService.searchPaginated("dummy");
     expect(name(paginatedSearch.docs)).toEqual(
       expect.arrayContaining([data.student.name, dummy2.name])
     );
-    //page limit set to 10
+    // page limit set to 10
     paginatedSearch = await userService.searchPaginated("bpgc");
     expect(paginatedSearch.docs.length).not.toBeGreaterThan(10);
 
