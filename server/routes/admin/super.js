@@ -2,11 +2,13 @@
 // Super Admin Actions
 //
 const express = require("express");
-const upload = require("../../middleware/upload");
+// const { upload, s3Uploader } = require("../../middleware/upload");
 const response = require("../../util/response");
 const {
   course: courseService,
   user: userService,
+  upload,
+  s3Uploader,
 } = require("../../features/services");
 const calcCurDate = require("../../util/calcCurDate");
 
@@ -27,12 +29,14 @@ router.post(
   async function (req, res) {
     if (!req.files || !req.files.coverImage[0] || !req.files.handout)
       return res.json(response.error("Insufficent fields"));
+    const files = await s3Uploader(req, res);
+    console.log("files", files);
     try {
       // Create Course
       const courseObject = {
         ...req.body,
-        handout: `/uploads/${req.files.handout[0].filename}`,
-        coverImage: `/uploads/${req.files.coverImage[0].filename}`,
+        handout: files[0],
+        coverImage: files[1],
       };
       const course = await courseService.create(courseObject);
 
