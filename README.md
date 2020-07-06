@@ -1,17 +1,17 @@
-# cte
-![CI](https://github.com/thelehhman/cte/workflows/CI/badge.svg)
+# noodle
+![CI](https://github.com/samarsault/noodle/workflows/CI/badge.svg)
 
-The dashboard is built using Vue, rest of the pages are rendered by the server.
+Node based LMS system
 
 ## Installation
 
 Requires: MongoDB, NodeJS
 
 ```sh
-$ git clone https://github.com/thelehhman/cte
+$ git clone https://github.com/samarsault/noodle
 # Build the vue app
-$ cd dashboard && npm i && npm run build
-$ cd ..
+$ cd client && npm i && npm run build
+$ cd ../server
 # run the server
 $ npm i && npm start
 ```
