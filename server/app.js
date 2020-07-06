@@ -80,10 +80,10 @@ app.use("/api", isAuth, apiRouter);
 // Admin App
 app.use(
   "/dashboard",
-  express.static(path.join(__dirname, "dashboard", "dist"))
+  express.static(path.join(__dirname, "..", "client", "dist"))
 );
 app.get("/dashboard/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "dashboard", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
 });
 
 if (process.env.NODE_ENV !== "production") {
