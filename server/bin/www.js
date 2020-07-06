@@ -9,6 +9,26 @@ const http = require("http");
 const app = require("../app");
 
 /**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  const port_temp = parseInt(val, 10);
+
+  if (Number.isNaN(port_temp)) {
+    // named pipe
+    return val;
+  }
+
+  if (port_temp >= 0) {
+    // port number
+    return port_temp;
+  }
+
+  return false;
+}
+
+/**
  * Get port from environment and store in Express.
  */
 
@@ -20,34 +40,6 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
 
 /**
  * Event listener for HTTP server "error" event.
@@ -87,3 +79,11 @@ function onListening() {
     console.log(`Started on http://localhost:${addr.port}`);
   }
 }
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on("error", onError);
+server.on("listening", onListening);
