@@ -2,7 +2,7 @@
   <div class="card">
     <img
       :src="course.coverImage"
-      alt="CTE Course"
+      alt="Course"
       style="width: 100%; height: 160px;"
     />
     <div class="card-container">

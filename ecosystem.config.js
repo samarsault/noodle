@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "CTE",
+      name: "noodle",
       script: "bin/www",
       autorestart: true,
 			watch: false,
