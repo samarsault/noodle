@@ -2,3 +2,5 @@
 .vscode
 .idea
 .vim
+node_modules
+.env
