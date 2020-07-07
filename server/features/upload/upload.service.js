@@ -12,7 +12,7 @@ aws.config.update({
   region: process.env.aws_region,
 });
 
-const s3Uploader = function (req, res) {
+const s3Uploader = async function (req, res) {
   aws.config.setPromisesDependency();
   aws.config.update({
     accessKeyId: process.env.aws_access_key_id,
@@ -22,39 +22,36 @@ const s3Uploader = function (req, res) {
   const s3 = new aws.S3();
   console.log(req.files);
   const locations = [];
-  Object.values(req.files).forEach((file) => {
+  const dataPromises = Object.values(req.files).map((file) => {
     const params = {
       ACL: "public-read",
       Bucket: process.env.aws_bucket_name,
       Body: fs.createReadStream(file[0].path),
-      Key: file[0].originalname,
+      Key: file[0].filename,
     };
-    let loc = null;
-    s3.upload(params, (err, data) => {
-      if (err) {
-        console.log("Error occured while trying to upload to S3 bucket", err);
-        res.status(500).send(err.stack);
-      }
 
-      if (data) {
-        fs.unlinkSync(file[0].path); // Empty temp folder
-        loc = data.Location;
-        locations.push(loc);
-        console.log(locations);
-        console.log("AWS Location");
-        console.log(loc);
-      }
-    });
+    const prom = s3.upload(params).promise();
+    fs.unlinkSync(file[0].path); // Empty temp folder
+    return prom;
   });
-  console.log("##################");
-  console.log(locations);
-  return locations;
+
+  const datas = await Promise.all(dataPromises);
+  // fs.unlinkSync(path.join(__dirname, "temp"));
+  datas.forEach((data) => {
+    try {
+      locations.push(data.Location);
+    } catch (e) {
+      console.log("Error occured while trying to upload to S3 bucket", e);
+      res.status(500).send(e.stack);
+    }
+  });
+  return locations[0];
 };
 
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
-      cb(null, path.join(__dirname, "..", "uploads", "temp"));
+      cb(null, path.join(__dirname, "temp"));
     },
     filename(req, file, cb) {
       cb(

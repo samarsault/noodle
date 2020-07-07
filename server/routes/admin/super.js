@@ -15,40 +15,48 @@ const calcCurDate = require("../../util/calcCurDate");
 const router = express.Router();
 
 router.post(
-  "/addCourse",
-  upload.fields([
-    {
-      name: "coverImage",
-      maxCount: 1,
-    },
-    {
-      name: "handout",
-      maxCount: 1,
-    },
-  ]),
-  async function (req, res) {
-    if (!req.files || !req.files.coverImage[0] || !req.files.handout)
-      return res.json(response.error("Insufficent fields"));
-    const files = await s3Uploader(req, res);
-    console.log("files", files);
+  "/upload/coverImage",
+  upload.fields([{ name: "coverImage" }]),
+  async (req, res) => {
+    console.log("hitting coverImage");
     try {
-      // Create Course
-      const courseObject = {
-        ...req.body,
-        handout: files[0],
-        coverImage: files[1],
-      };
-      const course = await courseService.create(courseObject);
-
-      return res.redirect(`/admin/cmgt/${course._id}`);
-    } catch (e) {
-      if (process.env.NODE_ENV !== "production")
-        return res.json(response.error(e.message));
-
-      return res.json(response.error(e.message));
+      const files = await s3Uploader(req, res);
+      console.log(files);
+      res.send(files);
+    } catch (err) {
+      res.status(500).send(err.message);
     }
   }
 );
+
+router.post(
+  "/upload/handout",
+  upload.fields([{ name: "handout" }]),
+  async (req, res) => {
+    console.log("hitting handout");
+    try {
+      const files = await s3Uploader(req, res);
+      res.send(files);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  }
+);
+
+router.post("/addCourse", async function (req, res) {
+  try {
+    // Create Course
+    console.log(req.body);
+    const course = await courseService.create(req.body);
+
+    return res.redirect(`/admin/cmgt/${course._id}`);
+  } catch (e) {
+    if (process.env.NODE_ENV !== "production")
+      return res.json(response.error(e.message));
+
+    return res.json(response.error(e.message));
+  }
+});
 
 // TODO: Efficiency
 router.get("/users", async function (req, res) {
