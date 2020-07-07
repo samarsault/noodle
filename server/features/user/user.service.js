@@ -39,8 +39,7 @@ exports.getDashboard = async function (user_id) {
 };
 
 exports.updateAccess = async function (user_id, role, instructor_for) {
-  // TODO: depreciated
-  const user = await User.findOneAndUpdate({ _id: user_id }, { role });
+  await User.updateOne({ _id: user_id }, { role });
 
   // Update role as instructor
   if (instructor_for) {
@@ -50,7 +49,7 @@ exports.updateAccess = async function (user_id, role, instructor_for) {
       },
       {
         $addToSet: {
-          instructors: user._id,
+          instructors: user_id,
         },
       }
     );
