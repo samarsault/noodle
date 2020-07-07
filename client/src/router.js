@@ -22,6 +22,10 @@ const router = new Router({
       name: "signup",
       component: SignUp,
     },
+    {
+      path: "/authorized",
+      component: () => import("./Authorized.vue"),
+    },
   ],
 });
 

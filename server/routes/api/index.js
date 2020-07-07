@@ -21,7 +21,7 @@ router.use(
 );
 
 router.get("/dashboard", async function (req, res) {
-  const dashboard = await user.service.getDashboard(req.session.passport.user);
+  const dashboard = await user.service.getDashboard(req.user._id);
   return res.json(dashboard);
 });
 

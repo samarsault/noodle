@@ -4,6 +4,11 @@ const router = express.Router();
 const passport = require("passport");
 const { user: userService } = require("../features/services");
 
+const { postLogin, postSignUp } = require("../features/auth/auth.controller");
+
+router.post("/login", postLogin);
+router.post("/signup", postSignUp);
+
 router.get(
   "/",
   passport.authenticate("google", {
@@ -15,10 +20,14 @@ router.get(
   "/callback",
   passport.authenticate("google", {
     failureRedirect: "/loginError",
+    session: false,
   }),
   (req, res) => {
-    res.redirect(req.session.returnTo || "/dashboard");
-    delete req.session.returnTo;
+    const token = req.user;
+    // TODO:
+    // Shouldn't pass auth tokens in URL
+    // Use iframe/script instead (involves complications with different origin)
+    return res.redirect(`http://localhost:8080/authorized?token=${token}`);
   }
 );
 
@@ -27,9 +36,6 @@ router.post("/update", async (req, res) => {
   const user_id = req.session.passport.user;
   // const { bits_id, phone }  =  req.body;
   await userService.updateInfo(user_id, req.body);
-
-  res.redirect(req.session.returnTo || "/dashboard");
-  delete req.session.returnTo;
 });
 
 router.get("/logout", (req, res) => {

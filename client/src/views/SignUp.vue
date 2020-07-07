@@ -9,36 +9,156 @@
       </p>
     </aside>
     <section>
-      <form method="POST" action="/auth/update">
-        <label for="bits_id">BITS ID</label>
+      <form method="POST" @submit="auth">
+        <p
+          v-if="error.show"
+          style="
+            background-color: hsla(0, 100%, 50%, 0.2);
+            color: hsl(0, 50%, 35%);
+            padding: 10px 20px;
+            border-radius: 4px;
+          "
+        >
+          {{ error.message }}
+        </p>
+
+        <div v-if="!login">
+          <label for="name">Name</label>
+          <input
+            name="name"
+            v-model="name"
+            type="text"
+            placeholder="Full name, ex: John Doe"
+            required
+          />
+        </div>
+        <label for="email">Email</label>
         <input
-          name="bits_id"
-          type="text"
-          placeholder="Your 13 digit BITS ID. For example, 2018A8PS0414G"
-          pattern="\d{4}[ABH](A|[0-9])(PS|([ABH]|[0-9])(A|[0-9]))\d{4}G"
+          name="email"
+          v-model="email"
+          type="email"
+          placeholder="johndoe@example.com"
           required
         />
-        <label for="phone">Phone</label>
+        <label for="phone">Password</label>
         <input
-          name="phone"
-          type="number"
-          placeholder="10 Digit Phone"
-          pattern="\\d{10}"
+          name="pass"
+          v-model="pass"
+          type="password"
+          placeholder="•••••••"
           required
         />
+        <p v-if="login">New user? <a href="#" @click="toggle">Sign up.</a></p>
+        <p v-else>Existing user? <a href="#" @click="toggle">Log in.</a></p>
         <button class="primary icon-button">
-          <span class="icon-right">Let's Go</span><Go :size="28" />
+          <span class="icon-right">{{ login ? "Login" : "Sign up" }}</span
+          ><Go :size="28" />
         </button>
       </form>
+      <a href="http://localhost:3000/auth">
+        <button>Google Log in</button>
+      </a>
     </section>
   </main>
 </template>
 
 <script>
+import axios from "axios";
 import Go from "vue-material-design-icons/AccountArrowRight";
+
 export default {
   components: {
     Go,
+  },
+  data() {
+    return {
+      name: "",
+      email: "",
+      pass: "",
+      error: {
+        show: false,
+        message: "",
+      },
+      login: true,
+    };
+  },
+  methods: {
+    toggle() {
+      this.login = !this.login;
+    },
+    showError(msg) {
+      this.error = {
+        show: true,
+        message: msg,
+      };
+    },
+    // oAuth() {
+    //   window.onAuth = (token) => {
+    //     console.log(token);
+    //     localStorage.setItem("token", token);
+    //   };
+    //   window.addEventListener(
+    //     "message",
+    //     (event) => window.onAuth(event),
+    //     false
+    //   );
+
+    //   window.open(
+    //     "http://localhost:3000/auth",
+    //     "Google Auth",
+    //     "toolbar=no, menubar=no, width=480, height=640"
+    //   );
+    // },
+    async logIn() {
+      const email = this.email;
+      const password = this.pass;
+
+      if (email && password) {
+        const { data } = await axios.post("/auth/login", {
+          email,
+          password,
+        });
+        if (data.success) {
+          localStorage.setItem("token", data.token);
+          this.$router.push({
+            path: "/",
+          });
+        } else {
+          this.showError(data.message);
+        }
+      }
+    },
+    async signUp() {
+      const email = this.email;
+      const name = this.name;
+      const password = this.pass;
+
+      if (password.length < 8) {
+        this.showError("Password should be atleast 8 characters");
+        return;
+      }
+
+      if (name && email && password) {
+        const { data } = await axios.post("/auth/signup", {
+          name,
+          email,
+          password,
+        });
+        if (data.success) {
+          localStorage.setItem("token", data.token);
+          this.$router.push({
+            path: "/",
+          });
+        } else {
+          this.showError(data.message);
+        }
+      }
+    },
+    auth(e) {
+      e.preventDefault();
+      if (this.login) this.logIn();
+      else this.signUp();
+    },
   },
 };
 </script>

@@ -43,7 +43,7 @@ section#faq {
 
 	&::after {
 		content: '';
-		background-color: #30C41C;
+		background-color: $green;
 		display: block;
 		border-radius: 100%;
 		position: absolute;

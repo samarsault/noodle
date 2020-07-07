@@ -1,9 +1,9 @@
-input[type="text"], input[type="number"], input[type="password"], textarea {
+input[type="text"], input[type="number"], input[type="password"], input[type="email"], textarea {
 	display: block;
 	margin: 10px 0;	
 }
 
-input[type="text"], input[type="password"], input[type="number"], textarea {
+input[type="text"], input[type="password"], input[type="number"], input[type="email"], textarea {
 	background: $white;
 	border: 1px solid $gray;
 	padding: 10px 20px;

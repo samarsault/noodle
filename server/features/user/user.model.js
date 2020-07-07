@@ -14,11 +14,8 @@ const UserSchema = new Schema({
     unique: true,
     dropDups: true,
   },
-  oauth_id: {
+  password: {
     type: String,
-    required: true,
-    unique: true,
-    dropDups: true,
   },
   bits_id: {
     type: String,

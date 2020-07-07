@@ -21,6 +21,7 @@ export default {
         user: this.user,
         course_id: this.$route.params.course_id,
         courses: this.courses,
+        action: this.dispatchAction,
       };
     },
   },
@@ -31,6 +32,9 @@ export default {
         return data;
       }
       return [];
+    },
+    dispatchAction(action) {
+      if (action === "logout") localStorage.clear();
     },
   },
   async mounted() {

@@ -1,13 +1,11 @@
 const express = require("express");
 const path = require("path");
-const cookieParser = require("cookie-parser");
-const session = require("cookie-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 // fallback to index.html for vue
 
 // Custom
-const googleAuth = require("./features/user/googleAuth");
+const googleAuth = require("./features/auth/googleAuth");
 
 // Middleware
 const isAuth = require("./middleware/isAuth");
@@ -27,9 +25,6 @@ require("./configure")(app);
 
 // app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.use(cookieParser());
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(
   bodyParser.urlencoded({
@@ -40,19 +35,8 @@ app.use(
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
-app.use(
-  session({
-    name: "session",
-    keys: ["!P+@3D7x&rW#G%m"],
-  })
-);
-
 // Initialize Google Auth
 googleAuth(passport);
-
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes

@@ -10,16 +10,24 @@ import "sweetalert2/dist/sweetalert2.min.css";
 Vue.use(VueSweetalert2);
 Vue.config.productionTip = false;
 
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+  const token = localStorage.getItem("token");
+  config.headers.Authorization = `Bearer ${token}`;
+
+  return config;
+});
 axios.interceptors.response.use(
   (response) => {
     return response;
   },
-  () => {
-    // if (error.response && error.response.data && error.response.data.location) {
-    //   window.location.href = error.response.data.location;
-    // } else {
-    //   return Promise.reject(error);
-    // }
+  (error) => {
+    if (error.response && error.response.data && error.response.data.location) {
+      // window.location.href = error.response.data.location;
+      console.log(error);
+    } else {
+      return Promise.reject(error);
+    }
   }
 );
 

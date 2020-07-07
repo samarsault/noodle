@@ -12,7 +12,7 @@
     </Modal>
     <Loading v-if="isLoading" />
     <div :class="{ 'app-loading': isLoading }" id="app">
-      <NavBar :user="user" />
+      <NavBar :user="user" :doLogOut="logout" />
       <router-view />
     </div>
   </div>
@@ -44,14 +44,17 @@ export default {
   },
   methods: {
     ...mutations,
+    logout() {
+      localStorage.clear();
+    },
   },
   async mounted() {
     this.setLoading(true);
     try {
       const { data: user } = await axios.get("/api/user");
       this.setUser(user);
-    } catch {
-      console.error(".");
+    } catch (e) {
+      this.setUser(null);
     }
     this.setLoading(false);
   },
