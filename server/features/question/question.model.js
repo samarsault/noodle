@@ -14,7 +14,8 @@ module.exports = model(
       question: r_string,
       answer: {
         type: Schema.Types.Mixed,
-        required: true,
+        // For some questions, answers can be subjective
+        // required: true,
       },
       course: {
         type: Schema.Types.ObjectId,
@@ -30,13 +31,6 @@ module.exports = model(
         type: String,
         default: "default",
       },
-      // Sub-Parts of the question, if any
-      parts: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Question",
-        },
-      ],
     },
     Options
   ),

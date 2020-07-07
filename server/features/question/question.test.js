@@ -21,7 +21,6 @@ beforeEach(async () => {
   data.numQuestion = await Numeric.create({
     question: "What's 2 + 3?",
     answer: 5,
-    parts: [],
     course: data.course._id,
   });
   mcqEx.course = data.course._id;
@@ -68,25 +67,6 @@ describe("Question", function () {
     });
     const { error } = await Numeric.findOne({ _id: data.numQuestion._id });
     expect(error).toBe(3);
-    done();
-  });
-
-  it("Adds a question subpart", async (done) => {
-    const newQ = await questions.create("MCQ", mcqEx);
-    await questions.parts(data.numQuestion._id).add(newQ._id);
-    const numQ = await Question.findOne({ _id: data.numQuestion._id });
-    expect(numQ.parts).toContainEqual(newQ._id);
-    done();
-  });
-
-  it("Removes question subpart", async (done) => {
-    const newQ = await questions.create("MCQ", mcqEx);
-    await questions.parts(data.numQuestion._id).add(newQ._id);
-    const numQi = await Question.findOne({ _id: data.numQuestion._id });
-    expect(numQi.parts).toContainEqual(newQ._id);
-    await questions.parts(data.numQuestion._id).remove(newQ._id);
-    const numQf = await Question.findOne({ _id: data.numQuestion._id });
-    expect(numQf.parts).not.toContainEqual(newQ._id);
     done();
   });
 });

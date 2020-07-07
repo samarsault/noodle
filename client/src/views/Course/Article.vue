@@ -1,9 +1,9 @@
 <template>
   <div>
     <div v-if="isAdmin">
-      <button class="primary" @click="save">Save</button>
+      <button class="primary" v-if="editable" @click="save">Save</button>
       <button class="secondary" @click="toggleEdit">
-        {{ editable ? "Finish" : "Edit" }}
+        {{ editable ? "Discard" : "Edit" }}
       </button>
     </div>
     <Editor v-model="page" :edit="editable" :course_id="course_id" />

@@ -11,7 +11,8 @@
     </router-link>
     <div v-if="attempts.length > 0">
       <h3>My Attempts</h3>
-      <AttemptView :attempts="attempts" :quiz="quiz" />
+      <!-- show latest attempt first -->
+      <AttemptView :attempts="attempts.slice().reverse()" :quiz="quiz" />
     </div>
     <div v-if="isAdmin">
       <h3>Admin</h3>
@@ -26,42 +27,25 @@
         :onDelete="deleteFromQuiz"
         :showExisting="true"
       />
-      <Modal
+      <QuestionPicker
         v-if="editing"
-        title="Add Question"
         @close="editing = false"
         @ok="editing = false"
-      >
-        <template slot="body">
-          <b>Group</b>
-          <GroupInput
-            style="margin-top: 10px;"
-            :course_id="course_id"
-            :onChange="getQuestionsForGroup"
-          />
-          <div style="min-height: 300px; overflow-y: scroll;">
-            <div
-              v-for="question in availableQuestions"
-              :key="question._id"
-              class="flexy"
-            >
-              <div v-html="question.question" />
-              <a href="#" @click="addToQuiz(question)">Add</a>
-            </div>
-          </div>
-        </template>
-      </Modal>
+        :course_id="course_id"
+        :onSelect="addToQuiz"
+        :filter="hideAlreadyAdded"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import Modal from "@/components/Dialogs/Modal";
-import GroupInput from "@/components/Input/Group";
 import QuestionManager from "@/components/Questions/Manager";
+import QuestionPicker from "@/components/Questions/Picker";
 import AttemptView from "@/components/AttemptView";
 import Editor from "@/components/Editor";
+
 export default {
   props: {
     isAdmin: Boolean,
@@ -81,11 +65,10 @@ export default {
     };
   },
   components: {
-    Modal,
     Editor,
     QuestionManager,
+    QuestionPicker,
     AttemptView,
-    GroupInput,
   },
   mounted() {
     axios
@@ -122,20 +105,8 @@ export default {
       );
       return data.success;
     },
-    async getQuestionsForGroup(group) {
-      const { data } = await axios.get(
-        `/api/courses/${this.course_id}/questions`,
-        {
-          params: {
-            group,
-          },
-        }
-      );
-      // Filter available questions to hide questions which
-      // have already been added
-      this.availableQuestions = data.filter((qId) => {
-        return !this.quiz.questions.find((x) => x._id == qId._id);
-      });
+    hideAlreadyAdded(question) {
+      return !this.quiz.questions.find((x) => x._id == question._id);
     },
     async saveDescription() {
       const { data } = await axios.put(

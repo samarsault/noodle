@@ -2,16 +2,17 @@
  * Question Bank Service
  */
 const Question = require("./question.model");
-const { MCQ, Numeric } = require("./types");
+const { MCQ, Numeric, MultiPart } = require("./types");
 
 const QuestionModels = {
   MCQ,
   Numeric,
+  MultiPart,
 };
 // console.log(Question.discriminators)
 
 exports.getAll = function (course, group = "default") {
-  return Question.find({ course, group });
+  return Question.find({ course, group }).populate("questions");
 };
 
 exports.getGroups = function (course) {
@@ -44,39 +45,4 @@ exports.delete = function (questionId) {
   return Question.deleteOne({
     _id: questionId,
   });
-};
-
-/*
- * Manage parts of a question
- * Methods:
- *    .subparts(question).add(new question)
- *    .parts(question).remove(new question)
- */
-exports.parts = function (parent_id) {
-  return {
-    add(child_id) {
-      return Question.updateOne(
-        {
-          _id: parent_id,
-        },
-        {
-          $push: {
-            parts: child_id,
-          },
-        }
-      );
-    },
-    remove(child_id) {
-      return Question.updateOne(
-        {
-          _id: parent_id,
-        },
-        {
-          $pull: {
-            parts: child_id,
-          },
-        }
-      );
-    },
-  };
 };

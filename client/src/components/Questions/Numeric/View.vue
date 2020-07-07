@@ -1,5 +1,6 @@
 <template>
   <div>
+    <b>Answer:</b>
     <input
       type="number"
       :value="answer"

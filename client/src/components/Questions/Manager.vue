@@ -80,6 +80,7 @@ export default {
       presetIndex: -1,
       preset: {},
       questionTypes: [
+        { name: "MultiPart", description: "A question with multiple parts" },
         { name: "MCQ", description: "Multiple choice question" },
         { name: "Numeric", description: "Numeric data type answer" },
       ],

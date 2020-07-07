@@ -16,10 +16,7 @@
         </form>
       </div>
       <div class="quizzer-panel">
-        <p>Time: {{ totalTime | stringTime }}</p>
-        <button @click="alert('You can continue anytime in coming 5 days.')">
-          Pause
-        </button>
+        <p align="center">Time: {{ totalTime | stringTime }}</p>
         <div class="quizzer-nav">
           <div
             v-for="n in quiz.questions.length"
@@ -129,7 +126,7 @@ export default {
       axios
         .post(`/api/courses/${this.course_id}/quiz/submit`, {
           ...this.attempt,
-          answers: this.answers,
+          answers: this.answers.flat(),
         })
         .then(({ status }) => {
           if (status === 200) {
@@ -181,7 +178,10 @@ export default {
 }
 .quizzer-panel {
   border: 1px solid #ccc;
-  padding: 5px 20px;
+  padding: 20px;
   height: 100%;
+  p {
+    margin-top: 0;
+  }
 }
 </style>

@@ -12,7 +12,7 @@ function resolveQuestions(questionIds) {
     questionIds.map((id) =>
       Question.findOne({
         _id: id,
-      })
+      }).populate("questions")
     )
   );
 }
@@ -73,11 +73,23 @@ exports.attempt = async function (attempt) {
 exports.evaluate = async function (attempt) {
   try {
     // Calculate Score
-    const { questions: questionIds } = await Quiz.findOne({
-      _id: attempt.quiz_id,
-    }).select("questions");
-    const questions = await resolveQuestions(questionIds);
-    const correctAnswers = questions.map((q) => q.answer);
+    const { questions } = await Quiz.findOne(
+      {
+        _id: attempt.quiz_id,
+      },
+      "questions"
+    ).populate({
+      path: "questions",
+      // populate questions of multi-part
+      populate: {
+        path: "questions",
+      },
+    });
+    const questionMap = questions.flatMap((question) => {
+      if (question.questions) return [...question.questions];
+      return question;
+    });
+    const correctAnswers = questionMap.map((q) => q.answer);
     const attemptAnswers = attempt.answers;
     let score = 0;
     let unansweredQs = 0;
@@ -86,7 +98,7 @@ exports.evaluate = async function (attempt) {
       if (attemptAnswers[i] === "") {
         unansweredQs++;
       } else if (attemptAnswers[i] === correctAnswers[i]) {
-        score += questions[i].points;
+        score += questionMap[i].points;
         correctQs++;
       }
     }

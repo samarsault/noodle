@@ -30,9 +30,16 @@
             <router-link
               v-for="page in modulePages"
               v-bind:key="page.name"
+              class="module-item"
               :to="`/course/${course_id}/${page.type}/${page._id}`"
             >
-              {{ page.name }}
+              <div>
+                {{ page.name }}
+              </div>
+              <div class="module-panel">
+                <Edit :size="20" />
+                <Bin :size="20" />
+              </div>
             </router-link>
             <a
               v-if="isAdmin"
@@ -102,6 +109,8 @@ import SelectItem from "../components/SelectItem.vue";
 
 // Icons
 import Plus from "vue-material-design-icons/Plus";
+import Edit from "vue-material-design-icons/Pencil";
+import Bin from "vue-material-design-icons/TrashCan";
 import Folder from "vue-material-design-icons/Folder";
 import FolderOpen from "vue-material-design-icons/FolderOpen";
 
@@ -173,6 +182,8 @@ export default {
   },
   components: {
     Plus,
+    Edit,
+    Bin,
     SelectItem,
     Folder,
     FolderOpen,
@@ -273,6 +284,15 @@ export default {
       background: #222;
       &:not(:last-child) {
         border-bottom: 1px solid #444;
+      }
+    }
+    .module-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      span {
+        color: #999;
+        padding: 0 5px;
       }
     }
     a {

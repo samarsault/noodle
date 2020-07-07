@@ -13,6 +13,12 @@
       :answer="answer"
       :onAnswer="onAnswer"
     />
+    <MultiPart
+      v-if="question.type == 'MultiPart'"
+      :question="question"
+      :answer="answer"
+      :onAnswer="onAnswer"
+    />
   </div>
 </template>
 <script>
@@ -21,12 +27,15 @@
 //
 import MCQ from "@/components/Questions/MCQ/View.vue";
 import Numeric from "@/components/Questions/Numeric/View.vue";
+import MultiPart from "@/components/Questions/MultiPart/View.vue";
 
 export default {
+  name: "QuestionView",
   props: ["question", "answer", "onAnswer"],
   components: {
     Numeric,
     MCQ,
+    MultiPart,
   },
 };
 </script>
