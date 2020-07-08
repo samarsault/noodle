@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const passport = require("passport");
-const { user } = require("../features/services");
+const { user: userService } = require("../features/services");
 
 router.get(
   "/",
@@ -26,7 +26,7 @@ router.get(
 router.post("/update", async (req, res) => {
   const user_id = req.session.passport.user;
   // const { bits_id, phone }  =  req.body;
-  await user.service.updateInfo(user_id, req.body);
+  await userService.updateInfo(user_id, req.body);
 
   res.redirect(req.session.returnTo || "/dashboard");
   delete req.session.returnTo;

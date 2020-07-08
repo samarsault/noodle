@@ -35,8 +35,7 @@ router.get("/courseId", async function (req, res) {
 });
 
 router.get("/user", async function (req, res) {
-  const userInfo = await user.service.get(req.session.passport.user);
-  return res.json(userInfo);
+  return res.json(req.user);
 });
 
 module.exports = router;

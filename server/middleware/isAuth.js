@@ -5,8 +5,6 @@ const { User } = require("../features/models");
 
 module.exports = async function (req, res, next) {
   if (req.isAuthenticated()) {
-    if (req.originalUrl.match("/api/user")) return next();
-
     const user = await User.findOne({
       _id: req.session.passport.user,
     }).select("email role bits_id phone");
