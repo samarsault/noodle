@@ -3,7 +3,11 @@
     <div class="content" v-if="true">
       <div class="heading">
         <div class="buttons">
-          <button class="primary" @click="submitForm">
+          <button
+            class="primary"
+            @click="submitForm"
+            v-if="coverRecieved && handoutRecieved"
+          >
             Add
           </button>
           <router-link to="/admin/cmgt" tag="button">Back</router-link>
@@ -64,7 +68,9 @@
           accept="image/png, image/jpeg"
           v-on:change="handleCoverUpload()"
         />
-        <button @click="submitCoverImage" type="button">Upload Image</button>
+        <button @click="submitCoverImage" type="button" v-if="!coverRecieved">
+          Upload Image
+        </button>
 
         <label for="handout">Handout</label>
         <input
@@ -74,7 +80,9 @@
           v-if="false"
         />
         <input type="file" ref="handout" v-on:change="handleHandoutUpload()" />
-        <button @click="submitHandout" type="button">Upload Handout</button>
+        <button @click="submitHandout" type="button" v-if="!handoutRecieved">
+          Upload Handout
+        </button>
       </div>
     </div>
   </div>
@@ -97,6 +105,12 @@ export default {
         })
         .join(",");
     },
+    awsCover: function () {
+      return this.course.coverImage;
+    },
+    awsHandout: function () {
+      return this.course.handout;
+    },
   },
   data() {
     return {
@@ -113,7 +127,17 @@ export default {
       coverImage: "",
       handout: "",
       instructors: [],
+      coverRecieved: false,
+      handoutRecieved: false,
     };
+  },
+  watch: {
+    awsCover(val) {
+      this.coverRecieved = !!val;
+    },
+    awsHandout(val) {
+      this.handoutRecieved = !!val;
+    },
   },
   methods: {
     formEnter: function (e) {
