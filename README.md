@@ -1,7 +1,12 @@
-# noodle
-![CI](https://github.com/samarsault/noodle/workflows/CI/badge.svg)
+<div align="center">
+	<br/>
+	<br/>
+    <img src="banner.png" width="480">
+	<br/>
+	<br />
+</div>
 
-Node based LMS system
+![CI](https://github.com/samarsault/noodle/workflows/CI/badge.svg)
 
 ## Installation
 
@@ -29,13 +34,3 @@ There are 3 types of access levels:
 - Student
 
 Note that the first user you create is granted admin status by default.
-
-## Directory structure
-
-- bin: contains the webserver
-- controllers: the various models, routes and middleware required by our app
-- public: static assets, i.e. images, stylesheets and scripts
-- styles: source style files (SASS), which form the base of the entire app's UI
-- test: server tests. Run using `npm test`
-- views: contain pug templates for server rendered pages.
-- dashboard: contains the vue app i.e. the dashboard
