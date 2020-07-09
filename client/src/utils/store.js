@@ -4,11 +4,7 @@
 import Vue from "vue";
 
 const store = Vue.observable({
-  user: {
-    name: "",
-    email: "",
-    role: "student",
-  },
+  user: null,
   isAdmin: false,
   isLoading: false,
   alert: {

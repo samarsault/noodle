@@ -20,7 +20,7 @@
             </div>
           </div>
           <div>
-            <router-link :to="'/course/' + course._id">
+            <router-link :to="'/dashboard/course/' + course._id">
               <button class="secondary">View Course</button>
             </router-link>
           </div>

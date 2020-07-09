@@ -1,5 +1,6 @@
 //
 // Server rendered pages
+// Depreciated
 //
 const express = require("express");
 

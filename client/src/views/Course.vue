@@ -31,7 +31,7 @@
               v-for="page in modulePages"
               v-bind:key="page.name"
               class="module-item"
-              :to="`/course/${course_id}/${page.type}/${page._id}`"
+              :to="`/dashboard/course/${course_id}/${page.type}/${page._id}`"
             >
               <div>
                 {{ page.name }}
@@ -55,7 +55,7 @@
         <router-link
           v-for="page in content"
           v-bind:key="page.name"
-          :to="`/course/${course_id}/${page.type}/${page._id}`"
+          :to="`/dashboard/course/${course_id}/${page.type}/${page._id}`"
         >
           <li>{{ page.name }}</li>
         </router-link>
@@ -73,7 +73,7 @@
             <router-link
               v-for="group in questionGroups"
               v-bind:key="group"
-              :to="`/course/${course_id}/questions/${group}`"
+              :to="`/dashboard/course/${course_id}/questions/${group}`"
             >
               {{ group }}
             </router-link>
@@ -83,7 +83,7 @@
             </a>
           </div>
           <!-- Registrations -->
-          <router-link :to="`/course/${course_id}/registrations`"
+          <router-link :to="`/dashboard/course/${course_id}/registrations`"
             >Registrations</router-link
           >
         </nav>

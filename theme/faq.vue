@@ -1,4 +1,33 @@
-@import '../../styles/include/vars';
+<template lang="pug">
+div  
+  section#faq
+    h1 FAQs
+    p Browse through the most frequently asked questions.
+
+  section#qa
+    .container
+      div(v-for="topic in topics")
+        h2 {{topic}}
+        ul.questions
+          li(v-for="qa in faq[topic]", @click="e => e.currentTarget.classList.toggle('open')")
+            p.question {{qa.question}}
+            p.answer {{qa.answer}}
+</template>
+
+<script>
+import faqData from './data/faq.json'
+
+export default {
+  data() {
+    return {
+      topics: Object.keys(faqData),
+      faq: faqData
+    }
+  }
+}
+</script>
+
+<style lang="scss">
 
 section#faq {
 	$radius: 17px;
@@ -33,7 +62,12 @@ section#qa {
 
 .questions {
 	list-style-type: none;
-	padding-left: 0;
+  padding-left: 0;
+  li.open {
+    .answer {
+      max-height: 100%;;
+    }
+  }
 }
 .question {
 	color: #777;
@@ -48,10 +82,8 @@ section#qa {
 }
 
 .answer {
-	&.open {
-		max-height: 100%;
-	}
 	max-height: 0;
 	margin: 0;
 	overflow: hidden;
 }
+</style>

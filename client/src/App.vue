@@ -12,7 +12,7 @@
     </Modal>
     <Loading v-if="isLoading" />
     <div :class="{ 'app-loading': isLoading }" id="app">
-      <NavBar />
+      <NavBar :user="user" />
       <router-view />
     </div>
   </div>
@@ -27,7 +27,7 @@
 <script>
 import axios from "axios";
 
-import NavBar from "./components/NavBar";
+import { NavBar } from "../../theme";
 import Modal from "./components/Dialogs/Modal";
 import Loading from "./components/Loading";
 
@@ -47,8 +47,12 @@ export default {
   },
   async mounted() {
     this.setLoading(true);
-    const { data: user } = await axios.get("/api/user");
-    this.setUser(user);
+    try {
+      const { data: user } = await axios.get("/api/user");
+      this.setUser(user);
+    } catch {
+      console.error(".");
+    }
     this.setLoading(false);
   },
 };

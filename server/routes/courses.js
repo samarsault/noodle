@@ -11,10 +11,16 @@ const renderView = require("../util/renderView");
 // Current Date Calculator
 const calcCurDate = require("../util/calcCurDate");
 
+router.get("/all", async (req, res) => {
+  const courses = await courseService.getAll();
+  console.log(courses);
+  return res.json(courses);
+});
+
 // Register User for course
 router.get("/:course_id/register", async function (req, res) {
   const course = await courseService.get(req.params.course_id);
-  console.log(course, "get request fot agreement");
+  console.log(course, "get request for agreement");
   return renderView(req, res, "agreement", {
     hideAgreement: false,
     course,

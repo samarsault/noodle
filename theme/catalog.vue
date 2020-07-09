@@ -1,8 +1,27 @@
-@import '../../styles/include/vars';
-//
-// Catalog & Course page
-//
+<template lang="pug">
+div.container
+  h1 Courses 
 
+  .courses
+    .course-card(v-for="course in courses")
+      .card
+        .card-header
+          img(:src="course.coverImage", alt="Thumbnail")
+          h2 {{course.name}}
+        .card-body
+          p {{course.subtitle}}
+        .card-footer
+          a.regBtn(:href="'/courses/' + course._id + '/view/'")
+            button.secondary View
+</template>
+
+<script>
+export default {
+  props: [ 'courses' ]
+}
+</script>
+
+<style lang="scss">
 .catalog {
 	position: relative;
 	button {
@@ -141,3 +160,4 @@
 		}
 	}
 }
+</style>

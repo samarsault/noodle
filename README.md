@@ -8,6 +8,8 @@
 
 ![CI](https://github.com/samarsault/noodle/workflows/CI/badge.svg)
 
+### Noodle is currently under development, not suitable for use/production. 
+
 ## Installation
 
 Requires: MongoDB, NodeJS
