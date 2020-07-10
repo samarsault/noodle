@@ -1,5 +1,5 @@
 <template>
-  <div class="mainWrapper">
+  <div class="mainWrapper" v-if="course">
     <div class="heading">
       <input
         type="text"

@@ -16,12 +16,11 @@
         Registered Courses
       </h4>
       <!-- <Students/> -->
-      <ul v-for="course in courses" :key="course">
-        <li>
-          {{ course.name }}
+      <CourseCard v-for="course in courses" :key="course._id" :course="course">
+        <template slot="action">
           <button class="error" @click="dereg(course.name)">Deregister</button>
-        </li>
-      </ul>
+        </template>
+      </CourseCard>
       <div v-if="!courses.length">
         None
       </div>
@@ -31,14 +30,17 @@
 
 <script>
 import axios from "axios";
+import CourseCard from "@/components/CourseCard.vue";
 
 export default {
-  components: {},
   data() {
     return {
       user: null,
       courses: [],
     };
+  },
+  components: {
+    CourseCard,
   },
   async mounted() {
     this.user = (

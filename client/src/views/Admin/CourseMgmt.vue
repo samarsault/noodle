@@ -23,7 +23,11 @@
       Showing results for {{ searchField }}
     </div>
     <div class="courses">
-      <Card v-for="course in courses" :key="course._id" :course="course" />
+      <CourseCard
+        v-for="course in courses"
+        :key="course._id"
+        :course="course"
+      />
     </div>
     <div class="not-found" v-if="courses.length == 0">
       <img src="/images/empty.png" />
@@ -39,14 +43,14 @@
 import axios from "axios";
 import Magnify from "vue-material-design-icons/Magnify";
 import Plus from "vue-material-design-icons/Plus";
-import Card from "@/components/Card";
+import CourseCard from "@/components/CourseCard";
 import { mutations } from "@/utils/store";
 
 export default {
   components: {
     Magnify,
     Plus,
-    Card,
+    CourseCard,
   },
   data() {
     return {
