@@ -1,8 +1,8 @@
 //
-// Custom routes
+// Routes adapted from application
 //
 import CustomContainer from "../components/CustomContainer.vue";
-import { routes } from "../../../theme";
+import { routes } from "noodle-adapter";
 
 //
 // CustomContainer acts as a wrapper to

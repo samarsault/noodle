@@ -4,7 +4,7 @@ import SignUp from "./views/SignUp";
 
 import admin from "./routes/admin";
 import dashboard from "./routes/dashboard";
-import custom from "./routes/custom";
+import adapted from "./routes/adapted";
 
 import { getters } from "./utils/store";
 
@@ -16,7 +16,7 @@ const router = new Router({
   routes: [
     ...admin,
     ...dashboard,
-    ...custom,
+    ...adapted,
     {
       path: "/signup",
       name: "signup",

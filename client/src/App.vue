@@ -27,7 +27,7 @@
 <script>
 import axios from "axios";
 
-import { NavBar } from "../../theme";
+import { NavBar } from "noodle-adapter";
 import Modal from "./components/Dialogs/Modal";
 import Loading from "./components/Loading";
 

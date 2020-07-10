@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     async getCourses() {
-      if (this.access.includes("courses")) {
+      if (this.access && this.access.includes("courses")) {
         const { data } = await axios.get("/courses/all");
         return data;
       }
