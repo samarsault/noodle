@@ -1,21 +1,19 @@
 <template>
-  <div class="mainWrapper">
+  <div>
     <div class="header">
-      <input
-        type="text"
-        placeholder="Search by Name"
-        v-model="searchField"
-        v-on:keydown.enter="search()"
-      />
-      <button @click="search()" type="submit" ref="submitBtn">
-        <Magnify />
-      </button>
-      <button @click="showAlert">
-        <FilterVariant />
-      </button>
+      <form
+        @submit="(e) => e.preventDefault() && search()"
+        style="display: flex; align-items: center;"
+      >
+        <input type="text" placeholder="Search by Name" v-model="searchField" />
+        <button class="secondary" type="submit" style="height: 100%;">
+          <Magnify />
+        </button>
+      </form>
       <router-link
         :to="`/admin/cmgt/add`"
         tag="button"
+        class="primary"
         style="display: inline-flex;"
       >
         <Plus /> Add Course</router-link
@@ -40,14 +38,12 @@
 <script>
 import axios from "axios";
 import Magnify from "vue-material-design-icons/Magnify";
-import FilterVariant from "vue-material-design-icons/FilterVariant";
 import Plus from "vue-material-design-icons/Plus";
-import Card from "../../../components/Card";
-import { mutations } from "../../../utils/store";
+import Card from "@/components/Card";
+import { mutations } from "@/utils/store";
 
 export default {
   components: {
-    FilterVariant,
     Magnify,
     Plus,
     Card,
@@ -86,27 +82,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mainWrapper {
-  display: grid;
-}
 .header {
   display: flex;
-  grid-row: 1;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  button {
+    height: 100%;
+  }
 }
 .courses {
-  grid-row: 3;
   display: flex;
   flex-flow: row wrap;
-  align-items: center;
-  justify-content: center;
 }
 .showing-res {
-  grid-row: 2;
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 // .not-found {
 // 	grid: ;

@@ -1,12 +1,12 @@
 //
 // Admin related routes
 //
-import Admin from "../views/Admin/SuperIndex.vue";
-import CourseMgmt from "../views/Admin/Super/CourseMgmt.vue";
-import UserMgmt from "../views/Admin/Super/UserMgmt.vue";
-import EditCourse from "../views/Admin/Super/EditCourse.vue";
-import AddCourse from "../views/Admin/Super/AddCourse.vue";
-import EditUser from "../views/Admin/Super/EditUser.vue";
+import Admin from "../views/Admin.vue";
+import CourseMgmt from "../views/Admin/CourseMgmt.vue";
+import UserMgmt from "../views/Admin/UserMgmt.vue";
+import EditCourse from "../views/Admin/EditCourse.vue";
+import AddCourse from "../views/Admin/AddCourse.vue";
+import EditUser from "../views/Admin/EditUser.vue";
 
 export default [
   {

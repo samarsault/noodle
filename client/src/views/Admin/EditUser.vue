@@ -1,5 +1,5 @@
 <template>
-  <div class="mainWrapper">
+  <div>
     <div class="heading">
       <div>
         <h2>{{ user.name }}</h2>
@@ -65,26 +65,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mainWrapper {
-  display: flex;
-  flex-direction: column;
-}
-
 .heading {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding: 20px;
+  justify-content: space-between;
 }
 .content {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-around;
-  padding: 20px;
   margin: 0px;
-  margin-left: 200px;
-  margin-right: 200px;
 }
 a {
   text-decoration: none;

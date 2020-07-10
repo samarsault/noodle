@@ -1,154 +1,152 @@
 <template>
   <div class="mainWrapper">
-    <div class="content" v-if="true">
-      <div class="heading">
-        <input
-          type="text"
-          v-model="course.name"
-          :disabled="!isEdit"
-          :class="{ 'no-edit': !isEdit, edit: isEdit, h1ify: true }"
-          name="name"
-          form="editForm"
-        />
-        <div class="buttons">
-          <button @click="toggleEdit()" v-if="!isEdit">
-            Edit
-          </button>
-          <button @click="toggleEdit()" v-if="isEdit">
-            Discard
-          </button>
-          <div style="padding: 0px; margin: 0px;" v-if="isEdit">
-            <button class="primary" form="editForm">
-              Save
-            </button>
-          </div>
-          <button class="error" @click="delCourse(course._id)">
-            Delete
-          </button>
-          <router-link to="/admin/cmgt" tag="button">Back</router-link>
-        </div>
-      </div>
-
-      <img
-        :src="course.coverImage"
-        v-if="!isEdit || !url"
-        :alt="course.name"
-        class="courseImage"
+    <div class="heading">
+      <input
+        type="text"
+        v-model="course.name"
+        :disabled="!isEdit"
+        :class="{ 'no-edit': !isEdit, edit: isEdit, h1ify: true }"
+        name="name"
+        form="editForm"
       />
-      <img v-if="url && isEdit" :src="url" class="courseImage" />
-      <form
-        id="editForm"
-        method="post"
-        :action="`/admin/super/courses/update/${this.course._id}`"
-        enctype="multipart/form-data"
-      >
-        <input
-          type="file"
-          name="coverImage"
-          @change="onImgChange"
-          v-if="isEdit"
-          value="Icon"
-        />
-        <div class="info">
-          <h4>
-            <b>
-              Subtitle
-            </b>
-          </h4>
-          <textarea
-            name="subtitle"
-            placeholder="Course subtitle in 50-100 characters"
-            :val="course.subtitle"
-            minlength="50"
-            maxlength="100"
-            v-model="course.subtitle"
-            :disabled="!isEdit"
-            :class="{ 'no-edit': !isEdit, edit: isEdit }"
-          >
-          </textarea>
-          <h4>
-            <b>
-              Description
-            </b>
-          </h4>
-          <textarea
-            name="description"
-            rows="12"
-            placeholder="Detailed description in 800-1000 characters."
-            minlength="800"
-            maxlength="1000"
-            v-model="course.description"
-            :disabled="!isEdit"
-            :class="{ 'no-edit': !isEdit, edit: isEdit }"
-          />
-          <div style="display: flex; justify-content: space-between;">
-            <div>
-              <h4>
-                <b>
-                  Offer Year
-                </b>
-              </h4>
-              <input
-                type="number"
-                name="offerYear"
-                placeholder="Year"
-                v-model="course.offerYear"
-                :disabled="!isEdit"
-                :class="{ 'no-edit': !isEdit, edit: isEdit }"
-              />
-            </div>
-            <div>
-              <h4>
-                <b>
-                  Offer Sem
-                </b>
-              </h4>
-              <input
-                type="number"
-                name="offerSem"
-                placeholder="Semester"
-                v-model="course.offerSem"
-                :disabled="!isEdit"
-                :class="{ 'no-edit': !isEdit, edit: isEdit }"
-              />
-            </div>
-          </div>
-          <h4>
-            <b>
-              Instructors
-            </b>
-          </h4>
-          <ul v-if="!isEdit">
-            <li v-for="inst in instNames" :key="inst">
-              {{ inst }}
-            </li>
-          </ul>
-          <UserInput v-model="instructors" v-if="isEdit" />
-          <input type="hidden" name="instructors" v-model="instructorStr" />
-          <br />
-          <button>
-            Handout
+      <div class="buttons">
+        <button @click="toggleEdit()" v-if="!isEdit">
+          Edit
+        </button>
+        <button @click="toggleEdit()" v-if="isEdit">
+          Discard
+        </button>
+        <div style="padding: 0px; margin: 0px;" v-if="isEdit">
+          <button class="primary" form="editForm">
+            Save
           </button>
-          <input type="file" name="handout" v-if="isEdit" />
-          <div class="padless">
+        </div>
+        <button class="error" @click="delCourse(course._id)">
+          Delete
+        </button>
+        <router-link to="/admin/cmgt" tag="button">Back</router-link>
+      </div>
+    </div>
+
+    <img
+      :src="course.coverImage"
+      v-if="!isEdit || !url"
+      :alt="course.name"
+      class="courseImage"
+    />
+    <img v-if="url && isEdit" :src="url" class="courseImage" />
+    <form
+      id="editForm"
+      method="post"
+      :action="`/admin/super/courses/update/${this.course._id}`"
+      enctype="multipart/form-data"
+    >
+      <input
+        type="file"
+        name="coverImage"
+        @change="onImgChange"
+        v-if="isEdit"
+        value="Icon"
+      />
+      <div class="info">
+        <h4>
+          <b>
+            Subtitle
+          </b>
+        </h4>
+        <textarea
+          name="subtitle"
+          placeholder="Course subtitle in 50-100 characters"
+          :val="course.subtitle"
+          minlength="50"
+          maxlength="100"
+          v-model="course.subtitle"
+          :disabled="!isEdit"
+          :class="{ 'no-edit': !isEdit, edit: isEdit }"
+        >
+        </textarea>
+        <h4>
+          <b>
+            Description
+          </b>
+        </h4>
+        <textarea
+          name="description"
+          rows="12"
+          placeholder="Detailed description in 800-1000 characters."
+          minlength="800"
+          maxlength="1000"
+          v-model="course.description"
+          :disabled="!isEdit"
+          :class="{ 'no-edit': !isEdit, edit: isEdit }"
+        />
+        <div style="display: flex; justify-content: space-between;">
+          <div>
             <h4>
               <b>
-                Registered Students
+                Offer Year
               </b>
             </h4>
-            <Students />
+            <input
+              type="number"
+              name="offerYear"
+              placeholder="Year"
+              v-model="course.offerYear"
+              :disabled="!isEdit"
+              :class="{ 'no-edit': !isEdit, edit: isEdit }"
+            />
+          </div>
+          <div>
+            <h4>
+              <b>
+                Offer Sem
+              </b>
+            </h4>
+            <input
+              type="number"
+              name="offerSem"
+              placeholder="Semester"
+              v-model="course.offerSem"
+              :disabled="!isEdit"
+              :class="{ 'no-edit': !isEdit, edit: isEdit }"
+            />
           </div>
         </div>
-      </form>
-    </div>
+        <h4>
+          <b>
+            Instructors
+          </b>
+        </h4>
+        <ul v-if="!isEdit">
+          <li v-for="inst in instNames" :key="inst">
+            {{ inst }}
+          </li>
+        </ul>
+        <UserInput v-model="instructors" v-if="isEdit" />
+        <input type="hidden" name="instructors" v-model="instructorStr" />
+        <br />
+        <button>
+          Handout
+        </button>
+        <input type="file" name="handout" v-if="isEdit" />
+        <div class="padless">
+          <h4>
+            <b>
+              Registered Students
+            </b>
+          </h4>
+          <Students />
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { mutations } from "../../../utils/store";
-import UserInput from "../../../components/Input/User";
-import Students from "../../../components/Students";
+import { mutations } from "@/utils/store";
+import UserInput from "@/components/Input/User";
+import Students from "@/components/Students";
 
 const emailExtract = /<(.*)>/;
 

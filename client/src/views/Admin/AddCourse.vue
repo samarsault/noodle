@@ -1,61 +1,59 @@
 <template>
   <div class="mainWrapper">
-    <div class="content" v-if="true">
-      <div class="heading">
-        <div class="buttons">
-          <button class="primary" form="addForm">
-            Add
-          </button>
-          <router-link to="/admin/cmgt" tag="button">Back</router-link>
-        </div>
+    <div class="heading">
+      <div class="buttons">
+        <button class="primary" form="addForm">
+          Add
+        </button>
+        <router-link to="/admin/cmgt" tag="button">Back</router-link>
       </div>
-
-      <form
-        id="addForm"
-        method="post"
-        action="/admin/super/addCourse"
-        enctype="multipart/form-data"
-        v-on:keydown.enter="formEnter"
-      >
-        <label for="name">Name</label>
-        <input type="text" name="name" />
-        <label>Subtitle</label>
-        <textarea
-          name="subtitle"
-          rows="7"
-          placeholder="Course subtitle in 50-100 characters"
-          minlength="50"
-          maxlength="100"
-        />
-
-        <label>Description</label>
-        <textarea
-          name="description"
-          rows="12"
-          placeholder="Detailed description in 800-1000 characters."
-          minlength="800"
-          maxlength="1000"
-        />
-        <input type="number" name="offerYear" placeholder="Year" />
-        <input type="number" name="offerSem" placeholder="Semester" />
-
-        <label for="instructors">Instructors</label>
-
-        <UserInput v-model="instructors" />
-        <input type="hidden" name="instructors" v-model="instructorStr" />
-
-        <label for="coverImage">Cover Image</label>
-        <input type="file" name="coverImage" accept="image/png, image/jpeg" />
-
-        <label for="handout">Handout:</label>
-        <input type="file" name="handout" />
-      </form>
     </div>
+
+    <form
+      id="addForm"
+      method="post"
+      action="/admin/super/addCourse"
+      enctype="multipart/form-data"
+      v-on:keydown.enter="formEnter"
+    >
+      <label for="name">Name</label>
+      <input type="text" name="name" />
+      <label>Subtitle</label>
+      <textarea
+        name="subtitle"
+        rows="7"
+        placeholder="Course subtitle in 50-100 characters"
+        minlength="50"
+        maxlength="100"
+      />
+
+      <label>Description</label>
+      <textarea
+        name="description"
+        rows="12"
+        placeholder="Detailed description in 800-1000 characters."
+        minlength="800"
+        maxlength="1000"
+      />
+      <input type="number" name="offerYear" placeholder="Year" />
+      <input type="number" name="offerSem" placeholder="Semester" />
+
+      <label for="instructors">Instructors</label>
+
+      <UserInput v-model="instructors" />
+      <input type="hidden" name="instructors" v-model="instructorStr" />
+
+      <label for="coverImage">Cover Image</label>
+      <input type="file" name="coverImage" accept="image/png, image/jpeg" />
+
+      <label for="handout">Handout:</label>
+      <input type="file" name="handout" />
+    </form>
   </div>
 </template>
 
 <script>
-import UserInput from "../../../components/Input/User";
+import UserInput from "@/components/Input/User";
 const emailExtract = /<(.*)>/;
 
 export default {
@@ -106,14 +104,6 @@ form {
   padding-left: 200px;
 }
 
-.mainWrapper {
-  display: grid;
-}
-.content {
-  padding: 40px;
-  padding-right: 200px;
-  padding-left: 200px;
-}
 .heading {
   display: flex;
   flex-wrap: wrap;
