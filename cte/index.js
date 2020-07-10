@@ -1,5 +1,5 @@
 //
-// Theme configuration
+// Adapter
 //
 import NavBarComponent from './components/NavBar.vue'
 
