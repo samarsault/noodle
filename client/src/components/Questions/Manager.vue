@@ -101,7 +101,6 @@ export default {
     editQuestion(index) {
       this.presetIndex = index;
       this.preset = this.questions[index];
-      // console.log()
       this.showEditor = true;
     },
     editQuestionSuccessful(question) {

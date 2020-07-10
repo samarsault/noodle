@@ -139,7 +139,6 @@ export default {
       this.selectedUser = _id;
     },
     goToPage(page) {
-      console.log("page", page);
       if (page && (page < 0 || page > this.users.pages)) return;
 
       if (!page || typeof page !== "number") page = 1;

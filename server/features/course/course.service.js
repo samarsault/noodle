@@ -261,7 +261,6 @@ exports.update = async function (course_id, newCourse) {
       const user = await User.findOne({
         email,
       });
-      console.log(user, "userFound");
       // don't degrade admin
       if (user.role !== "admin") {
         await User.updateOne(

@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <form
-        @submit="(e) => e.preventDefault() && search()"
+        @submit.prevent="search"
         style="display: flex; align-items: center;"
       >
         <input type="text" placeholder="Search by Name" v-model="searchField" />
@@ -57,10 +57,7 @@ export default {
   },
   async mounted() {
     this.setLoading(true);
-    console.log(this.$router);
-    console.log("Wassup!");
     this.courses = (await axios.get("/admin/super/courses/all")).data;
-    console.log(this.courses);
     this.setLoading(false);
   },
   methods: {
@@ -73,7 +70,6 @@ export default {
         this.courses = (
           await axios.get(`/admin/super/courses/search/?q=${this.searchField}`)
         ).data;
-        console.log(this.courses);
         this.showRes = true;
       }
     },

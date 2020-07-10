@@ -175,8 +175,6 @@ export default {
   },
   async mounted() {
     this.setLoading(true);
-    console.log("Wassup!");
-    console.log(this.$route.params.course_id);
     this.course = (
       await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)
     ).data;
@@ -189,8 +187,6 @@ export default {
       }
     );
     this.instNames = await Promise.all(instructorDelegates);
-    console.log("instNames", this.instNames);
-    console.log(this.course);
     this.setLoading(false);
   },
   methods: {
@@ -206,7 +202,6 @@ export default {
     },
     async toggleEdit() {
       this.isEdit = !this.isEdit;
-      console.log(this.course);
       this.course = (
         await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)
       ).data;
