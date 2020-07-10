@@ -91,21 +91,6 @@ export default {
   components: {
     UserInput,
   },
-  computed: {
-    instructorStr: function () {
-      return this.instructors
-        .map((x) => {
-          return x.match(emailExtract)[1];
-        })
-        .join(",");
-    },
-    awsCover: function () {
-      return this.course.coverImage;
-    },
-    awsHandout: function () {
-      return this.course.handout;
-    },
-  },
   data() {
     return {
       course: {
@@ -124,6 +109,21 @@ export default {
       coverRecieved: false,
       handoutRecieved: false,
     };
+  },
+  computed: {
+    instructorStr: function () {
+      return this.instructors
+        .map((x) => {
+          return x.match(emailExtract)[1];
+        })
+        .join(",");
+    },
+    awsCover: function () {
+      return this.course.coverImage;
+    },
+    awsHandout: function () {
+      return this.course.handout;
+    },
   },
   watch: {
     awsCover(val) {

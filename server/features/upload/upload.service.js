@@ -20,7 +20,6 @@ const s3Uploader = async function (req, res) {
     region: process.env.aws_region,
   });
   const s3 = new aws.S3();
-  console.log(req.files);
   const locations = [];
   const dataPromises = Object.values(req.files).map((file) => {
     const params = {

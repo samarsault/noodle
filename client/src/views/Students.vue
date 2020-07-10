@@ -27,7 +27,7 @@
     </a>
   </div>
   <div v-else>
-    <h1>No student registered.</h1>
+    <h4>No student registered.</h4>
   </div>
 </template>
 

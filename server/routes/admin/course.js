@@ -11,7 +11,6 @@ const {
   page: pageService,
   quiz: quizzer,
   upload,
-  s3Uploader,
 } = require("../../features/services");
 const { Uploads } = require("../../features/models");
 
