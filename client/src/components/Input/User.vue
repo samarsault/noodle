@@ -2,7 +2,7 @@
   <v-select
     :options="users"
     @search="searchUsers"
-    v-on:input="changed"
+    v-model="value"
     multiple
     taggable
   />
@@ -28,9 +28,6 @@ export default {
         this.users = data.map((x) => `${x.name} <${x.email}>`);
         loading(false);
       });
-    },
-    changed(value) {
-      this.$emit("input", value);
     },
   },
   components: {

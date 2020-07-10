@@ -187,6 +187,15 @@ export default {
       }
     );
     this.instNames = await Promise.all(instructorDelegates);
+    const instructorPromises = this.course.instructors.map(
+      async (instructor_id) => {
+        const user = (
+          await axios.get(`/admin/super/users/searchById/?q=${instructor_id}`)
+        ).data;
+        return `${user.name} <${user.email}>`;
+      }
+    );
+    this.instructors = await Promise.all(instructorPromises);
     this.setLoading(false);
   },
   methods: {
