@@ -96,30 +96,7 @@
               :class="{ 'no-edit': !isEdit, edit: isEdit }"
             />
           </div>
-<<<<<<< HEAD:client/src/views/Admin/EditCourse.vue
           <div>
-=======
-          <h4>
-            <b>
-              Instructors
-            </b>
-          </h4>
-          <ul v-if="!isEdit">
-            <li v-for="inst in instNames" :key="inst">
-              {{ inst }}
-            </li>
-          </ul>
-          <UserInput v-model="instructors" v-if="isEdit" />
-          <input type="hidden" name="instructors" v-model="instructorStr" />
-          <br />
-          <a :href="course.handout" target="_blank">
-            <button>
-              Handout
-            </button>
-          </a>
-          <input type="file" name="handout" v-if="isEdit" />
-          <div class="padless">
->>>>>>> Improve the UX for course Addition:client/src/views/Admin/Super/EditCourse.vue
             <h4>
               <b>
                 Offer Sem
@@ -167,15 +144,9 @@
 
 <script>
 import axios from "axios";
-<<<<<<< HEAD:client/src/views/Admin/EditCourse.vue
 import { mutations } from "@/utils/store";
 import UserInput from "@/components/Input/User";
 import Students from "@/components/Students";
-=======
-import { mutations } from "../../../utils/store";
-import UserInput from "../../../components/Input/User";
-import Students from "../../Students";
->>>>>>> Improve the UX for course Addition:client/src/views/Admin/Super/EditCourse.vue
 
 const emailExtract = /<(.*)>/;
 

@@ -1,89 +1,83 @@
 <template>
-  <div class="mainWrapper">
-    <div class="content" v-if="true">
-      <div class="heading">
-        <div class="buttons">
-          <button
-            class="primary"
-            @click="submitForm"
-            v-if="coverRecieved && handoutRecieved"
-          >
-            Add
-          </button>
-          <router-link to="/admin/cmgt" tag="button">Back</router-link>
-        </div>
+  <div class="content">
+    <div class="heading">
+      <div class="buttons">
+        <button
+          class="primary"
+          @click="submitForm"
+          v-if="coverRecieved && handoutRecieved"
+        >
+          Add
+        </button>
+        <router-link to="/admin/cmgt" tag="button">Back</router-link>
       </div>
     </div>
 
-      <div class="form">
-        <label for="name">Name</label>
-        <input type="text" name="name" v-model="course.name" />
-        <label>Subtitle</label>
-        <textarea
-          name="subtitle"
-          rows="7"
-          placeholder="Course subtitle in 50-100 characters"
-          minlength="50"
-          maxlength="100"
-          v-model="course.subtitle"
-        />
+    <div class="form">
+      <label for="name">Name</label>
+      <input type="text" name="name" v-model="course.name" />
+      <label>Subtitle</label>
+      <textarea
+        name="subtitle"
+        rows="7"
+        placeholder="Course subtitle in 50-100 characters"
+        minlength="50"
+        maxlength="100"
+        v-model="course.subtitle"
+      />
 
-        <label>Description</label>
-        <textarea
-          name="description"
-          rows="12"
-          placeholder="Detailed description in 800-1000 characters."
-          minlength="800"
-          maxlength="1000"
-          v-model="course.description"
-        />
-        <input
-          type="number"
-          name="offerYear"
-          placeholder="Year"
-          v-model="course.offerYear"
-        />
-        <input
-          type="number"
-          name="offerSem"
-          placeholder="Semester"
-          v-model="course.offerSem"
-        />
+      <label>Description</label>
+      <textarea
+        name="description"
+        rows="12"
+        placeholder="Detailed description in 800-1000 characters."
+        minlength="800"
+        maxlength="1000"
+        v-model="course.description"
+      />
+      <label>Offer Year</label>
+      <input
+        type="number"
+        name="offerYear"
+        placeholder="Year"
+        v-model="course.offerYear"
+      />
+      <label>Offer Sem</label>
+      <input
+        type="number"
+        name="offerSem"
+        placeholder="Semester"
+        v-model="course.offerSem"
+      />
 
       <label for="instructors">Instructors</label>
 
       <UserInput v-model="instructors" />
       <input type="hidden" name="instructors" v-model="instructorStr" />
 
-        <label for="coverImage">Cover Image</label>
-        <input
-          type="text"
-          name="coverImage"
-          v-model="course.coverImage"
-          v-if="false"
-        />
-        <input
-          type="file"
-          ref="coverImage"
-          accept="image/png, image/jpeg"
-          v-on:change="handleCoverUpload()"
-        />
-        <button @click="submitCoverImage" type="button" v-if="!coverRecieved">
-          Upload Image
-        </button>
+      <label for="coverImage">Cover Image</label>
+      <input
+        type="text"
+        name="coverImage"
+        v-model="course.coverImage"
+        v-if="false"
+      />
+      <input
+        type="file"
+        ref="coverImage"
+        accept="image/png, image/jpeg"
+        v-on:change="handleCoverUpload()"
+      />
+      <button @click="submitCoverImage" type="button" v-if="!coverRecieved">
+        Upload Image
+      </button>
 
-        <label for="handout">Handout</label>
-        <input
-          type="text"
-          name="handout"
-          v-model="course.handout"
-          v-if="false"
-        />
-        <input type="file" ref="handout" v-on:change="handleHandoutUpload()" />
-        <button @click="submitHandout" type="button" v-if="!handoutRecieved">
-          Upload Handout
-        </button>
-      </div>
+      <label for="handout">Handout</label>
+      <input type="text" name="handout" v-model="course.handout" v-if="false" />
+      <input type="file" ref="handout" v-on:change="handleHandoutUpload()" />
+      <button @click="submitHandout" type="button" v-if="!handoutRecieved">
+        Upload Handout
+      </button>
     </div>
   </div>
 </template>
@@ -202,7 +196,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-form {
+.form {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -211,6 +205,11 @@ form {
   padding-left: 200px;
 }
 
+.content {
+  padding: 40px;
+  padding-right: 200px;
+  padding-left: 200px;
+}
 .heading {
   display: flex;
   flex-wrap: wrap;
@@ -226,44 +225,15 @@ form {
   width: inherit;
   // margin: 5px;
 }
-.form {
-  // padding: 0px;
-  // margin: 0px;
-}
-.form * {
-  margin: 0px;
-}
+
 .courseImage {
   padding: 20px;
-}
-.mainWrapper h2 {
-  padding: 0px;
-  margin: 0px;
-  grid-row: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .h1ify {
   font-size: 200%;
   font-weight: 500;
 }
-
-// .no-edit {
-//   width: 100%;
-//   padding: 0px;
-//   color: inherit;
-//   margin: 0px;
-//   background-color: inherit;
-// }
-
-// .edit {
-//   width: 100%;
-//   padding: 0px;
-//   color: inherit;
-//   margin: 0px;
-// }
 
 label {
   display: block;
