@@ -19,26 +19,14 @@
 
 <script>
 export default {
-  data() {
-    return {
-      activeComp: "CM",
-    };
-  },
-  methods: {
-    setActive(comp) {
-      this.activeComp = comp;
-      this.$router.push({
-        path: "/admin/ec",
-      });
+  computed: {
+    sidebarHidden() {
+      if (this.$route.name && this.$route.name === "admin") {
+        // Navigation page
+        return false;
+      }
+      return true;
     },
-  },
-  mounted() {
-    if (this.$route.query.success) {
-      if (this.$route.query.success === "1")
-        this.setAlert("success", "Operation succesful");
-      else if (this.$route.query.success === "0")
-        this.setAlert("error", "Operation was not successful");
-    }
   },
 };
 </script>

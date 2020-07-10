@@ -181,21 +181,12 @@ export default {
 }
 table {
   width: 100%;
-  thead {
-    display: table-header-group;
-  }
-  tbody {
-    width: 100%;
-  }
-  &.loading {
-    tbody {
-      position: relative;
-    }
-  }
+  position: relative;
 }
 
 table.loading tbody {
   position: relative;
+  // display: table;
   &:after {
     position: absolute;
     top: 0;
