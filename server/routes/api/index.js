@@ -20,6 +20,23 @@ router.use(
   courseApiRouter
 );
 
+router.post("/register/:course_id", async function (req, res) {
+  // TODO: check if toobject required
+
+  const { course_id } = req.params;
+  if (!req.user)
+    return res.json({
+      success: false,
+    });
+  // User.
+  const user_id = req.user._id;
+
+  await course.service.register(user_id, course_id);
+
+  return res.json({
+    success: true,
+  });
+});
 router.get("/dashboard", async function (req, res) {
   const dashboard = await user.service.getDashboard(req.user._id);
   return res.json(dashboard);

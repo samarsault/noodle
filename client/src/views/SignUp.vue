@@ -116,21 +116,14 @@ export default {
       const password = this.pass;
 
       if (email && password) {
-        try {
-          const { data } = await axios.post("/auth/login", {
-            email,
-            password,
-          });
-          if (data.success) {
-            localStorage.setItem("token", data.token);
-            this.$router.push({
-              path: "/",
-            });
-          } else {
-            throw new Error(data.message);
-          }
-        } catch (err) {
-          // TODO: Update
+        const { data } = await axios.post("/auth/login", {
+          email,
+          password,
+        });
+        if (data.success) {
+          localStorage.setItem("token", data.token);
+          window.location.href = "/";
+        } else {
           this.showError("Invalid email or password");
         }
       }

@@ -41,6 +41,9 @@ export default {
     logout() {
       localStorage.clear();
       this.setUser(null);
+      this.$router.push({
+        path: "/",
+      });
     },
   },
   async mounted() {

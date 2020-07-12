@@ -4,6 +4,7 @@ exports.postLogin = async (req, res) => {
   try {
     const token = await authService.login(req.body);
     return res.status(200).json({
+      success: true,
       token,
     });
   } catch (err) {
@@ -15,10 +16,12 @@ exports.postSignUp = async function (req, res) {
   try {
     const token = await authService.createUser(req.body);
     return res.status(200).json({
+      success: true,
       token,
     });
   } catch (err) {
     return res.status(401).json({
+      success: false,
       message: err.message,
     });
   }
