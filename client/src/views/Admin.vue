@@ -3,10 +3,12 @@
     <div class="sidebar">
       <p style="font-weight: bold; padding: 0 10px;">Admin</p>
       <nav>
-        <router-link :to="'/admin/cmgt'">
+        <router-link :to="'/admin/cmgt'" class="icon-centre">
+          <BookOpen style="margin-right: 10px;" />
           Courses
         </router-link>
-        <router-link :to="'/admin/umgt'">
+        <router-link :to="'/admin/umgt'" class="icon-centre">
+          <Account style="margin-right: 10px;" />
           Users
         </router-link>
       </nav>
@@ -18,7 +20,14 @@
 </template>
 
 <script>
+import BookOpen from "vue-material-design-icons/BookOpenVariant";
+import Account from "vue-material-design-icons/Account";
+
 export default {
+  components: {
+    BookOpen,
+    Account,
+  },
   computed: {
     sidebarHidden() {
       if (this.$route.name && this.$route.name === "admin") {
@@ -110,5 +119,9 @@ export default {
       }
     }
   }
+}
+.icon-centre {
+  display: flex !important;
+  align-items: center;
 }
 </style>
