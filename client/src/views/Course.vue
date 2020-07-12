@@ -36,7 +36,7 @@
               <div>
                 {{ page.name }}
               </div>
-              <div class="module-panel">
+              <div class="module-panel" v-if="isAdmin">
                 <Edit :size="20" />
                 <Bin :size="20" />
               </div>
