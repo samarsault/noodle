@@ -55,9 +55,11 @@
           ><Go :size="28" />
         </button>
       </form>
+      <!--
       <a href="http://localhost:3000/auth">
         <button>Google Log in</button>
       </a>
+      -->
     </section>
   </main>
 </template>
@@ -114,17 +116,22 @@ export default {
       const password = this.pass;
 
       if (email && password) {
-        const { data } = await axios.post("/auth/login", {
-          email,
-          password,
-        });
-        if (data.success) {
-          localStorage.setItem("token", data.token);
-          this.$router.push({
-            path: "/",
+        try {
+          const { data } = await axios.post("/auth/login", {
+            email,
+            password,
           });
-        } else {
-          this.showError(data.message);
+          if (data.success) {
+            localStorage.setItem("token", data.token);
+            this.$router.push({
+              path: "/",
+            });
+          } else {
+            throw new Error(data.message);
+          }
+        } catch (err) {
+          // TODO: Update
+          this.showError("Invalid email or password");
         }
       }
     },

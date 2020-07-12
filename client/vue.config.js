@@ -18,7 +18,7 @@ module.exports = {
       sass: {
         // Inserts SCSS variables in all styles
         // changed to prependData, starting sass-loader 8
-        data: `@import "@/styles/include/_vars.scss";`,
+        data: `@import "~noodle-adapter/styles/include/_vars.scss";`,
       },
     },
   },

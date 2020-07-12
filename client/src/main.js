@@ -4,7 +4,6 @@ import App from "./App.vue";
 import router from "./router";
 import VueSweetalert2 from "vue-sweetalert2";
 // import 'vue-material-design-icons/styles.css'
-import "./styles/base.scss";
 import "sweetalert2/dist/sweetalert2.min.css";
 
 Vue.use(VueSweetalert2);
@@ -17,19 +16,19 @@ axios.interceptors.request.use(function (config) {
 
   return config;
 });
-axios.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response && error.response.data && error.response.data.location) {
-      // window.location.href = error.response.data.location;
-      console.log(error);
-    } else {
-      return Promise.reject(error);
-    }
-  }
-);
+// axios.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   (error) => {
+//     if (error.response && error.response.data && error.response.data.location) {
+//       // window.location.href = error.response.data.location;
+//       console.log(error);
+//     } else {
+//       return Promise.reject(error);
+//     }
+//   }
+// );
 
 new Vue({
   router,

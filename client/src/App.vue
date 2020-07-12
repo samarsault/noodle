@@ -18,12 +18,6 @@
   </div>
 </template>
 
-<style lang="scss">
-@charset 'utf-8';
-
-@import "vue-select/src/scss/vue-select.scss";
-</style>
-
 <script>
 import axios from "axios";
 
@@ -46,6 +40,7 @@ export default {
     ...mutations,
     logout() {
       localStorage.clear();
+      this.setUser(null);
     },
   },
   async mounted() {
@@ -62,6 +57,11 @@ export default {
 </script>
 
 <style lang="scss">
+@charset 'utf-8';
+
+@import "~noodle-adapter/styles/base.scss";
+@import "vue-select/src/scss/vue-select.scss";
+
 .app-loading {
   filter: blur(5px);
 }
