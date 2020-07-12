@@ -131,7 +131,7 @@ export default {
         .then(({ status }) => {
           if (status === 200) {
             this.$router.push({
-              path: `/course/${this.course_id}/Quiz/${this.quiz_id}`,
+              path: `/dashboard/course/${this.course_id}/Quiz/${this.quiz_id}`,
             });
           } else {
             alert("Submission error");

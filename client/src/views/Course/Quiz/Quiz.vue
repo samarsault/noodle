@@ -6,7 +6,7 @@
     </button>
     <Editor v-model="quiz.description" :edit="isAdmin" :course_id="course_id" />
 
-    <router-link :to="`/course/${course_id}/Quizzer/${quiz._id}`">
+    <router-link :to="`/dashboard/course/${course_id}/Quizzer/${quiz._id}`">
       <button class="primary">Attempt Quiz</button>
     </router-link>
     <div v-if="attempts.length > 0">
@@ -16,7 +16,7 @@
     </div>
     <div v-if="isAdmin">
       <h3>Admin</h3>
-      <router-link :to="`/course/${course_id}/attempts/${quiz._id}`">
+      <router-link :to="`/dashboard/course/${course_id}/attempts/${quiz._id}`">
         <button class>View Attempts</button>
       </router-link>
       <button class="secondary" @click="editing = true">Add Question</button>

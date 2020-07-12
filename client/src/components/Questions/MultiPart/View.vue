@@ -4,7 +4,7 @@
       v-for="(part, index) in question.questions"
       :key="part._id"
       :question="part"
-      :answer="answer[index]"
+      :answer="answer ? answer[index] : null"
       :onAnswer="(ans) => setAnswer(index, ans)"
     />
   </div>
@@ -18,11 +18,6 @@ export default {
     // Needs to be imported dynamically
     // https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
     QuestionView: () => import("../View"),
-  },
-  data() {
-    return {
-      answers: [],
-    };
   },
   methods: {
     setAnswer(index, ans) {
