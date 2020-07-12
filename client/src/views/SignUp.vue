@@ -146,9 +146,7 @@ export default {
         });
         if (data.success) {
           localStorage.setItem("token", data.token);
-          this.$router.push({
-            path: "/",
-          });
+          window.location.href = "/";
         } else {
           this.showError(data.message);
         }
