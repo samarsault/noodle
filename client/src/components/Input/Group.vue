@@ -24,7 +24,7 @@ export default {
     );
     this.groups = data;
     // First change, default property
-    this.onChange(this.value);
+    this.onChange(this.selectedValue);
   },
   data() {
     return {
