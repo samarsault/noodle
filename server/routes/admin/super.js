@@ -2,8 +2,7 @@
 // Super Admin Actions
 //
 const express = require("express");
-// const { upload, s3Uploader } = require("../../middleware/upload");
-const response = require("../../util/response");
+// const response = require("../../util/response");
 const {
   course: courseService,
   user: userService,

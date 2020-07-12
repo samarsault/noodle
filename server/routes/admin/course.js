@@ -11,6 +11,7 @@ const {
   page: pageService,
   quiz: quizzer,
   upload,
+  s3Uploader,
 } = require("../../features/services");
 const { Uploads } = require("../../features/models");
 
@@ -33,13 +34,16 @@ router.get("/students/download", async function (req, res) {
 });
 
 // Add a resource to course
-router.post("/upload", upload.single("res"), async function (req, res) {
-  if (!req.file) return res.status(400).send("Missing");
-
-  const url = `/uploads/${req.file.filename}`;
+router.post("/upload", upload.fields([{ name: "res" }]), async function (
+  req,
+  res
+) {
+  if (!req.files) return res.status(400).send("Missing");
+  const url = await s3Uploader(req, res);
+  const file = req.files.res[0];
   // History of uploads
   const uploadEntry = await Uploads.create({
-    name: req.file.originalname,
+    name: file.originalname,
     course: req.course_id,
     user: req.session.passport.user,
     url,
