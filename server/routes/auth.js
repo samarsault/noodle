@@ -36,6 +36,9 @@ router.post("/update", async (req, res) => {
   const user_id = req.session.passport.user;
   // const { bits_id, phone }  =  req.body;
   await userService.updateInfo(user_id, req.body);
+  return res.json({
+    success: true,
+  });
 });
 
 router.get("/logout", (req, res) => {
