@@ -1,4 +1,4 @@
-const { User, Course } = require("../models");
+const User = require("./user.model");
 const calcCurDate = require("../../util/calcCurDate");
 
 exports.get = async function (user_id) {
@@ -38,22 +38,8 @@ exports.getDashboard = async function (user_id) {
   };
 };
 
-exports.updateAccess = async function (user_id, role, instructor_for) {
-  await User.updateOne({ _id: user_id }, { role });
-
-  // Update role as instructor
-  if (instructor_for) {
-    await Course.updateOne(
-      {
-        name: instructor_for,
-      },
-      {
-        $addToSet: {
-          instructors: user_id,
-        },
-      }
-    );
-  }
+exports.updateAccess = function (user_id, role) {
+  return User.updateOne({ _id: user_id }, { role });
 };
 
 exports.search = function (query) {

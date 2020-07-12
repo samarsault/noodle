@@ -1,10 +1,16 @@
 <template>
   <div>
-    <div class="heading">
+    <div class="header">
       <div>
         <h2>{{ user.name }}</h2>
         <p style="color: #999;">{{ user.email }}</p>
         <p style="color: #999;">{{ user.bits_id }}</p>
+        <p>
+          {{ user.role | title }}
+          <a href="#" @click="alterAccess">
+            {{ user.role === "student" ? "Upgrade" : "Downgrade" }}
+          </a>
+        </p>
       </div>
 
       <div class="buttons">
@@ -22,7 +28,7 @@
         </template>
       </CourseCard>
       <div v-if="!courses.length">
-        None
+        None.
       </div>
     </div>
   </div>
@@ -38,6 +44,13 @@ export default {
       user: null,
       courses: [],
     };
+  },
+  filters: {
+    title: (str) => {
+      return `${str[0].toUpperCase()}${str
+        .toLowerCase()
+        .substr(1, str.length - 1)}`;
+    },
   },
   components: {
     CourseCard,
@@ -62,12 +75,25 @@ export default {
 
       this.$router.push({ path: `/admin/umgt/${this.user._id}` });
     },
+    async alterAccess() {
+      const oppositeRole = this.user.role === "admin" ? "student" : "admin";
+      try {
+        const { status } = await axios.post("/admin/super/users/updateAccess", {
+          user_id: this.user._id,
+          role: oppositeRole,
+        });
+        if (status !== 200) throw new Error("Error updating access level");
+        this.user.role = oppositeRole;
+      } catch (err) {
+        alert(err.message);
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.heading {
+.header {
   display: flex;
   justify-content: space-between;
 }
@@ -77,22 +103,5 @@ export default {
   flex-wrap: wrap;
   justify-content: space-around;
   margin: 0px;
-}
-a {
-  text-decoration: none;
-  color: inherit;
-}
-.mainWrapper h2 {
-  padding: 0px;
-  margin: 0px;
-  grid-row: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.h1ify {
-  font-size: 200%;
-  font-weight: 500;
 }
 </style>

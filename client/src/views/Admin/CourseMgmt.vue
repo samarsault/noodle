@@ -20,7 +20,8 @@
       >
     </div>
     <div v-if="showRes" class="showing-res">
-      Showing results for {{ searchField }}
+      <p v-if="courses.length > 0">Showing results for {{ searchField }}</p>
+      <p v-else>No such course found.</p>
     </div>
     <div class="courses">
       <CourseCard
@@ -28,13 +29,6 @@
         :key="course._id"
         :course="course"
       />
-    </div>
-    <div class="not-found" v-if="courses.length == 0">
-      <img src="/images/empty.png" />
-      <h4>
-        We looked every where but couldn't find your course, try checking the
-        spelling :D
-      </h4>
     </div>
   </div>
 </template>
@@ -97,12 +91,4 @@ export default {
 .showing-res {
   display: flex;
 }
-// .not-found {
-// 	grid: ;
-//   display: inline-block;
-//   width: 140px;
-//   height: 140px;
-//   margin-right: 20px;
-//   border-radius: 100%;
-// }
 </style>

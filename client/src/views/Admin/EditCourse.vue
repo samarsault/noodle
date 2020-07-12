@@ -1,5 +1,5 @@
 <template>
-  <div class="mainWrapper" v-if="course">
+  <div v-if="course">
     <div class="heading">
       <input
         type="text"
@@ -38,7 +38,7 @@
     <form
       id="editForm"
       method="post"
-      :action="`/admin/super/courses/update/${this.course._id}`"
+      @submit.prevent="saveCourse"
       enctype="multipart/form-data"
     >
       <input
@@ -263,23 +263,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-form {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  padding: 40px;
-  padding-right: 200px;
-  padding-left: 200px;
-}
-
-.mainWrapper {
-  display: grid;
-}
-.content {
-  padding: 40px;
-  padding-right: 200px;
-  padding-left: 200px;
-}
 .heading {
   display: flex;
   align-items: center;

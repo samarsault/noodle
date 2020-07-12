@@ -1,24 +1,5 @@
 <template>
   <div>
-    <Modal
-      v-if="updateModal"
-      title="Update Access Level"
-      v-on:ok="updateAccess"
-      v-on:close="updateModal = false"
-    >
-      <template slot="body">
-        <v-select
-          v-model="accessLevel"
-          :options="['student', 'admin', 'instructor']"
-        />
-        <CourseInput
-          style="margin-top: 15px;"
-          v-model="instructorFor"
-          v-if="accessLevel === 'instructor'"
-        />
-      </template>
-    </Modal>
-
     <div class="flex-away">
       <div>
         <p>Total: {{ users.total }} entries</p>
@@ -45,7 +26,6 @@
           <th>Name</th>
           <th>Email</th>
           <th>Access Level</th>
-          <th>Action</th>
           <th>Details</th>
         </tr>
       </thead>
@@ -54,14 +34,6 @@
           <td>{{ student.name }}</td>
           <td>{{ student.email }}</td>
           <td>{{ student.role }}</td>
-          <td>
-            <button
-              @click="showUpdateModal(student.role, student._id)"
-              class="primary"
-            >
-              Update
-            </button>
-          </td>
           <td>
             <router-link :to="`/admin/umgt/${student._id}`" tag="button"
               >View</router-link
@@ -75,18 +47,12 @@
 
 <script>
 import axios from "axios";
-import Modal from "./Dialogs/Modal";
-import CourseInput from "./Input/Course";
 import NextIcon from "vue-material-design-icons/ArrowRight";
 import PrevIcon from "vue-material-design-icons/ArrowLeft";
-import vSelect from "vue-select";
 
 export default {
   props: ["course"],
   components: {
-    Modal,
-    vSelect,
-    CourseInput,
     PrevIcon,
     NextIcon,
   },
@@ -94,8 +60,6 @@ export default {
   data() {
     return {
       accessLevel: "student",
-      instructorFor: "",
-      updateModal: false,
       query: "",
       isLoading: false,
       users: {
@@ -117,27 +81,6 @@ export default {
   },
 
   methods: {
-    updateAccess() {
-      axios
-        .post("/admin/super/users/updateAccess", {
-          user_id: this.selectedUser,
-          role: this.accessLevel,
-          instructor_for: this.instructorFor,
-        })
-        .then(({ status }) => {
-          if (status === 200) {
-            this.updateModal = false;
-            this.setAlert("success", `Updated Access to ${this.accessLevel}`);
-          } else {
-            this.setAlert("error", `Error updating access`);
-          }
-        });
-    },
-    showUpdateModal(role, _id) {
-      this.updateModal = true;
-      this.accessLevel = role;
-      this.selectedUser = _id;
-    },
     goToPage(page) {
       if (page && (page < 0 || page > this.users.pages)) return;
 

@@ -16,7 +16,6 @@ async function populateDB() {
     name: "Instroctor",
     email: "instructor@bpgc-cte.org",
     oauth_id: "8823421",
-    role: "instructor",
   });
 
   const admin = await User.create({

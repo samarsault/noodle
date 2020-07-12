@@ -4,7 +4,7 @@
 const basicData = require("@/data");
 const userService = require("./user.service");
 const courseService = require("../course/course.service");
-const { User, Course } = require("../models");
+const { User } = require("../models");
 
 let data;
 
@@ -70,17 +70,7 @@ describe("User Service", function () {
 
   it("checks wether it update access or not", async (done) => {
     // For instructor
-    await userService.updateAccess(
-      data.student._id,
-      "instructor",
-      data.course.name
-    );
     let user = await User.findOne({ _id: data.student._id });
-    const course = await Course.findOne({ _id: data.course._id });
-    expect(user.role).toBe("instructor");
-    expect(course.instructors).toEqual(
-      expect.arrayContaining([data.student._id])
-    );
 
     // For admin
     await userService.updateAccess(data.student._id, "admin");

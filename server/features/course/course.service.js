@@ -32,17 +32,16 @@ exports.isRegistered = async (course_id, user_id) => {
 };
 
 exports.getCourseView = async function (course_id, user_id) {
-  const course = await Course.findOne({ _id: course_id });
-
-  const instructorDelegates = course.instructors.map(async (instructor_id) => {
-    const user = await User.findOne({ _id: instructor_id }).select("name");
-    return user.name;
+  const course = await Course.findOne({ _id: course_id }).populate({
+    path: "instructors",
+    select: "name",
   });
+
   let isReg = false;
   if (user_id) {
     isReg = await this.isRegistered(course_id, user_id);
   }
-  const instructors = await Promise.all(instructorDelegates);
+  const instructors = course.instructors.map((x) => x.name);
   const courseObject = course.toObject();
   courseObject.instructors = instructors;
   const curDate = calcCurDate();
@@ -182,19 +181,6 @@ exports.create = async function (body) {
     const user = await User.findOne({
       email,
     });
-    // don't degrade admin
-    if (user.role !== "admin") {
-      await User.updateOne(
-        {
-          _id: user._id,
-        },
-        {
-          role: "instructor",
-          instructor_for: course._id,
-        }
-      );
-    }
-
     await Course.updateOne(
       {
         _id: course._id,
@@ -261,19 +247,6 @@ exports.update = async function (course_id, newCourse) {
       const user = await User.findOne({
         email,
       });
-      // don't degrade admin
-      if (user.role !== "admin") {
-        await User.updateOne(
-          {
-            _id: user._id,
-          },
-          {
-            role: "instructor",
-            instructor_for: course._id,
-          }
-        );
-      }
-
       await Course.updateOne(
         {
           _id: course._id,

@@ -27,12 +27,5 @@ To run the app, you will require a .env file listing your GOOGLE_CLIENT_ID and G
 GOOGLE_CLIENT_ID=sdjfoasjfoda
 GOOGLE_CLIENT_SECRET=3232-u23.apps.googleusercontent.com
 ```
-## Access Levels
-
-There are 3 types of access levels:
-
-- Admin: Can do anything
-- Instructor: Can upload resources, see students particular to his/her course
-- Student
 
 Note that the first user you create is granted admin status by default.

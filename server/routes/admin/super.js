@@ -151,18 +151,16 @@ router.delete("/courses/:course_id", async function (req, res) {
 // Upgrade Access Level of User
 //
 router.post("/users/updateAccess", async function (req, res) {
-  const { user_id, role, instructor_for } = req.body;
+  const { user_id, role } = req.body;
 
   if (user_id && role) {
-    if (role === "instructor" && !instructor_for)
-      return res.json(response.error("Instructor role requires a course."));
-
-    await userService.updateAccess(user_id, role, instructor_for);
-
-    return res.redirect("/dashboard/admin?success=1");
+    await userService.updateAccess(user_id, role);
+    return res.status(200).json({
+      success: true,
+    });
   }
 
-  return res.redirect("/dashboard/admin?success=0");
+  return res.status(400).json({ success: false });
 });
 
 router.post("/deregister", async function (req, res) {
