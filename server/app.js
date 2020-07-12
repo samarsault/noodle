@@ -15,6 +15,7 @@ const authRouter = require("./routes/auth");
 const coursesRouter = require("./routes/courses");
 const adminRouter = require("./routes/admin");
 const apiRouter = require("./routes/api");
+const publicRouter = require("./routes/public");
 
 const app = express();
 
@@ -40,6 +41,7 @@ googleAuth(passport);
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
+app.use("/public", publicRouter);
 app.use("/auth", authRouter);
 app.use("/courses", isAuth, coursesRouter); // handle course registration
 app.use("/admin", isAuth, adminRouter);

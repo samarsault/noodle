@@ -48,7 +48,9 @@ router.post("/:course_id/register", async function (req, res) {
 
   await courseService.register(user_id, course_id);
 
-  return res.redirect("/dashboard");
+  return res.json({
+    success: true,
+  });
 });
 
 module.exports = router;
