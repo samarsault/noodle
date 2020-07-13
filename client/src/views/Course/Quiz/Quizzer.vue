@@ -90,6 +90,11 @@ export default {
   },
   methods: {
     startQuiz() {
+      if (this.quiz.questions.length === 0) {
+        alert("Quiz has no questions.");
+        return;
+      }
+
       axios
         .post(`/api/courses/${this.course_id}/quiz/attempt`, {
           quiz_id: this.quiz_id,
