@@ -19,8 +19,8 @@ export default {
     properties() {
       return {
         user: this.user,
-        course_id: this.$route.params.course_id,
         courses: this.courses,
+        course: this.course,
         action: this.dispatchAction,
       };
     },
@@ -33,12 +33,22 @@ export default {
       }
       return [];
     },
+    async getCourse() {
+      if (this.access && this.access.includes("course")) {
+        const course_id = this.$route.params.course_id;
+        if (!course_id) return null;
+        const { data } = await axios.get(`/public/courses/${course_id}`);
+        return data;
+      }
+      return null;
+    },
     dispatchAction(action) {
       if (action === "logout") localStorage.clear();
     },
   },
   async mounted() {
     this.courses = await this.getCourses();
+    this.course = await this.getCourse();
   },
 };
 </script>
