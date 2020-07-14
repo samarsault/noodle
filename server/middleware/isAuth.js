@@ -10,7 +10,7 @@ module.exports = async function (req, res, next) {
     const { user_id } = await jwt.verify(token, process.env.SECRET_KEY);
     const user = await User.findOne({
       _id: user_id,
-    }).select("email role bits_id phone");
+    }).select("email role bits_id phone courses");
     if (!user) {
       throw new Error("No user with the given id");
     }
