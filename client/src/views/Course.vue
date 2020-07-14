@@ -9,7 +9,12 @@
           padding: 0 10px;
         "
       >
-        <p style="font-weight: bold;">{{ course.name }}</p>
+        <div style="display: flex; align-items: center;">
+          <router-link style="color: #ddd; margin-right: 5px;" to="/dashboard">
+            <Back style="margin-top: 4px;" />
+          </router-link>
+          <p style="font-weight: bold;">{{ course.name }}</p>
+        </div>
         <Plus v-if="isAdmin" @click="addPage()" style="cursor: pointer;" />
       </div>
       <nav>
@@ -113,6 +118,7 @@ import Edit from "vue-material-design-icons/Pencil";
 import Bin from "vue-material-design-icons/TrashCan";
 import Folder from "vue-material-design-icons/Folder";
 import FolderOpen from "vue-material-design-icons/FolderOpen";
+import Back from "vue-material-design-icons/ChevronLeft";
 
 export default {
   computed: {
@@ -183,6 +189,7 @@ export default {
   components: {
     Plus,
     Edit,
+    Back,
     Bin,
     SelectItem,
     Folder,
