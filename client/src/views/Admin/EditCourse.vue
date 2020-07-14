@@ -124,7 +124,7 @@
           {{ inst }}
         </li>
       </ul>
-      <UserInput v-model="instructors" v-if="isEdit" />
+      <UserInput v-model="instructors" v-if="isEdit" :value="instructors" />
       <input type="hidden" name="instructors" v-model="instructorStr" />
       <br />
 
@@ -199,32 +199,35 @@ export default {
     },
   },
   async mounted() {
-    this.setLoading(true);
-    this.course = (
-      await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)
-    ).data;
-    const instructorDelegates = this.course.instructors.map(
-      async (instructor_id) => {
-        const user = (
-          await axios.get(`/admin/super/users/searchById/?q=${instructor_id}`)
-        ).data;
-        return user.name;
-      }
-    );
-    this.instNames = await Promise.all(instructorDelegates);
-    const instructorPromises = this.course.instructors.map(
-      async (instructor_id) => {
-        const user = (
-          await axios.get(`/admin/super/users/searchById/?q=${instructor_id}`)
-        ).data;
-        return `${user.name} <${user.email}>`;
-      }
-    );
-    this.instructors = await Promise.all(instructorPromises);
-    this.setLoading(false);
+    this.doMounting();
   },
   methods: {
     ...mutations,
+    async doMounting() {
+      this.setLoading(true);
+      this.course = (
+        await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)
+      ).data;
+      const instructorDelegates = this.course.instructors.map(
+        async (instructor_id) => {
+          const user = (
+            await axios.get(`/admin/super/users/searchById/?q=${instructor_id}`)
+          ).data;
+          return user.name;
+        }
+      );
+      this.instNames = await Promise.all(instructorDelegates);
+      const instructorPromises = this.course.instructors.map(
+        async (instructor_id) => {
+          const user = (
+            await axios.get(`/admin/super/users/searchById/?q=${instructor_id}`)
+          ).data;
+          return `${user.name} <${user.email}>`;
+        }
+      );
+      this.instructors = await Promise.all(instructorPromises);
+      this.setLoading(false);
+    },
     async submit() {
       this.course = (
         await axios.put(`/admin/super/courses/update/${this.course._id}`, {
@@ -233,9 +236,9 @@ export default {
         })
       ).data;
       this.isEdit = !this.isEdit;
+      this.doMounting();
     },
     async toggleEdit() {
-      console.log("hitting toggleEdit");
       this.isEdit = !this.isEdit;
       this.course = (
         await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)

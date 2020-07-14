@@ -141,9 +141,7 @@ export default {
     },
     async submitForm() {
       const sendCourse = { ...this.course, instructors: this.instructorStr };
-      const data = (await axios.post("/admin/super/addCourse", sendCourse))
-        .data;
-      console.log(data);
+      await axios.post("/admin/super/addCourse", sendCourse);
     },
     async submitHandout() {
       // Initialize the form data
