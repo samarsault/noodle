@@ -53,25 +53,7 @@ describe("Course Service", function () {
     const courseInfo = await courseService.getCourseView(data.course._id);
     const real = data.course.toObject();
     real.instructors = ["Instroctor"];
-    expect(courseInfo).toEqual(
-      expect.objectContaining({
-        course: real,
-        isArchive: false,
-        isReg: false,
-      })
-    );
-    await courseService.register(data.student._id, data.course._id);
-    const customCourseInfo = await courseService.getCourseView(
-      data.course._id,
-      data.student._id
-    );
-    expect(customCourseInfo).toEqual(
-      expect.objectContaining({
-        course: real,
-        isArchive: false,
-        isReg: true,
-      })
-    );
+    expect(courseInfo).toEqual(real);
     done();
   });
 
@@ -94,94 +76,6 @@ describe("Course Service", function () {
     expect(subtitle).toStrictEqual(
       expect.objectContaining({ subtitle: data.course.subtitle })
     );
-    done();
-  });
-
-  it("Get past courses successfully", async (done) => {
-    const demoDates = [
-      [2019, 1],
-      [2019, 2],
-      [2016, 1],
-      [2016, 2],
-      [2040, 1],
-      [2040, 2],
-    ];
-    const checkCorrectness = async (date) => {
-      const demoCourse = data.course.toObject();
-      [demoCourse.offerYear, demoCourse.offerSem] = date;
-      demoCourse.name = "Thing";
-      demoCourse._id = null;
-      const histCourse = await Course.create(demoCourse);
-      let histCourses = await courseService.getFromHistory(date);
-      histCourses = histCourses.map((c) => {
-        const course = c;
-        course._id = null;
-        return course.toObject();
-      });
-      expect(histCourses).toEqual(
-        expect.arrayContaining([histCourse.toObject()])
-      );
-    };
-
-    const checkEmpty = async (date) => {
-      const coursesEmpty = await courseService.getFromHistory(date);
-      expect(coursesEmpty).toEqual(expect.arrayContaining([]));
-    };
-
-    // Get courses which exist
-    await checkCorrectness(demoDates[1]);
-    await checkCorrectness(demoDates[0]);
-
-    // Extreme Past should be empty
-    await checkEmpty(demoDates[2]);
-    await checkEmpty(demoDates[3]);
-
-    // Future should be empty
-    await checkEmpty(demoDates[4]);
-    await checkEmpty(demoDates[5]);
-
-    done();
-  });
-
-  it("Get Archives successfully", (done) => {
-    const archivesAsExpected = (want, got) => {
-      expect(want).toEqual(
-        got.map((stamp) => expect.objectContaining({ stamp }))
-      );
-    };
-
-    let archives = courseService.getArchives([2017, 1], [2019, 2]);
-    let expected = ["2017-1", "2017-2", "2018-1", "2018-2", "2019-1"];
-    archivesAsExpected(archives, expected);
-
-    archives = courseService.getArchives([2017, 2], [2019, 1]);
-    expected = ["2017-2", "2018-1", "2018-2"];
-    archivesAsExpected(archives, expected);
-
-    archives = courseService.getArchives([2017, 2], [2019, 2]);
-    expected = ["2017-2", "2018-1", "2018-2", "2019-1"];
-    archivesAsExpected(archives, expected);
-
-    archives = courseService.getArchives([2017, 1], [2019, 1]);
-    expected = ["2017-1", "2017-2", "2018-1", "2018-2"];
-    archivesAsExpected(archives, expected);
-
-    archives = courseService.getArchives([2017, 2], [2017, 1]);
-    expect(archives).toEqual([]);
-
-    archives = courseService.getArchives([2017, 1], [2017, 1]);
-    expect(archives).toEqual([]);
-
-    archives = courseService.getArchives([2017, 2], [2017, 2]);
-    expect(archives).toEqual([]);
-
-    archives = courseService.getArchives([2017, 1], [2017, 2]);
-    expect(archives).toEqual([
-      expect.objectContaining({
-        stamp: "2017-1",
-      }),
-    ]);
-
     done();
   });
 

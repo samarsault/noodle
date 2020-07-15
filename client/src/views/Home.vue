@@ -10,7 +10,7 @@
             <img :src="course.coverImage" :alt="course.name" />
             <div>
               <h3>{{ course.name }}</h3>
-              <h4 v-if="isArchive(course)">
+              <h4 v-if="course.isArchived">
                 Archived
               </h4>
               <p>
@@ -53,18 +53,10 @@ export default {
   },
   methods: {
     ...mutations,
-    isArchive(course) {
-      return (
-        course.offerYear < this.curDate[0] ||
-        (course.offerYear === this.curDate[0] && course.offerSem === 1)
-      );
-    },
   },
   async mounted() {
     this.setLoading(true);
-    const response = (await axios.get("/api/dashboard")).data;
-    this.curDate = response.curDate;
-    this.courses = response.courses;
+    this.courses = (await axios.get("/api/dashboard")).data;
     this.setLoading(false);
   },
 };

@@ -35,9 +35,6 @@
         minlength="800"
         maxlength="1000"
       />
-      <input type="number" name="offerYear" placeholder="Year" />
-      <input type="number" name="offerSem" placeholder="Semester" />
-
       <label for="instructors">Instructors</label>
 
       <UserInput v-model="instructors" />
@@ -77,8 +74,6 @@ export default {
         handout: null,
         instructors: null,
         name: null,
-        offerSem: null,
-        offerYear: null,
         subtitle: null,
       },
       instructors: [],

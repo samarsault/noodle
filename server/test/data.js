@@ -31,8 +31,6 @@ async function populateDB() {
     description: new Array(58).join("Long Description."),
     handout: "/something.pdf",
     coverImage: "/something.png",
-    offerYear: 2019,
-    offerSem: 2,
     // topics: [ 'Introduction', 'Endnotes'],
     instructors: [instructor._id],
   });

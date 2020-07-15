@@ -19,7 +19,7 @@ describe("User Service", function () {
     const dashboard = await userService.getDashboard(data.student._id);
 
     // TODO: Match Course ID
-    expect(dashboard.courses).toEqual(
+    expect(dashboard).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           name: data.course.name,

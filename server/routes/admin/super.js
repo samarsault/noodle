@@ -8,7 +8,6 @@ const {
   course: courseService,
   user: userService,
 } = require("../../features/services");
-const calcCurDate = require("../../util/calcCurDate");
 
 const router = express.Router();
 
@@ -77,8 +76,7 @@ router.get("/courses/search", async function (req, res) {
 });
 
 router.get("/courses/all", async function (req, res) {
-  const current = calcCurDate();
-  const courses = await courseService.getAll(current);
+  const courses = await courseService.getAll();
   res.send(courses);
 });
 

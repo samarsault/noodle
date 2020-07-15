@@ -1,7 +1,6 @@
 //
 //
 const { User, Course, CoursePage, Uploads } = require("../models");
-const calcCurDate = require("../../util/calcCurDate");
 
 exports.register = function (user_id, course_id) {
   return User.updateOne(
@@ -31,28 +30,17 @@ exports.isRegistered = async (course_id, user_id) => {
   );
 };
 
-exports.getCourseView = async function (course_id, user_id) {
+exports.getCourseView = async function (course_id) {
   const course = await Course.findOne({ _id: course_id }).populate({
     path: "instructors",
     select: "name",
   });
 
-  let isReg = false;
-  if (user_id) {
-    isReg = await this.isRegistered(course_id, user_id);
-  }
-  const instructors = course.instructors.map((x) => x.name);
   const courseObject = course.toObject();
-  courseObject.instructors = instructors;
-  const curDate = calcCurDate();
-  const isArchive =
-    courseObject.offerYear < curDate[0] ||
-    (course.offerYear === curDate[0] && courseObject.offerSem === 1);
 
   return {
-    course: courseObject,
-    isArchive,
-    isReg,
+    ...courseObject,
+    instructors: courseObject.instructors.map((x) => x.name),
   };
 };
 
@@ -78,49 +66,19 @@ exports.getProp = async function (course_id, toSelect) {
 };
 
 exports.getAll = function () {
-  return Course.find({}).limit(10);
-};
-
-exports.getFromHistory = function (period) {
   return Course.find({
-    offerYear: period[0],
-    offerSem: period[1],
-  });
+    isArchived: {
+      // not equal to true i.e. not a truthy value
+      // works for false, undefined etc.
+      $ne: true,
+    },
+  }).limit(10);
 };
 
-exports.getArchives = function (start, end) {
-  const periods = [];
-  const years = end[0] - start[0];
-  if (start[0] !== end[0] || start[1] !== end[1]) {
-    periods.push({
-      stamp: `${start[0]}-${start[1]}`,
-      link: `/archives/${start[0]}/${start[1]}`,
-    });
-    if (start[1] === 1) {
-      periods.push({
-        stamp: `${start[0]}-${start[1] + 1}`,
-        link: `/archives/${start[0]}/${start[1] + 1}`,
-      });
-    }
-  }
-
-  for (let i = 1; i <= years; i++) {
-    const period1 = [start[0] + i, 1];
-    const period2 = [start[0] + i, 2];
-    periods.push({
-      stamp: `${period1[0]}-${period1[1]}`,
-      link: `/archives/${period1[0]}/${period1[1]}`,
-    });
-    if (!(period1[0] === end[0] && end[1] === 1)) {
-      periods.push({
-        stamp: `${period2[0]}-${period2[1]}`,
-        link: `/archives/${period2[0]}/${period2[1]}`,
-      });
-    }
-  }
-  // remove end, i.e. the curent period
-  periods.pop();
-  return periods;
+exports.getArchives = function () {
+  return Course.find({
+    isArchived: true,
+  });
 };
 
 exports.getRegistered = function (course_id) {
@@ -157,8 +115,6 @@ exports.create = async function (body) {
     name,
     subtitle,
     description,
-    offerYear,
-    offerSem,
     instructors,
     handout,
     coverImage,
@@ -172,8 +128,6 @@ exports.create = async function (body) {
     description,
     handout,
     coverImage,
-    offerYear,
-    offerSem,
   });
   // Update instructor & roles
 

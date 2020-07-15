@@ -80,38 +80,6 @@
           :disabled="!isEdit"
           :class="{ 'no-edit': !isEdit, edit: isEdit }"
         />
-        <div style="display: flex; justify-content: space-between;">
-          <div>
-            <h4>
-              <b>
-                Offer Year
-              </b>
-            </h4>
-            <input
-              type="number"
-              name="offerYear"
-              placeholder="Year"
-              v-model="course.offerYear"
-              :disabled="!isEdit"
-              :class="{ 'no-edit': !isEdit, edit: isEdit }"
-            />
-          </div>
-          <div>
-            <h4>
-              <b>
-                Offer Sem
-              </b>
-            </h4>
-            <input
-              type="number"
-              name="offerSem"
-              placeholder="Semester"
-              v-model="course.offerSem"
-              :disabled="!isEdit"
-              :class="{ 'no-edit': !isEdit, edit: isEdit }"
-            />
-          </div>
-        </div>
         <h4>
           <b>
             Instructors
