@@ -19,6 +19,10 @@ export const routes = [{
     page: () => import('./catalog.vue'),
     access: ['courses']
   }, {
+    path: '/team',
+    page: () => import('./team.vue')
+  },
+  {
     path: '/faq',
     page: () => import('./faq.vue')
   },
