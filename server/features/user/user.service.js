@@ -1,5 +1,4 @@
 const User = require("./user.model");
-const calcCurDate = require("../../util/calcCurDate");
 
 exports.get = async function (user_id) {
   const user = await User.findOne({ _id: user_id });
@@ -18,7 +17,7 @@ exports.updateInfo = async function (user_id, updateObject) {
 exports.getDashboard = async function (user_id) {
   const user = await User.findOne({ _id: user_id }, "courses").populate({
     path: "courses",
-    select: "name coverImage instructors offerYear offerSem",
+    select: "name coverImage instructors",
     populate: {
       path: "instructors",
       select: "name",
@@ -32,10 +31,7 @@ exports.getDashboard = async function (user_id) {
     course.instructors = [...course.instructors.map((x) => x.name)];
   }
 
-  return {
-    courses: user.courses,
-    curDate: calcCurDate(),
-  };
+  return user.courses;
 };
 
 exports.updateAccess = function (user_id, role) {

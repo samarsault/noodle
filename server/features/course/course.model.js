@@ -1,5 +1,5 @@
 const { model, Schema } = require("mongoose");
-const { r_string, r_num } = require("../shared/schemaTypes");
+const { r_string } = require("../shared/schemaTypes");
 
 const CourseSchema = new Schema({
   name: r_string,
@@ -17,8 +17,10 @@ const CourseSchema = new Schema({
   },
   handout: r_string,
   coverImage: r_string,
-  offerYear: r_num,
-  offerSem: r_num,
+  isArchived: {
+    type: Boolean,
+    default: false,
+  },
   instructors: [
     {
       type: Schema.Types.ObjectId,
@@ -26,6 +28,10 @@ const CourseSchema = new Schema({
       required: true,
     },
   ],
+  created: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 // Enable searching using $text

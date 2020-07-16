@@ -9,7 +9,6 @@
       <h4>
         <b>{{ course.name }}</b>
       </h4>
-      <p class="course-sem">{{ course.offerYear }}-{{ course.offerSem }}</p>
       <slot name="action">
         <router-link
           :to="`/admin/cmgt/${course._id}`"

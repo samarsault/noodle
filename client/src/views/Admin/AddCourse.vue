@@ -35,20 +35,6 @@
         maxlength="1000"
         v-model="course.description"
       />
-      <label>Offer Year</label>
-      <input
-        type="number"
-        name="offerYear"
-        placeholder="Year"
-        v-model="course.offerYear"
-      />
-      <label>Offer Sem</label>
-      <input
-        type="number"
-        name="offerSem"
-        placeholder="Semester"
-        v-model="course.offerSem"
-      />
 
       <label for="instructors">Instructors</label>
 
@@ -105,8 +91,6 @@ export default {
         handout: null,
         instructors: null,
         name: null,
-        offerSem: null,
-        offerYear: null,
         subtitle: null,
       },
       coverImage: "",
