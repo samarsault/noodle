@@ -14,8 +14,8 @@ const calcCurDate = require("../../util/calcCurDate");
 const router = express.Router();
 
 router.post(
-  "/upload/coverImage",
-  upload.fields([{ name: "coverImage" }]),
+  "/upload/:fileName",
+  upload.fields([{ name: "content" }]),
   async (req, res) => {
     try {
       const files = await s3Uploader(req, res);
@@ -23,20 +23,6 @@ router.post(
     } catch (err) {
       res.status(500).send(err.message);
     }
-  }
-);
-
-router.post(
-  "/upload/handout",
-  upload.fields([{ name: "handout" }]),
-  async (req, res, next) => {
-    try {
-      const files = await s3Uploader(req, res);
-      res.send(files);
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
-    next();
   }
 );
 

@@ -71,6 +71,12 @@
       <button @click="submitCoverImage" type="button" v-if="!coverRecieved">
         Upload Image
       </button>
+      <img
+        v-if="coverRecieved"
+        :src="awsCover"
+        alt="Course Cover Image"
+        class="courseImage"
+      />
 
       <label for="handout">Handout</label>
       <input type="text" name="handout" v-model="course.handout" v-if="false" />
@@ -150,7 +156,7 @@ export default {
 
       // Add the form data we need to submit
 
-      formData.append("handout", this.handout);
+      formData.append("content", this.handout);
 
       // Make the request to the POST /single-file URL
 
@@ -173,7 +179,7 @@ export default {
 
       // Add the form data we need to submit
 
-      formData.append("coverImage", this.coverImage);
+      formData.append("content", this.coverImage);
 
       // Make the request to the POST /single-file URL
 
@@ -231,6 +237,11 @@ export default {
 .h1ify {
   font-size: 200%;
   font-weight: 500;
+}
+
+.courseImage {
+  width: 300px;
+  height: auto;
 }
 
 label {

@@ -286,7 +286,7 @@ export default {
 
       // Add the form data we need to submit
 
-      formData.append("handout", this.handout);
+      formData.append("content", this.handout);
 
       // Make the request to the POST /single-file URL
 
@@ -310,7 +310,7 @@ export default {
 
       // Add the form data we need to submit
 
-      formData.append("coverImage", this.coverImage);
+      formData.append("content", this.coverImage);
 
       // Make the request to the POST /single-file URL
 
