@@ -1,6 +1,7 @@
 <template>
   <div class="content">
     <div class="heading">
+      <h2>Add Course</h2>
       <div class="buttons">
         <button
           class="primary"
@@ -14,9 +15,9 @@
     </div>
 
     <div class="form">
-      <label for="name">Name</label>
+      <h4>Name</h4>
       <input type="text" name="name" v-model="course.name" />
-      <label>Subtitle</label>
+      <h4>Subtitle</h4>
       <textarea
         name="subtitle"
         rows="7"
@@ -26,7 +27,7 @@
         v-model="course.subtitle"
       />
 
-      <label>Description</label>
+      <h4>Description</h4>
       <textarea
         name="description"
         rows="12"
@@ -36,12 +37,12 @@
         v-model="course.description"
       />
 
-      <label for="instructors">Instructors</label>
+      <h4>Instructors</h4>
 
       <UserInput v-model="instructors" />
       <input type="hidden" name="instructors" v-model="instructorStr" />
 
-      <label for="coverImage">Cover Image</label>
+      <h4 style="margin-bottom: 0;">Cover Image</h4>
       <input
         type="text"
         name="coverImage"
@@ -54,8 +55,13 @@
         accept="image/png, image/jpeg"
         v-on:change="handleCoverUpload()"
       />
-      <button @click="submitCoverImage" type="button" v-if="!coverRecieved">
-        Upload Image
+      <button
+        class="secondary"
+        @click="submitCoverImage"
+        type="button"
+        v-if="!coverRecieved"
+      >
+        Upload
       </button>
       <img
         v-if="coverRecieved"
@@ -64,11 +70,16 @@
         class="courseImage"
       />
 
-      <label for="handout">Handout</label>
+      <h4 style="margin-bottom: 0;">Handout</h4>
       <input type="text" name="handout" v-model="course.handout" v-if="false" />
       <input type="file" ref="handout" v-on:change="handleHandoutUpload()" />
-      <button @click="submitHandout" type="button" v-if="!handoutRecieved">
-        Upload Handout
+      <button
+        class="secondary"
+        @click="submitHandout"
+        type="button"
+        v-if="!handoutRecieved"
+      >
+        Upload
       </button>
     </div>
   </div>
@@ -185,24 +196,16 @@ export default {
 
 <style lang="scss" scoped>
 .form {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  padding: 40px;
-  padding-right: 200px;
-  padding-left: 200px;
+  width: 100%;
+  h4 {
+    margin-bottom: 10px;
+  }
 }
 
-.content {
-  padding: 40px;
-  padding-right: 200px;
-  padding-left: 200px;
-}
 .heading {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-around;
-  padding: 20px;
+  align-items: center;
 }
 
 .buttons {
