@@ -2,49 +2,40 @@
 // Super Admin Actions
 //
 const express = require("express");
-const upload = require("../../middleware/upload");
-const response = require("../../util/response");
+// const response = require("../../util/response");
 const {
   course: courseService,
   user: userService,
+  upload,
+  s3Uploader,
 } = require("../../features/services");
 const calcCurDate = require("../../util/calcCurDate");
 
 const router = express.Router();
 
 router.post(
-  "/addCourse",
-  upload.fields([
-    {
-      name: "coverImage",
-      maxCount: 1,
-    },
-    {
-      name: "handout",
-      maxCount: 1,
-    },
-  ]),
-  async function (req, res) {
-    if (!req.files || !req.files.coverImage[0] || !req.files.handout)
-      return res.json(response.error("Insufficent fields"));
+  "/upload/:fileName",
+  upload.fields([{ name: "content" }]),
+  async (req, res) => {
     try {
-      // Create Course
-      const courseObject = {
-        ...req.body,
-        handout: `/uploads/${req.files.handout[0].filename}`,
-        coverImage: `/uploads/${req.files.coverImage[0].filename}`,
-      };
-      const course = await courseService.create(courseObject);
-
-      return res.redirect(`/admin/cmgt/${course._id}`);
-    } catch (e) {
-      if (process.env.NODE_ENV !== "production")
-        return res.json(response.error(e.message));
-
-      return res.json(response.error(e.message));
+      const files = await s3Uploader(req, res);
+      res.send(files);
+    } catch (err) {
+      res.status(500).send(err.message);
     }
   }
 );
+
+router.post("/addCourse", async function (req, res) {
+  try {
+    // Create Course
+    const course = await courseService.create(req.body);
+
+    return res.redirect(`/admin/cmgt/${course._id}`);
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+});
 
 // TODO: Efficiency
 router.get("/users", async function (req, res) {
@@ -87,57 +78,15 @@ router.get("/courses/:course_id", async function (req, res) {
   res.send(course);
 });
 
-router.post(
-  "/courses/update/:course_id",
-  upload.fields([
-    {
-      name: "coverImage",
-      maxCount: 1,
-    },
-    {
-      name: "handout",
-      maxCount: 1,
-    },
-  ]),
-  async function (req, res) {
-    try {
-      // Create Course\
-      let courseObject;
-      if (req.files.handout && req.files.coverImage) {
-        courseObject = {
-          ...req.body,
-          handout: `/uploads/${req.files.handout[0].filename}`,
-          coverImage: `/uploads/${req.files.coverImage[0].filename}`,
-        };
-      } else if (req.files.coverImage) {
-        courseObject = {
-          ...req.body,
-          coverImage: `/uploads/${req.files.coverImage[0].filename}`,
-        };
-      } else if (req.files.handout) {
-        courseObject = {
-          ...req.body,
-          handout: `/uploads/${req.files.handout[0].filename}`,
-        };
-      } else {
-        courseObject = {
-          ...req.body,
-        };
-      }
-      const course = await courseService.update(
-        req.params.course_id,
-        courseObject
-      );
-
-      return res.status(200).redirect(`/dashboard/admin/cmgt/${course._id}`);
-    } catch (e) {
-      if (process.env.NODE_ENV !== "production")
-        return res.json(response.error(e.message));
-
-      return res.json(response.error(e.message));
-    }
+router.put("/courses/update/:course_id", async function (req, res) {
+  try {
+    // Update Course
+    const course = await courseService.update(req.params.course_id, req.body);
+    return res.status(200).send(course);
+  } catch (err) {
+    return res.status(500).send(err.message);
   }
-);
+});
 
 router.delete("/courses/:course_id", async function (req, res) {
   try {

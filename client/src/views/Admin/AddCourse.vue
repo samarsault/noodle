@@ -1,23 +1,21 @@
 <template>
-  <div class="mainWrapper">
+  <div class="content">
     <div class="heading">
       <div class="buttons">
-        <button class="primary" form="addForm">
+        <button
+          class="primary"
+          @click="submitForm"
+          v-if="coverRecieved && handoutRecieved"
+        >
           Add
         </button>
         <router-link to="/admin/cmgt" tag="button">Back</router-link>
       </div>
     </div>
 
-    <form
-      id="addForm"
-      method="post"
-      action="/admin/super/addCourse"
-      enctype="multipart/form-data"
-      v-on:keydown.enter="formEnter"
-    >
+    <div class="form">
       <label for="name">Name</label>
-      <input type="text" name="name" />
+      <input type="text" name="name" v-model="course.name" />
       <label>Subtitle</label>
       <textarea
         name="subtitle"
@@ -25,6 +23,7 @@
         placeholder="Course subtitle in 50-100 characters"
         minlength="50"
         maxlength="100"
+        v-model="course.subtitle"
       />
 
       <label>Description</label>
@@ -34,9 +33,22 @@
         placeholder="Detailed description in 800-1000 characters."
         minlength="800"
         maxlength="1000"
+        v-model="course.description"
       />
-      <input type="number" name="offerYear" placeholder="Year" />
-      <input type="number" name="offerSem" placeholder="Semester" />
+      <label>Offer Year</label>
+      <input
+        type="number"
+        name="offerYear"
+        placeholder="Year"
+        v-model="course.offerYear"
+      />
+      <label>Offer Sem</label>
+      <input
+        type="number"
+        name="offerSem"
+        placeholder="Semester"
+        v-model="course.offerSem"
+      />
 
       <label for="instructors">Instructors</label>
 
@@ -44,30 +56,46 @@
       <input type="hidden" name="instructors" v-model="instructorStr" />
 
       <label for="coverImage">Cover Image</label>
-      <input type="file" name="coverImage" accept="image/png, image/jpeg" />
+      <input
+        type="text"
+        name="coverImage"
+        v-model="course.coverImage"
+        v-if="false"
+      />
+      <input
+        type="file"
+        ref="coverImage"
+        accept="image/png, image/jpeg"
+        v-on:change="handleCoverUpload()"
+      />
+      <button @click="submitCoverImage" type="button" v-if="!coverRecieved">
+        Upload Image
+      </button>
+      <img
+        v-if="coverRecieved"
+        :src="awsCover"
+        alt="Course Cover Image"
+        class="courseImage"
+      />
 
-      <label for="handout">Handout:</label>
-      <input type="file" name="handout" />
-    </form>
+      <label for="handout">Handout</label>
+      <input type="text" name="handout" v-model="course.handout" v-if="false" />
+      <input type="file" ref="handout" v-on:change="handleHandoutUpload()" />
+      <button @click="submitHandout" type="button" v-if="!handoutRecieved">
+        Upload Handout
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import UserInput from "@/components/Input/User";
+import axios from "axios";
 const emailExtract = /<(.*)>/;
 
 export default {
   components: {
     UserInput,
-  },
-  computed: {
-    instructorStr: function () {
-      return this.instructors
-        .map((x) => {
-          return x.match(emailExtract)[1];
-        })
-        .join(",");
-    },
   },
   data() {
     return {
@@ -81,8 +109,35 @@ export default {
         offerYear: null,
         subtitle: null,
       },
+      coverImage: "",
+      handout: "",
       instructors: [],
+      coverRecieved: false,
+      handoutRecieved: false,
     };
+  },
+  computed: {
+    instructorStr: function () {
+      return this.instructors
+        .map((x) => {
+          return x.match(emailExtract)[1];
+        })
+        .join(",");
+    },
+    awsCover: function () {
+      return this.course.coverImage;
+    },
+    awsHandout: function () {
+      return this.course.handout;
+    },
+  },
+  watch: {
+    awsCover(val) {
+      this.coverRecieved = !!val;
+    },
+    awsHandout(val) {
+      this.handoutRecieved = !!val;
+    },
   },
   methods: {
     formEnter: function (e) {
@@ -90,12 +145,62 @@ export default {
         e.preventDefault();
       }
     },
+    async submitForm() {
+      const sendCourse = { ...this.course, instructors: this.instructorStr };
+      await axios.post("/admin/super/addCourse", sendCourse);
+    },
+    async submitHandout() {
+      // Initialize the form data
+
+      let formData = new FormData();
+
+      // Add the form data we need to submit
+
+      formData.append("content", this.handout);
+
+      // Make the request to the POST /single-file URL
+
+      this.course.handout = (
+        await axios.post("/admin/super/upload/handout", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+      ).data;
+    },
+    handleHandoutUpload() {
+      this.handout = this.$refs.handout.files[0];
+    },
+
+    async submitCoverImage() {
+      // Initialize the form data
+
+      let formData = new FormData();
+
+      // Add the form data we need to submit
+
+      formData.append("content", this.coverImage);
+
+      // Make the request to the POST /single-file URL
+
+      this.course.coverImage = (
+        await axios.post("/admin/super/upload/coverImage", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+      ).data;
+    },
+
+    handleCoverUpload() {
+      this.coverImage = this.$refs.coverImage.files[0];
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-form {
+.form {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -104,6 +209,11 @@ form {
   padding-left: 200px;
 }
 
+.content {
+  padding: 40px;
+  padding-right: 200px;
+  padding-left: 200px;
+}
 .heading {
   display: flex;
   flex-wrap: wrap;
@@ -119,20 +229,9 @@ form {
   width: inherit;
   // margin: 5px;
 }
-form {
-  padding: 0px;
-  margin: 0px;
-}
+
 .courseImage {
   padding: 20px;
-}
-.mainWrapper h2 {
-  padding: 0px;
-  margin: 0px;
-  grid-row: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .h1ify {
@@ -140,20 +239,10 @@ form {
   font-weight: 500;
 }
 
-// .no-edit {
-//   width: 100%;
-//   padding: 0px;
-//   color: inherit;
-//   margin: 0px;
-//   background-color: inherit;
-// }
-
-// .edit {
-//   width: 100%;
-//   padding: 0px;
-//   color: inherit;
-//   margin: 0px;
-// }
+.courseImage {
+  width: 300px;
+  height: auto;
+}
 
 label {
   display: block;

@@ -240,6 +240,7 @@ exports.update = async function (course_id, newCourse) {
   const course = await Course.findByIdAndUpdate(course_id, modCourse, {
     new: true,
   });
+  await Course.updateOne({ _id: course_id }, { instructors: [] });
   if (instructors) {
     const instructorsArr = instructors.toString().split(",");
 

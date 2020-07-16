@@ -205,6 +205,7 @@ export default {
     },
   },
   mounted() {
+    this.course_id = this.$attrs.course_id;
     this.editor = new Editor({
       extensions: [
         new HardBreak(),

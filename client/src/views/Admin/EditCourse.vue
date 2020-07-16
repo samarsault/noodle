@@ -16,12 +16,10 @@
         <button @click="toggleEdit()" v-if="isEdit">
           Discard
         </button>
-        <div style="padding: 0px; margin: 0px;" v-if="isEdit">
-          <button class="primary" form="editForm">
-            Save
-          </button>
-        </div>
-        <button class="error" @click="delCourse(course._id)">
+        <button class="primary" @click="submit" v-if="isEdit">
+          Save
+        </button>
+        <button class="error" @click="delCourse(course._id)" v-if="!isEdit">
           Delete
         </button>
         <router-link to="/admin/cmgt" tag="button">Back</router-link>
@@ -30,115 +28,132 @@
 
     <img
       :src="course.coverImage"
-      v-if="!isEdit || !url"
+      v-if="!isEdit || !awsCover"
       :alt="course.name"
       class="courseImage"
     />
-    <img v-if="url && isEdit" :src="url" class="courseImage" />
-    <form
-      id="editForm"
-      method="post"
-      @submit.prevent="saveCourse"
-      enctype="multipart/form-data"
-    >
+    <img v-if="awsCover && isEdit" :src="awsCover" class="courseImage" />
+    <div class="padless" v-if="isEdit">
+      <input
+        type="text"
+        name="coverImage"
+        v-model="course.coverImage"
+        v-if="false"
+      />
       <input
         type="file"
-        name="coverImage"
-        @change="onImgChange"
-        v-if="isEdit"
-        value="Icon"
+        ref="coverImage"
+        accept="image/png, image/jpeg"
+        v-on:change="handleCoverUpload()"
       />
-      <div class="info">
-        <h4>
-          <b>
-            Subtitle
-          </b>
-        </h4>
-        <textarea
-          name="subtitle"
-          placeholder="Course subtitle in 50-100 characters"
-          :val="course.subtitle"
-          minlength="50"
-          maxlength="100"
-          v-model="course.subtitle"
-          :disabled="!isEdit"
-          :class="{ 'no-edit': !isEdit, edit: isEdit }"
-        >
-        </textarea>
-        <h4>
-          <b>
-            Description
-          </b>
-        </h4>
-        <textarea
-          name="description"
-          rows="12"
-          placeholder="Detailed description in 800-1000 characters."
-          minlength="800"
-          maxlength="1000"
-          v-model="course.description"
-          :disabled="!isEdit"
-          :class="{ 'no-edit': !isEdit, edit: isEdit }"
-        />
-        <div style="display: flex; justify-content: space-between;">
-          <div>
-            <h4>
-              <b>
-                Offer Year
-              </b>
-            </h4>
-            <input
-              type="number"
-              name="offerYear"
-              placeholder="Year"
-              v-model="course.offerYear"
-              :disabled="!isEdit"
-              :class="{ 'no-edit': !isEdit, edit: isEdit }"
-            />
-          </div>
-          <div>
-            <h4>
-              <b>
-                Offer Sem
-              </b>
-            </h4>
-            <input
-              type="number"
-              name="offerSem"
-              placeholder="Semester"
-              v-model="course.offerSem"
-              :disabled="!isEdit"
-              :class="{ 'no-edit': !isEdit, edit: isEdit }"
-            />
-          </div>
-        </div>
-        <h4>
-          <b>
-            Instructors
-          </b>
-        </h4>
-        <ul v-if="!isEdit">
-          <li v-for="inst in instNames" :key="inst">
-            {{ inst }}
-          </li>
-        </ul>
-        <UserInput v-model="instructors" v-if="isEdit" />
-        <input type="hidden" name="instructors" v-model="instructorStr" />
-        <br />
-        <button>
-          Handout
-        </button>
-        <input type="file" name="handout" v-if="isEdit" />
-        <div class="padless">
+      <button @click="submitCoverImage" type="button" v-if="!coverRecieved">
+        Upload Image
+      </button>
+    </div>
+    <div class="info">
+      <h4>
+        <b>
+          Subtitle
+        </b>
+      </h4>
+      <textarea
+        name="subtitle"
+        placeholder="Course subtitle in 50-100 characters"
+        :val="course.subtitle"
+        minlength="50"
+        maxlength="100"
+        v-model="course.subtitle"
+        :disabled="!isEdit"
+        :class="{ 'no-edit': !isEdit, edit: isEdit }"
+      >
+      </textarea>
+      <h4>
+        <b>
+          Description
+        </b>
+      </h4>
+      <textarea
+        name="description"
+        rows="12"
+        placeholder="Detailed description in 800-1000 characters."
+        minlength="800"
+        maxlength="1000"
+        v-model="course.description"
+        :disabled="!isEdit"
+        :class="{ 'no-edit': !isEdit, edit: isEdit }"
+      />
+      <div style="display: flex; justify-content: space-between;">
+        <div>
           <h4>
             <b>
-              Registered Students
+              Offer Year
             </b>
           </h4>
-          <Students />
+          <input
+            type="number"
+            name="offerYear"
+            placeholder="Year"
+            v-model="course.offerYear"
+            :disabled="!isEdit"
+            :class="{ 'no-edit': !isEdit, edit: isEdit }"
+          />
+        </div>
+        <div>
+          <h4>
+            <b>
+              Offer Sem
+            </b>
+          </h4>
+          <input
+            type="number"
+            name="offerSem"
+            placeholder="Semester"
+            v-model="course.offerSem"
+            :disabled="!isEdit"
+            :class="{ 'no-edit': !isEdit, edit: isEdit }"
+          />
         </div>
       </div>
-    </form>
+      <h4>
+        <b>
+          Instructors
+        </b>
+      </h4>
+      <ul v-if="!isEdit">
+        <li v-for="inst in instNames" :key="inst">
+          {{ inst }}
+        </li>
+      </ul>
+      <UserInput v-model="instructors" v-if="isEdit" :value="instructors" />
+      <input type="hidden" name="instructors" v-model="instructorStr" />
+      <br />
+
+      <button v-if="!isEdit">
+        Handout
+      </button>
+      <div v-if="isEdit" class="padless">
+        <label for="handout">Handout</label>
+        <input
+          type="text"
+          name="handout"
+          v-model="course.handout"
+          v-if="false"
+        />
+        <input type="file" ref="handout" v-on:change="handleHandoutUpload()" />
+        <button @click="submitHandout" type="button" v-if="!handoutRecieved">
+          Upload Handout
+        </button>
+      </div>
+
+      <div class="padless" v-if="!isEdit">
+        <h4>
+          <b>
+            Registered Students
+          </b>
+        </h4>
+        <Students />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -146,7 +161,7 @@
 import axios from "axios";
 import { mutations } from "@/utils/store";
 import UserInput from "@/components/Input/User";
-import Students from "@/components/Students";
+import Students from "@/views/Students";
 
 const emailExtract = /<(.*)>/;
 
@@ -162,6 +177,10 @@ export default {
       instNames: [],
       instructors: [],
       url: null,
+      coverImage: "",
+      handout: "",
+      coverRecieved: false,
+      handoutRecieved: false,
     };
   },
   computed: {
@@ -172,56 +191,58 @@ export default {
         })
         .join(",");
     },
+    awsCover: function () {
+      return this.course.coverImage;
+    },
+    awsHandout: function () {
+      return this.course.handout;
+    },
   },
   async mounted() {
-    this.setLoading(true);
-    this.course = (
-      await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)
-    ).data;
-    const instructorDelegates = this.course.instructors.map(
-      async (instructor_id) => {
-        const user = (
-          await axios.get(`/admin/super/users/searchById/?q=${instructor_id}`)
-        ).data;
-        return user.name;
-      }
-    );
-    this.instNames = await Promise.all(instructorDelegates);
-    const instructorPromises = this.course.instructors.map(
-      async (instructor_id) => {
-        const user = (
-          await axios.get(`/admin/super/users/searchById/?q=${instructor_id}`)
-        ).data;
-        return `${user.name} <${user.email}>`;
-      }
-    );
-    this.instructors = await Promise.all(instructorPromises);
-    this.setLoading(false);
+    this.doMounting();
   },
   methods: {
     ...mutations,
-    formEnter: function (e) {
-      if (e.target.localName !== "textarea") {
-        e.preventDefault();
-      }
+    async doMounting() {
+      this.setLoading(true);
+      this.course = (
+        await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)
+      ).data;
+      const instructorDelegates = this.course.instructors.map(
+        async (instructor_id) => {
+          const user = (
+            await axios.get(`/admin/super/users/searchById/?q=${instructor_id}`)
+          ).data;
+          return user.name;
+        }
+      );
+      this.instNames = await Promise.all(instructorDelegates);
+      const instructorPromises = this.course.instructors.map(
+        async (instructor_id) => {
+          const user = (
+            await axios.get(`/admin/super/users/searchById/?q=${instructor_id}`)
+          ).data;
+          return `${user.name} <${user.email}>`;
+        }
+      );
+      this.instructors = await Promise.all(instructorPromises);
+      this.setLoading(false);
     },
-    onImgChange(e) {
-      const file = e.target.files[0];
-      this.url = URL.createObjectURL(file);
+    async submit() {
+      this.course = (
+        await axios.put(`/admin/super/courses/update/${this.course._id}`, {
+          ...this.course,
+          instructors: this.instructorStr,
+        })
+      ).data;
+      this.isEdit = !this.isEdit;
+      this.doMounting();
     },
     async toggleEdit() {
       this.isEdit = !this.isEdit;
       this.course = (
         await axios.get(`/admin/super/courses/${this.$route.params.course_id}`)
       ).data;
-    },
-    async saveCourse() {
-      this.course = (
-        await axios.put(`/admin/super/courses/update/${this.course._id}`, {
-          course: this.course,
-        })
-      ).data;
-      this.isEdit = !this.isEdit;
     },
     async delCourse() {
       // Use sweetalert2
@@ -257,6 +278,54 @@ export default {
             );
           }
         });
+    },
+    async submitHandout() {
+      // Initialize the form data
+
+      let formData = new FormData();
+
+      // Add the form data we need to submit
+
+      formData.append("content", this.handout);
+
+      // Make the request to the POST /single-file URL
+
+      this.course.handout = (
+        await axios.post("/admin/super/upload/handout", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+      ).data;
+      this.handoutRecieved = true;
+    },
+    handleHandoutUpload() {
+      this.handout = this.$refs.handout.files[0];
+    },
+
+    async submitCoverImage() {
+      // Initialize the form data
+
+      let formData = new FormData();
+
+      // Add the form data we need to submit
+
+      formData.append("content", this.coverImage);
+
+      // Make the request to the POST /single-file URL
+
+      this.course.coverImage = (
+        await axios.post("/admin/super/upload/coverImage", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+      ).data;
+      this.coverRecieved = true;
+    },
+
+    handleCoverUpload() {
+      this.coverImage = this.$refs.coverImage.files[0];
     },
   },
 };

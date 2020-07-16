@@ -3,16 +3,62 @@
 //
 const path = require("path");
 const multer = require("multer");
+const aws = require("aws-sdk");
+const fs = require("fs");
+
+aws.config.update({
+  accessKeyId: process.env.aws_access_key_id,
+  secretAccessKey: process.env.aws_secret_access_key,
+  region: process.env.aws_region,
+});
+
+const s3Uploader = async function (req, res) {
+  aws.config.setPromisesDependency();
+  aws.config.update({
+    accessKeyId: process.env.aws_access_key_id,
+    secretAccessKey: process.env.aws_secret_access_key,
+    region: process.env.aws_region,
+  });
+  const s3 = new aws.S3();
+  const locations = [];
+  const dataPromises = Object.values(req.files).map((file) => {
+    const params = {
+      ACL: "public-read",
+      Bucket: process.env.aws_bucket_name,
+      Body: fs.createReadStream(file[0].path),
+      Key: file[0].filename,
+    };
+
+    const prom = s3.upload(params).promise();
+    fs.unlinkSync(file[0].path); // Empty temp folder
+    return prom;
+  });
+
+  const datas = await Promise.all(dataPromises);
+  // fs.unlinkSync(path.join(__dirname, "temp"));
+  datas.forEach((data) => {
+    try {
+      locations.push(data.Location);
+    } catch (e) {
+      console.log("Error occured while trying to upload to S3 bucket", e);
+      res.status(500).send(e.stack);
+    }
+  });
+  return locations[0];
+};
 
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
-      cb(null, path.join(__dirname, "..", "uploads"));
+      cb(null, path.join(__dirname, "temp"));
     },
     filename(req, file, cb) {
       cb(
         null,
-        `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+        `${req.params.fileName}-${path.basename(
+          file.originalname,
+          path.extname(file.originalname)
+        )}-${Date.now()}${path.extname(file.originalname)}`
       );
     },
   }),
@@ -21,4 +67,4 @@ const upload = multer({
   },
 });
 
-module.exports = upload;
+module.exports = { upload, s3Uploader };
