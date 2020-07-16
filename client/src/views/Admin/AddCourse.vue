@@ -6,7 +6,7 @@
         <button
           class="primary"
           @click="submitForm"
-          v-if="coverRecieved && handoutRecieved"
+          :disabled="!(coverRecieved && handoutRecieved)"
         >
           Add
         </button>
