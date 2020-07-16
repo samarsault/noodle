@@ -1,8 +1,12 @@
 <template>
-  <component :is="page" v-bind="properties" />
+  <div>
+    <component :is="page" v-bind="properties" />
+    <Footer />
+  </div>
 </template>
 
 <script>
+import { Footer } from "noodle-adapter";
 import { getters } from "../utils/store";
 import axios from "axios";
 
@@ -24,6 +28,9 @@ export default {
         action: this.dispatchAction,
       };
     },
+  },
+  components: {
+    Footer,
   },
   methods: {
     async getCourses() {
