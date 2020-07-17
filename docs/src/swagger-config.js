@@ -59,6 +59,99 @@ module.exports = {
         }
       }
     },
+    "/api/courses/{course_id}": {
+      get: {
+        summary: "Retrieve specific course",
+        tags: [ "courses" ],
+        parameters: [
+          {
+            name: "course_id",
+            in: "path",
+            required: true,
+            description: "The id of the course to retrieve",
+            schema: {
+              type: "string"
+            }
+          }
+        ],
+        responses: {
+          200: {
+            description: "OK",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/course"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/courses/{course_id}/register": {
+      post: {
+        summary: "Register for given course",
+        tags: [ "courses" ],
+        parameters: [
+          {
+            name: "course_id",
+            in: "path",
+            required: true,
+            description: "The id of the course to register",
+            schema: {
+              type: "string"
+            }
+          }
+        ],
+        responses: {
+          200: {
+            description: "OK",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    success: {
+                      type: "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      post: {
+        tags: [ "user" ],
+        summary: "Login user & obtain bearer token",
+        requestBody: {
+          description: "Pet to add to the store",
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  email: {
+                    type: "string"
+                  },
+                  password: {
+                    type: "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: "OK"
+          }
+        }
+      }
+    },
     "/api/user": {
       get: {
         tags: [
@@ -105,35 +198,5 @@ module.exports = {
         }
       }
     },
-    "/auth/login": {
-      post: {
-        tags: [ "user" ],
-        summary: "Login user & obtain bearer token",
-        requestBody: {
-          description: "Pet to add to the store",
-          required: true,
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  email: {
-                    type: "string"
-                  },
-                  password: {
-                    type: "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        responses: {
-          200: {
-            description: "OK"
-          }
-        }
-      }
-    }
   }
 }

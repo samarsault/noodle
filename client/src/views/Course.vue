@@ -174,9 +174,7 @@ export default {
   async created() {
     this.setLoading(true);
     try {
-      this.course = (
-        await axios.get(`/api/courses/${this.course_id}/view`)
-      ).data;
+      this.course = (await axios.get(`/api/courses/${this.course_id}`)).data;
       this.pages = (
         await axios.get(`/api/courses/${this.course_id}/pages`)
       ).data;

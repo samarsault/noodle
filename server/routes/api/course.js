@@ -8,10 +8,15 @@ const router = express.Router();
 const { course, page, quiz, question } = require("../../features");
 const { CoursePage } = require("../../features/models");
 
+router.get("/", async function (req, res) {
+  const courseView = await course.service.get(req.course_id);
+  return res.status(200).json(courseView);
+});
+
 router.post("/register", async function (req, res) {
   // TODO: check if toobject required
 
-  const { course_id } = req.params;
+  const { course_id } = req.course_id;
   if (!req.user)
     return res.json({
       success: false,
@@ -79,6 +84,7 @@ router.get("/quiz/:quiz_id/attempt", async function (req, res) {
   );
   return res.status(200).json(quizAttempt);
 });
+
 router.post("/quiz/attempt", async function (req, res) {
   const quizAttempt = await quiz.service.attempt({
     user_id: req.user._id,
