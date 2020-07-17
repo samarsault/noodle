@@ -85,7 +85,7 @@ exports.getRegistered = function (course_id) {
   return User.find({
     courses: course_id,
     role: "student",
-  });
+  }).select("-password -courses");
 };
 
 exports.getRegisteredCSV = async function (course_id) {

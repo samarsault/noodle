@@ -56,7 +56,7 @@ export default {
   },
   async mounted() {
     this.setLoading(true);
-    this.courses = (await axios.get("/api/dashboard")).data;
+    this.courses = (await axios.get("/api/user/courses")).data;
     this.setLoading(false);
   },
 };

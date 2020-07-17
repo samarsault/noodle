@@ -24,18 +24,6 @@ router.get("/view/:prop", async function (req, res) {
   return res.status(500).send("Bad request");
 });
 
-//
-// Get Resources for a course
-// Response Format:
-// {
-//	<topic>: [ <resource1>, <resource2>, ... ]
-// }
-//
-router.get("/resources", async function (req, res) {
-  const resources = await course.service.getResources(req.course_id);
-  return res.json(resources);
-});
-
 router.get("/pages", async function (req, res) {
   const parent = req.query.parent || null;
   const pages = await page.service.getAll(req.course_id, parent);
@@ -99,7 +87,6 @@ router.post("/quiz/attempt", async function (req, res) {
 
 router.post("/quiz/submit", async function (req, res) {
   const QA = await quiz.service.evaluate(req.body);
-
   return res.status(200).json(QA);
 });
 

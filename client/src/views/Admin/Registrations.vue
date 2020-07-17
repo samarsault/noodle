@@ -52,7 +52,7 @@ export default {
     return {
       registered: [],
       courseName: "",
-      course_id: "",
+      course_id: this.$route.params.course_id,
     };
   },
   components: {
@@ -62,16 +62,10 @@ export default {
   methods: {
     ...mutations,
     async populateReg() {
-      const { data: course_id } = await axios.get(
-        `/api/courseId?name=${encodeURIComponent(this.courseName)}`
+      const studentsP = await axios.get(
+        `/admin/courses/${this.course_id}/students`
       );
-      if (course_id) {
-        this.course_id = course_id;
-        const studentsP = await axios.get(
-          `/admin/courses/${course_id}/students`
-        );
-        this.registered = studentsP.data;
-      }
+      this.registered = studentsP.data;
     },
     async deregister(email) {
       const confirmation = confirm(

@@ -37,22 +37,14 @@ router.post("/register/:course_id", async function (req, res) {
     success: true,
   });
 });
-router.get("/dashboard", async function (req, res) {
-  const dashboard = await user.service.getDashboard(req.user._id);
-  return res.json(dashboard);
-});
-
-router.get("/courseId", async function (req, res) {
-  try {
-    const { _id } = await course.service.getIdByName(req.query.name);
-    return res.send(_id);
-  } catch (e) {
-    return res.send("");
-  }
-});
 
 router.get("/user", async function (req, res) {
-  return res.json(req.user);
+  return res.status(200).json(req.user);
+});
+
+router.get("/user/courses", async function (req, res) {
+  const courses = await user.service.getCourses(req.user._id);
+  return res.status(200).json(courses);
 });
 
 module.exports = router;

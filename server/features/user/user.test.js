@@ -16,7 +16,7 @@ beforeEach(async () => {
 
 describe("User Service", function () {
   it("Shows registered course in dashboard", async (done) => {
-    const dashboard = await userService.getDashboard(data.student._id);
+    const dashboard = await userService.getCourses(data.student._id);
 
     // TODO: Match Course ID
     expect(dashboard).toEqual(

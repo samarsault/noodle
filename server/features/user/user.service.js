@@ -5,16 +5,7 @@ exports.get = async function (user_id) {
   return user;
 };
 
-exports.updateInfo = async function (user_id, updateObject) {
-  return User.updateOne(
-    {
-      _id: user_id,
-    },
-    updateObject
-  );
-};
-
-exports.getDashboard = async function (user_id) {
+exports.getCourses = async function (user_id) {
   const user = await User.findOne({ _id: user_id }, "courses").populate({
     path: "courses",
     select: "name coverImage instructors",
@@ -32,6 +23,15 @@ exports.getDashboard = async function (user_id) {
   }
 
   return user.courses;
+};
+
+exports.updateInfo = async function (user_id, updateObject) {
+  return User.updateOne(
+    {
+      _id: user_id,
+    },
+    updateObject
+  );
 };
 
 exports.updateAccess = function (user_id, role) {
