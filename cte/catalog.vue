@@ -11,13 +11,31 @@ div.container
         .card-body
           p {{course.subtitle}}
         .card-footer
-          a.regBtn(:href="'/courses/' + course._id + '/view/'")
-            button.secondary View
+          button.secondary(@click='register(course._id)') Register
 </template>
 
 <script>
+import coursesApi from '@/api/courses';
+import courseApi from '@/api/course';
+
 export default {
-  props: [ 'courses' ]
+  data() {
+    return {
+      courses: []
+    }
+  },
+  async created() {
+    this.courses = await coursesApi.getAll();
+  },
+  methods: {
+    async register(course_id) {
+      const registerSuccess = await courseApi(course_id).register();
+      if (registerSuccess)
+        this.$router.push({ path: '/dashboard' })
+      else
+        alert('Error registering.')
+    }
+  }
 }
 </script>
 

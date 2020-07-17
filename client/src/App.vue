@@ -13,7 +13,7 @@
     <Loading v-if="isLoading" />
     <div :class="{ 'app-loading': isLoading }" id="app">
       <NavBar :user="user" :doLogOut="logout" />
-      <router-view :key="$route.path" />
+      <router-view />
     </div>
   </div>
 </template>

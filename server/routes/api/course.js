@@ -13,24 +13,6 @@ router.get("/", async function (req, res) {
   return res.status(200).json(courseView);
 });
 
-router.post("/register", async function (req, res) {
-  // TODO: check if toobject required
-
-  const { course_id } = req.course_id;
-  if (!req.user)
-    return res.json({
-      success: false,
-    });
-  // User.
-  const user_id = req.user._id;
-
-  await course.service.register(user_id, course_id);
-
-  return res.json({
-    success: true,
-  });
-});
-
 router.get("/pages", async function (req, res) {
   const parent = req.query.parent || null;
   const pages = await page.service.getAll(req.course_id, parent);

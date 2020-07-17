@@ -13,22 +13,20 @@ export const NavBar = NavBarComponent;
 //
 export const routes = [{
     path: '/',
-    page: () => import('./index.vue'),
+    component: () => import('./index.vue'),
   }, {
     path: '/catalog',
-    page: () => import('./catalog.vue'),
-    access: ['courses']
+    component: () => import('./catalog.vue'),
   }, {
     path: '/team',
-    page: () => import('./team.vue')
+    component: () => import('./team.vue')
   },
   {
     path: '/faq',
-    page: () => import('./faq.vue')
+    component: () => import('./faq.vue')
   },
   {
     path: '/course/:course_id',
-    page: () => import('./course.vue'),
-    access: ['course']
+    component: () => import('./course.vue'),
   }
 ];
