@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import userApi from "@/api/user";
 import Go from "vue-material-design-icons/AccountArrowRight";
 
 export default {
@@ -116,12 +116,12 @@ export default {
       const password = this.pass;
 
       if (email && password) {
-        const { data } = await axios.post("/auth/login", {
+        const login = await userApi.login({
           email,
           password,
         });
-        if (data.success) {
-          localStorage.setItem("token", data.token);
+        if (login.success) {
+          localStorage.setItem("token", login.token);
           window.location.href = "/";
         } else {
           this.showError("Invalid email or password");
@@ -139,16 +139,16 @@ export default {
       }
 
       if (name && email && password) {
-        const { data } = await axios.post("/auth/signup", {
+        const signUp = await userApi.signUp({
           name,
           email,
           password,
         });
-        if (data.success) {
-          localStorage.setItem("token", data.token);
+        if (signUp.success) {
+          localStorage.setItem("token", signUp.token);
           window.location.href = "/";
         } else {
-          this.showError(data.message);
+          this.showError(signUp.message);
         }
       }
     },

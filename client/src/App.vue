@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import userApi from "@/api/user";
 
 import { NavBar } from "noodle-adapter";
 import Modal from "./components/Dialogs/Modal";
@@ -49,7 +49,7 @@ export default {
   async mounted() {
     this.setLoading(true);
     try {
-      const { data: user } = await axios.get("/api/user");
+      const user = await userApi.get();
       this.setUser(user);
     } catch (e) {
       this.setUser(null);

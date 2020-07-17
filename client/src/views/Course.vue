@@ -10,8 +10,11 @@
         "
       >
         <div style="display: flex; align-items: center;">
-          <router-link style="color: #ddd; margin-right: 5px;" to="/dashboard">
-            <Back style="margin-top: 4px;" />
+          <router-link
+            style="color: #ddd; margin-right: 5px; margin-top: 4px;"
+            to="/dashboard"
+          >
+            <Back />
           </router-link>
           <p style="font-weight: bold;">{{ course.name }}</p>
         </div>
@@ -108,7 +111,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import courseApi from "../api/course";
 import { mutations, getters } from "../utils/store";
 import SelectItem from "../components/SelectItem.vue";
 
@@ -148,6 +151,7 @@ export default {
     return {
       course_id: this.$route.params.course_id,
       course: {},
+      api: {},
       pages: [],
       modulePages: [],
       addModal: false,
@@ -172,12 +176,11 @@ export default {
     };
   },
   async created() {
+    this.api = courseApi(this.course_id);
     this.setLoading(true);
     try {
-      this.course = (await axios.get(`/api/courses/${this.course_id}`)).data;
-      this.pages = (
-        await axios.get(`/api/courses/${this.course_id}/pages`)
-      ).data;
+      this.course = await this.api.get();
+      this.pages = await this.api.getPages();
 
       this.setLoading(false);
     } catch (error) {
@@ -209,10 +212,7 @@ export default {
       } else {
         this.activeModule = "qb";
         if (this.questionGroups.length === 0) {
-          const { data } = await axios.get(
-            `/api/courses/${this.course_id}/questions/groups`
-          );
-          this.questionGroups = data;
+          this.questionGroups = await this.api.questions.getGroups();
         }
       }
     },
@@ -224,15 +224,7 @@ export default {
       if (this.activeModule === page._id) {
         this.activeModule = null;
       } else {
-        const { data } = await axios.get(
-          `/api/courses/${this.course_id}/pages/${page._id}`,
-          {
-            params: {
-              parent: page._id,
-            },
-          }
-        );
-        this.modulePages = data;
+        this.modulePages = await this.api.getPage(page._id, page._id);
         this.activeModule = page._id;
       }
     },
@@ -241,17 +233,14 @@ export default {
       const name = prompt("Name:");
       if (!name) return;
       if (type === "Module" && this.addToModule) return;
-      const response = await axios.post(
-        `/admin/courses/${this.course_id}/page`,
-        {
-          name,
-          course: this.course_id,
-          type,
-          parent: this.addToModule ? this.activeModule : null,
-        }
-      );
-      if (this.addToModule) this.modulePages.push(response.data);
-      else this.pages.push(response.data);
+      const page = await this.api.createPage({
+        name,
+        course: this.course_id,
+        type,
+        parent: this.addToModule ? this.activeModule : null,
+      });
+      if (this.addToModule) this.modulePages.push(page);
+      else this.pages.push(page);
     },
   },
 };

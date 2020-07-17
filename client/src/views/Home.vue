@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import userApi from "@/api/user";
 import { getters, mutations } from "../utils/store";
 
 export default {
@@ -56,7 +56,7 @@ export default {
   },
   async mounted() {
     this.setLoading(true);
-    this.courses = (await axios.get("/api/user/courses")).data;
+    this.courses = await userApi.getCourses();
     this.setLoading(false);
   },
 };
