@@ -82,6 +82,29 @@ module.exports = {
         }
       }
     },
+    "/api/user/courses": {
+      get: {
+        tags: [
+          "user"
+        ],
+        summary: "Get current users courses",
+        responses: {
+          200: {
+            description: "OK",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/courses"
+                }
+              }
+            }
+          },
+          401: {
+            description: "Unauthorized"
+          }
+        }
+      }
+    },
     "/auth/login": {
       post: {
         tags: [ "user" ],

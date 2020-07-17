@@ -41,10 +41,4 @@ router.post("/update", async (req, res) => {
   });
 });
 
-router.get("/logout", (req, res) => {
-  req.logout();
-  req.session = null;
-  res.redirect("/");
-});
-
 module.exports = router;

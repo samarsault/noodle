@@ -8,20 +8,22 @@ const router = express.Router();
 const { course, page, quiz, question } = require("../../features");
 const { CoursePage } = require("../../features/models");
 
-// Get Course Meta
-router.get("/view", async function (req, res) {
-  const courseInfo = await course.service.get(req.course_id);
-  return res.json(courseInfo);
-});
+router.post("/register", async function (req, res) {
+  // TODO: check if toobject required
 
-router.get("/view/:prop", async function (req, res) {
-  if (req.course_id && req.params.prop) {
-    const toSelect = req.params.prop.replace(",", " ");
-    const courseInfo = await course.service.getProp(req.course_id, toSelect);
+  const { course_id } = req.params;
+  if (!req.user)
+    return res.json({
+      success: false,
+    });
+  // User.
+  const user_id = req.user._id;
 
-    return res.json(courseInfo);
-  }
-  return res.status(500).send("Bad request");
+  await course.service.register(user_id, course_id);
+
+  return res.json({
+    success: true,
+  });
 });
 
 router.get("/pages", async function (req, res) {
