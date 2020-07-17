@@ -5,7 +5,7 @@
         <tr>
           <th>Name</th>
           <th>Email</th>
-          <th>BITS ID</th>
+          <th>ID</th>
           <th>Phone</th>
         </tr>
       </thead>

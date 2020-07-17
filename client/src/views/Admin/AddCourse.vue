@@ -200,6 +200,10 @@ export default {
   h4 {
     margin-bottom: 10px;
   }
+  input[type="text"],
+  textarea {
+    width: 100%;
+  }
 }
 
 .heading {

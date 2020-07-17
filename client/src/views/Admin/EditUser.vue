@@ -22,13 +22,21 @@
         Registered Courses
       </h4>
       <!-- <Students/> -->
-      <CourseCard v-for="course in courses" :key="course._id" :course="course">
-        <template slot="action">
-          <button class="error" @click="dereg(course.name)">Deregister</button>
-        </template>
-      </CourseCard>
-      <div v-if="!courses.length">
-        None.
+      <div style="display: flex;">
+        <CourseCard
+          v-for="course in courses"
+          :key="course._id"
+          :course="course"
+        >
+          <template slot="action">
+            <button class="error" @click="dereg(course.name)">
+              Deregister
+            </button>
+          </template>
+        </CourseCard>
+        <div v-if="!courses.length">
+          None.
+        </div>
       </div>
     </div>
   </div>
