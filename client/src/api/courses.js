@@ -5,4 +5,9 @@ export default {
     const { data } = await axios.get("/public/courses");
     return data;
   },
+  // Get publically
+  async getCourse(id) {
+    const { data } = await axios.get(`/public/courses/${id}`);
+    return data;
+  },
 };
