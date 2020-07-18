@@ -61,11 +61,6 @@ router.get("/users/searchById", async function (req, res) {
   return res.send(user);
 });
 
-router.get("/courses/search", async function (req, res) {
-  const courses = await courseService.search(req.query.q);
-  return res.json(courses);
-});
-
 router.get("/courses/all", async function (req, res) {
   const courses = await courseService.getAll();
   res.send(courses);

@@ -22,13 +22,18 @@ export default {
   components: {
     vSelect,
   },
+  async mounted() {
+    this.courseOptions = await this.fetchOptions("");
+  },
   methods: {
-    searchCourses(search, loading) {
+    async fetchOptions(search) {
+      const { data } = await axios.get(`/public/courses/search?q=${search}`);
+      return data.map((x) => x.name);
+    },
+    async searchCourses(search, loading) {
       loading(true);
-      axios.get(`/admin/super/courses/search?q=${search}`).then(({ data }) => {
-        this.courseOptions = data;
-        loading(false);
-      });
+      this.courseOptions = await this.fetchOptions(search);
+      loading(false);
     },
     changed(value) {
       this.$emit("input", value);

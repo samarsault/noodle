@@ -7,7 +7,7 @@ export default {
   },
   // Get publically
   async getCourse(id) {
-    const { data } = await axios.get(`/public/courses/${id}`);
+    const { data } = await axios.get(`/public/course/${id}`);
     return data;
   },
 };

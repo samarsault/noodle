@@ -8,7 +8,12 @@ router.get("/courses", async (req, res) => {
   return res.json(courses);
 });
 
-router.get("/courses/:course_id", async (req, res) => {
+router.get("/courses/search", async function (req, res) {
+  const courses = await courseService.search(req.query.q);
+  return res.json(courses);
+});
+
+router.get("/course/:course_id", async (req, res) => {
   const { course_id } = req.params;
   const course = await courseService.get(course_id);
   return res.json(course);
