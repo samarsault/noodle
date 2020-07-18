@@ -289,6 +289,7 @@ pre {
     border-radius: 4px;
   }
 }
+
 .editor p.is-editor-empty:first-child::before {
   content: attr(data-empty-text);
   float: left;
@@ -299,13 +300,13 @@ pre {
 
 #editor-container {
   position: relative;
-  padding: 6px 13px;
   margin: 10px 0;
 }
 
 .editing {
   background-color: #fff;
   border: 1px solid #ccc;
+  padding: 6px 13px;
 }
 
 .menubar {

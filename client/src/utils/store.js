@@ -16,6 +16,7 @@ const store = Vue.observable({
     show: false,
     onSuccess: null,
   },
+  activePage: null,
 });
 
 export const getters = {
@@ -23,11 +24,15 @@ export const getters = {
   isLoading: () => store.isLoading,
   alert: () => store.alert,
   uploadBox: () => store.uploadBox,
+  activePage: () => store.activePage,
 };
 
 export const mutations = {
   setUser(user) {
     store.user = user;
+  },
+  setActivePage(page) {
+    store.activePage = page;
   },
   setLoading(value) {
     store.isLoading = value;

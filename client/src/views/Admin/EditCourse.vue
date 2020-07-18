@@ -119,7 +119,7 @@
             Registered Students
           </b>
         </h4>
-        <Students />
+        <Registrations />
       </div>
     </div>
   </div>
@@ -129,14 +129,14 @@
 import axios from "axios";
 import { mutations } from "@/utils/store";
 import UserInput from "@/components/Input/User";
-import Students from "@/views/Students";
+import Registrations from "@/views/Course/Registrations";
 
 const emailExtract = /<(.*)>/;
 
 export default {
   components: {
     UserInput,
-    Students,
+    Registrations,
   },
   data() {
     return {

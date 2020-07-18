@@ -1,6 +1,5 @@
 <template>
   <div class="quiz-container">
-    <h1>{{ quiz.name }}</h1>
     <div v-if="started" class="quizzer">
       <div class="quizzer-question">
         <form @submit="nextQuestion">
@@ -45,6 +44,9 @@ import axios from "axios";
 import QuestionView from "@/components/Questions/View";
 
 export default {
+  props: {
+    onLoad: Function,
+  },
   data() {
     return {
       quiz_id: this.$route.params.quiz_id,
@@ -86,6 +88,10 @@ export default {
           this.answers = new Array(this.quiz.questions.length).fill("");
           this.times = new Array(this.quiz.questions.length).fill(0);
         }
+        this.onLoad({
+          parent: this.quiz.parent,
+          name: this.quiz.name,
+        });
       });
   },
   methods: {

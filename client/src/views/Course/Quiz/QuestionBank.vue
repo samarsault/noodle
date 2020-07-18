@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Question Bank</h2>
+    <h2 style="margin-top: 0;">Question Bank</h2>
     <p>You can add questions for later here.</p>
     <QuestionManager
       :questions="questions"
@@ -16,6 +16,9 @@ import axios from "axios";
 import QuestionManager from "@/components/Questions/Manager";
 
 export default {
+  props: {
+    onLoad: Function,
+  },
   components: {
     QuestionManager,
   },
@@ -27,6 +30,7 @@ export default {
     };
   },
   mounted() {
+    this.onLoad(null);
     axios
       .get(`/api/courses/${this.course_id}/questions`, {
         params: {

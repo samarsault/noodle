@@ -44,10 +44,6 @@
               <div>
                 {{ page.name }}
               </div>
-              <div class="module-panel" v-if="isAdmin">
-                <Edit :size="20" />
-                <Bin :size="20" />
-              </div>
             </router-link>
             <a
               v-if="isAdmin"
@@ -98,7 +94,23 @@
       </div>
     </div>
     <div :class="`course-pages ${sidebarHidden ? '' : 'hidden-mobile'}`">
-      <router-view :isAdmin="isAdmin" :key="$route.path" />
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <h2 style="margin-bottom: 0;">{{ activePage && activePage.name }}</h2>
+        <div v-if="isAdmin && activePage">
+          <button class="secondary" @click="toggleEdit">
+            <Edit v-if="!activePage.isEditing" />
+            <IconX v-if="activePage.isEditing" />
+          </button>
+          <button class="error"><Bin /></button>
+        </div>
+      </div>
+      <router-view :isAdmin="isAdmin" :key="$route.path" :onLoad="onPageLoad" />
     </div>
     <SelectItem
       title="Add page"
@@ -118,6 +130,7 @@ import SelectItem from "../components/SelectItem.vue";
 // Icons
 import Plus from "vue-material-design-icons/Plus";
 import Edit from "vue-material-design-icons/Pencil";
+import IconX from "vue-material-design-icons/Close";
 import Bin from "vue-material-design-icons/TrashCan";
 import Folder from "vue-material-design-icons/Folder";
 import FolderOpen from "vue-material-design-icons/FolderOpen";
@@ -190,6 +203,7 @@ export default {
   components: {
     Plus,
     Edit,
+    IconX,
     Back,
     Bin,
     SelectItem,
@@ -198,6 +212,25 @@ export default {
   },
   methods: {
     ...mutations,
+    toggleEdit() {
+      if (this.activePage) {
+        this.setActivePage({
+          ...this.activePage,
+          isEditing: !this.activePage.isEditing,
+        });
+      }
+    },
+    async onPageLoad(page) {
+      if (!page) {
+        this.setActivePage(null);
+      } else {
+        if (!this.activeModule) await this.toggleModule({ _id: page.parent });
+        this.setActivePage({
+          ...page,
+          isEditing: false,
+        });
+      }
+    },
     addPage(parent) {
       if (parent) {
         this.addToModule = parent;

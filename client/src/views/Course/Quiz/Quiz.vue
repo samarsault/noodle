@@ -1,11 +1,17 @@
 <template>
   <div>
-    <h2>{{ quiz.name }}</h2>
-    <button v-if="isAdmin" class="secondary" @click="saveDescription">
+    <Editor
+      v-model="quiz.description"
+      :edit="isAdmin && isEditing"
+      :course_id="course_id"
+    />
+    <button
+      v-if="isAdmin && isEditing"
+      class="secondary"
+      @click="saveDescription"
+    >
       Save Description
     </button>
-    <Editor v-model="quiz.description" :edit="isAdmin" :course_id="course_id" />
-
     <router-link
       v-if="quiz.questions.length > 0"
       :to="`/dashboard/course/${course_id}/Quizzer/${quiz._id}`"
@@ -17,7 +23,7 @@
       <!-- show latest attempt first -->
       <AttemptView :attempts="attempts.slice().reverse()" :quiz="quiz" />
     </div>
-    <div v-if="isAdmin">
+    <div v-if="isAdmin && isEditing">
       <h3>Admin</h3>
       <router-link :to="`/dashboard/course/${course_id}/attempts/${quiz._id}`">
         <button class>View Attempts</button>
@@ -48,10 +54,18 @@ import QuestionManager from "@/components/Questions/Manager";
 import QuestionPicker from "@/components/Questions/Picker";
 import AttemptView from "@/components/AttemptView";
 import Editor from "@/components/Editor";
+import { getters } from "@/utils/store";
 
 export default {
   props: {
     isAdmin: Boolean,
+    onLoad: Function,
+  },
+  computed: {
+    ...getters,
+    isEditing() {
+      return this.activePage && this.activePage.isEditing;
+    },
   },
   data() {
     return {
@@ -78,6 +92,10 @@ export default {
       .get(`/api/courses/${this.course_id}/quiz/${this.quiz_id}`)
       .then(({ data }) => {
         this.quiz = data;
+        this.onLoad({
+          parent: this.quiz.parent,
+          name: this.quiz.name,
+        });
       });
     axios
       .get(`/api/courses/${this.course_id}/quiz/${this.quiz_id}/attempt`)

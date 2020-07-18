@@ -1,6 +1,5 @@
 <template>
-  <div v-if="attempts.length > 0">
-    <h2>{{ quiz.name }}</h2>
+  <div v-if="attempts.length > 0" style="margin-top: 15px;">
     <AttemptView :attempts="attempts" :quiz="quiz" />
   </div>
   <div v-else>
@@ -12,6 +11,9 @@ import axios from "axios";
 import AttemptView from "@/components/AttemptView";
 
 export default {
+  props: {
+    onLoad: Function,
+  },
   components: {
     AttemptView,
   },
@@ -32,6 +34,10 @@ export default {
     );
     this.attempts = data;
     this.quiz = quiz.data;
+    this.onLoad({
+      parent: this.quiz.parent,
+      name: this.quiz.name,
+    });
   },
 };
 </script>
