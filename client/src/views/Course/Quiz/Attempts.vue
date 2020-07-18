@@ -1,5 +1,6 @@
 <template>
-  <div v-if="attempts.length > 0" style="margin-top: 15px;">
+  <div v-if="attempts.length > 0">
+    <h1 style>{{ quiz.name }}</h1>
     <AttemptView :attempts="attempts" :quiz="quiz" />
   </div>
   <div v-else>
@@ -34,10 +35,7 @@ export default {
     );
     this.attempts = data;
     this.quiz = quiz.data;
-    this.onLoad({
-      parent: this.quiz.parent,
-      name: this.quiz.name,
-    });
+    this.onLoad(null);
   },
 };
 </script>

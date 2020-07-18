@@ -5,3 +5,12 @@
     <p>You can see admin related actions in the place below</p>
   </div>
 </template>
+
+<script>
+export default {
+  props: ["onLoad"],
+  created() {
+    this.onLoad(null);
+  },
+};
+</script>

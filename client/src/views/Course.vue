@@ -107,7 +107,7 @@
             <Edit v-if="!activePage.isEditing" />
             <IconX v-if="activePage.isEditing" />
           </button>
-          <button class="error"><Bin /></button>
+          <button class="error" @click="deletePage(activePage)"><Bin /></button>
         </div>
       </div>
       <router-view :isAdmin="isAdmin" :key="$route.path" :onLoad="onPageLoad" />
@@ -274,6 +274,22 @@ export default {
       });
       if (this.addToModule) this.modulePages.push(page);
       else this.pages.push(page);
+    },
+    async deletePage(page) {
+      const confirmation = confirm(
+        `Are you sure you want to delete ${page.name}?`
+      );
+      if (!confirmation) return;
+      const delPage = await this.api.deletePage(page._id);
+      if (delPage) {
+        // successful deletion
+        this.modulePages = this.modulePages.filter((x) => x._id !== page._id);
+        this.$router.push({
+          path: `/dashboard/course/${this.course_id}`,
+        });
+      } else {
+        alert("Error can't delete");
+      }
     },
   },
 };

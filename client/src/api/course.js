@@ -35,6 +35,15 @@ export default (course_id) => ({
     const { data } = await axios.post(`/admin/courses/${course_id}/page`, body);
     return data;
   },
+  async deletePage(page_id) {
+    if (page_id) {
+      const { status } = await axios.delete(
+        `/admin/courses/${course_id}/page/${page_id}`
+      );
+      return status === 200;
+    }
+    return false;
+  },
   questions: {
     get() {},
     async getGroups() {

@@ -93,6 +93,7 @@ export default {
       .then(({ data }) => {
         this.quiz = data;
         this.onLoad({
+          _id: this.quiz._id,
           parent: this.quiz.parent,
           name: this.quiz.name,
         });

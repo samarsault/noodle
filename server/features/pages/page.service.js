@@ -44,8 +44,8 @@ exports.update = function (pageId, updateObject) {
   return null;
 };
 
-exports.delete = function (questionId) {
+exports.delete = function (pageId) {
   return Page.deleteOne({
-    _id: questionId,
+    _id: pageId,
   });
 };

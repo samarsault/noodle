@@ -77,6 +77,15 @@ router.put("/page/:id", async function (req, res) {
   });
 });
 
+router.delete("/page/:id", async function (req, res) {
+  try {
+    await pageService.delete(req.params.id);
+    return res.status(200).send("OK");
+  } catch (e) {
+    throw new Error(e.message);
+  }
+});
+
 router.get("/quiz/:id/attempts", async function (req, res) {
   const quiz_id = req.params.id;
   const attempts = await quizzer.getAttempts(quiz_id);

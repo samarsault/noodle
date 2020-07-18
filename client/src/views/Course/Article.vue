@@ -26,7 +26,7 @@ export default {
   computed: {
     ...getters,
     isEditing() {
-      return this.activePage.isEditing;
+      return this.activePage && this.activePage.isEditing;
     },
   },
   props: {
@@ -41,6 +41,7 @@ export default {
       this.page = page.doc;
       // Tell parent that's its loaded
       this.onLoad({
+        _id: page._id,
         parent: page.parent,
         name: page.name,
       });
