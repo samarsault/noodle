@@ -141,14 +141,23 @@ describe("Course Service", function () {
     expect(names).toEqual(expect.arrayContaining([]));
     // Empty String
     names = await courseService.search("");
-    expect(names).toEqual(expect.arrayContaining([]));
+    expect(names.length).toEqual(5);
     // Case Insenstive
     names = await courseService.search("course1");
     const recievedCourses = names.map((course) => course.toObject());
     const course1 = await Course.findOne({ name: "course1" });
     const Course1 = await Course.findOne({ name: "Course1" });
     expect(recievedCourses).toStrictEqual(
-      expect.arrayContaining([Course1.toObject(), course1.toObject()])
+      expect.arrayContaining([
+        {
+          _id: course1._id,
+          name: "course1",
+        },
+        {
+          _id: Course1._id,
+          name: "Course1",
+        },
+      ])
     );
     // Not more than 5
     names = await courseService.search("o");
