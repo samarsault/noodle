@@ -44,7 +44,8 @@ export default (editor) => [
     description: "Embed using youtube link",
     onCommand: function () {
       const videoURL = prompt("URL:");
-      const src = getYoutubeWatchId(videoURL);
+      const watchId = getYoutubeWatchId(videoURL);
+      const src = `https://www.youtube.com/embed/${watchId}`;
       editor.commands.iframe({ src });
     },
   },

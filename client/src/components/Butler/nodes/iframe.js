@@ -25,7 +25,7 @@ export default class Iframe extends Node {
       toDOM: (node) => [
         "iframe",
         {
-          src: `https://www.youtube.com/embed/${node.attrs.src}`,
+          src: node.attrs.src,
           frameborder: 0,
           allowfullscreen: "true",
           allow:
