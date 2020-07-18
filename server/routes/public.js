@@ -19,4 +19,10 @@ router.get("/course/:course_id", async (req, res) => {
   return res.json(course);
 });
 
+router.get("/course/:course_id/handout", async (req, res) => {
+  if (!req.params.course_id) return res.status(400).json({});
+  const tree = await courseService.pageTree(req.params.course_id);
+  return res.status(200).json(tree);
+});
+
 module.exports = router;

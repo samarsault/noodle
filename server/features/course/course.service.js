@@ -215,3 +215,21 @@ exports.update = async function (course_id, newCourse) {
   }
   return Course.findOne({ _id: course._id });
 };
+
+exports.pageTree = async function (course_id) {
+  // TODO:
+  // Try querying db once, and computing array in memory
+  const roots = await CoursePage.find({
+    course: course_id,
+    parent: null,
+  }).select("name parent");
+  const graph = {};
+  for (const root of roots) {
+    // eslint-disable-next-line no-await-in-loop
+    const children = await CoursePage.find({
+      parent: root._id,
+    }).select("name");
+    graph[root.name] = children;
+  }
+  return graph;
+};

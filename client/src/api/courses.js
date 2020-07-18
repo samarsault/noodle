@@ -10,4 +10,8 @@ export default {
     const { data } = await axios.get(`/public/course/${id}`);
     return data;
   },
+  async getHandout(id) {
+    const { data } = await axios.get(`/public/course/${id}/handout`);
+    return data;
+  },
 };
