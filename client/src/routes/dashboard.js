@@ -1,7 +1,7 @@
 //
 // Dashboard related routes
 //
-import Registrations from "../views/Students.vue";
+import Students from "../views/Students.vue";
 import Quizzer from "../views/Course/Quiz/Quizzer.vue";
 import QuestionBank from "../views/Course/Quiz/QuestionBank.vue";
 import Quiz from "../views/Course/Quiz/Quiz.vue";
@@ -28,7 +28,7 @@ export default [
       },
       {
         path: "registrations",
-        component: Registrations,
+        component: Students,
       },
       {
         path: "Quiz/:quiz_id",
