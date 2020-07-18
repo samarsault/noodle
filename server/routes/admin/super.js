@@ -2,7 +2,7 @@
 // Super Admin Actions
 //
 const express = require("express");
-// const response = require("../../util/response");
+
 const {
   course: courseService,
   user: userService,
