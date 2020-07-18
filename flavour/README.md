@@ -11,7 +11,7 @@ export const routes = [
     // Route
     path: '/catalog',
     // Component to render
-    page: () => import('./catalog.vue'),
+    component: () => import('./catalog.vue'),
   }
 ]
 ```
