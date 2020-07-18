@@ -1,5 +1,5 @@
 //
-// Adapter
+// Flavour
 //
 import NavBarComponent from './components/NavBar.vue'
 

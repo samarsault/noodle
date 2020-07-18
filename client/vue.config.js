@@ -9,8 +9,8 @@ module.exports = {
   chainWebpack: (config) => {
     // Move one up as noodle.config.js resides one folder up
     config.resolve.alias.set(
-      "noodle-adapter",
-      path.resolve("..", noodleConfig.adapter)
+      "noodle-flavour",
+      path.resolve("..", noodleConfig.flavour)
     );
   },
   css: {
@@ -18,7 +18,7 @@ module.exports = {
       sass: {
         // Inserts SCSS variables in all styles
         // changed to prependData, starting sass-loader 8
-        data: `@import "~noodle-adapter/styles/include/_vars.scss";`,
+        data: `@import "~noodle-flavour/styles/include/_vars.scss";`,
       },
     },
   },

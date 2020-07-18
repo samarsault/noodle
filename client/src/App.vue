@@ -21,7 +21,7 @@
 <script>
 import userApi from "@/api/user";
 
-import { NavBar } from "noodle-adapter";
+import { NavBar } from "noodle-flavour";
 import Modal from "./components/Dialogs/Modal";
 import Loading from "./components/Loading";
 
@@ -62,7 +62,7 @@ export default {
 <style lang="scss">
 @charset 'utf-8';
 
-@import "~noodle-adapter/styles/base.scss";
+@import "~noodle-flavour/styles/base.scss";
 @import "vue-select/src/scss/vue-select.scss";
 
 .app-loading {

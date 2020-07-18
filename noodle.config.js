@@ -2,5 +2,5 @@
 // Noodle Config
 //
 module.exports = {
-  adapter: "./cte"
+  flavour: "./flavour/cte"
 }
