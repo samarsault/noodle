@@ -40,12 +40,12 @@
           </button>
 
           <!-- <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.paragraph() }"
-          @click="commands.paragraph"
-        >
-          <icon name="paragraph" />
-        </button> -->
+            class="menubar__button"
+            :class="{ 'is-active': isActive.paragraph() }"
+            @click="commands.paragraph"
+          >
+            <IconPara />
+          </button> -->
 
           <button
             class="menubar__button"
@@ -94,8 +94,12 @@
           >
             <IconBlockquote />
           </button>
-          <button class="menubar__button" @click="showCommands = true">
-            Insert
+          <button
+            style="margin-left: auto; margin-right: 20px;"
+            class="menubar__button"
+            @click="showCommands = true"
+          >
+            <IconPlus />
           </button>
         </div>
       </editor-menu-bar>
@@ -108,7 +112,7 @@
       v-on:close="toggleUploadBox(false, null)"
     />
     <SelectItem
-      title="Insert"
+      title="Insert item"
       v-if="showCommands"
       :items="commands"
       @select="selectCommand"
@@ -157,6 +161,7 @@ import IconList from "vue-material-design-icons/FormatListBulleted";
 import IconListNumber from "vue-material-design-icons/FormatListNumbered";
 import IconCode from "vue-material-design-icons/CodeBraces";
 import IconBlockquote from "vue-material-design-icons/FormatQuoteClose";
+import IconPlus from "vue-material-design-icons/Plus";
 
 export default {
   // Implment v-model
@@ -176,6 +181,7 @@ export default {
     IconListNumber,
     IconCode,
     IconBlockquote,
+    IconPlus,
   },
   data() {
     return {
@@ -268,8 +274,9 @@ $color-white: #fff;
 code {
   background: #eee;
   color: indianred;
-  padding: 5px 10px;
+  padding: 5px;
   border-radius: 4px;
+  font-size: 90%;
   font-family: Monaco, Consolas, "Roboto Mono", "Ubuntu Monospaced";
 }
 
@@ -289,6 +296,12 @@ pre {
     border-radius: 4px;
   }
 }
+blockquote {
+  border-left: 5px solid $color-black;
+  margin: 20px 0;
+  padding: 8px 0 8px 25px;
+  font-style: italic;
+}
 
 .editor p.is-editor-empty:first-child::before {
   content: attr(data-empty-text);
@@ -305,32 +318,38 @@ pre {
 
 .editing {
   background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 6px 13px;
+  border: 1px solid rgba($color-black, 0.1);
+  border-radius: 4px;
+  // padding: 6px 13px;
+  .editor__content {
+    padding: 0 1rem;
+  }
 }
 
 .menubar {
   display: flex;
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
   // transition: visibility 0.2s 0.4s, opacity 0.2s 0.4s;
 
+  border-bottom: 1px solid rgba($color-black, 0.1);
   &__button {
     font-weight: bold;
     display: inline-flex;
     background: transparent;
     border: 0;
     color: $color-black;
-    padding: 0.2rem 0.5rem;
+    margin: 0.5rem;
     margin-right: 0.2rem;
-    border-radius: 3px;
+    padding: 0.3rem;
+    border-radius: 4px;
     cursor: pointer;
-
+    transition: background-color 0.3s;
     &:hover {
       background-color: rgba($color-black, 0.05);
     }
 
     &.is-active {
-      background-color: rgba($color-black, 0.1);
+      background-color: rgba($color-black, 0.09);
     }
   }
 

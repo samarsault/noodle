@@ -4,7 +4,8 @@
       <div class="modal-wrapper">
         <div class="modal-container" :style="`width: ${size}px`">
           <div class="modal-header">
-            <p>{{ title }}</p>
+            <!-- padding -> adjustment due to svg/path size difference-->
+            <p style="padding: 1px;">{{ title }}</p>
             <a href="#" @click="$emit('close')">
               <CloseIcon :size="24" />
             </a>

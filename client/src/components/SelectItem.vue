@@ -41,20 +41,23 @@ export default {
 </script>
 <style lang="scss" scoped>
 .item-to-add {
-  background-color: #f6f6f6;
-  padding: 15px;
+  padding: 10px;
   display: flex;
+  border-bottom: 0.5px solid rgba($black, 0.05);
   .icon {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     margin-right: 10px;
-    border: 3px dotted #ccc;
+    border: 2px dotted #ccc;
     border-radius: 4px;
-    background-color: #ddd;
+    background-color: #eee;
   }
   transition: background-color 0.3s ease-out;
   &:hover {
-    background-color: #f0f0f0;
+    background-color: $gray;
+    .item-name {
+      color: $tealBlue;
+    }
     //border: 1px solid #eee;
   }
   cursor: pointer;
@@ -64,6 +67,7 @@ p {
 }
 .item-name {
   font-weight: bold;
+  transition: color 0.3s ease-out;
 }
 .item-desc {
   color: #888;
