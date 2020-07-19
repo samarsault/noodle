@@ -53,9 +53,10 @@ const upload = multer({
       cb(null, path.join(__dirname, "temp"));
     },
     filename(req, file, cb) {
+      const name = req.params.fileName ? `${req.params.fileName}-` : "";
       cb(
         null,
-        `${req.params.fileName}-${path.basename(
+        `${name}${path.basename(
           file.originalname,
           path.extname(file.originalname)
         )}-${Date.now()}${path.extname(file.originalname)}`
