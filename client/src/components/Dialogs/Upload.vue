@@ -95,7 +95,7 @@ export default {
       uploadedFiles: [],
       uploadError: null,
       currentStatus: null,
-      uploadFieldName: "res",
+      uploadFieldName: "content",
     };
   },
   computed: {
