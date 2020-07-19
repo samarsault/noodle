@@ -95,10 +95,11 @@
       <UserInput v-model="instructors" v-if="isEdit" :value="instructors" />
       <input type="hidden" name="instructors" v-model="instructorStr" />
       <br />
-
-      <button v-if="!isEdit">
-        Handout
-      </button>
+      <a :href="course.handout" target="_blank" rel="noopener noreferrer">
+        <button v-if="!isEdit">
+          Handout
+        </button>
+      </a>
       <div v-if="isEdit" class="padless">
         <label for="handout">Handout</label>
         <input
