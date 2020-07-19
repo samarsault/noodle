@@ -34,18 +34,18 @@ router.get("/students/download", async function (req, res) {
 });
 
 // Add a resource to course
-router.post("/upload", upload.fields([{ name: "res" }]), async function (
+router.post("/upload", upload.fields([{ name: "content" }]), async function (
   req,
   res
 ) {
   if (!req.files) return res.status(400).send("Missing");
   const url = await s3Uploader(req, res);
-  const file = req.files.res[0];
+  const file = req.files.content[0];
   // History of uploads
   const uploadEntry = await Uploads.create({
     name: file.originalname,
     course: req.course_id,
-    user: req.session.passport.user,
+    user: req.user,
     url,
   });
   return res.send({ name: uploadEntry.name, url });
