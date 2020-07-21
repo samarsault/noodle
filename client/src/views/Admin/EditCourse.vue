@@ -94,23 +94,6 @@
       <input type="hidden" name="instructors" v-model="instructorStr" />
       <br />
 
-      <button v-if="!isEdit">
-        Handout
-      </button>
-      <div v-if="isEdit" class="padless">
-        <label for="handout">Handout</label>
-        <input
-          type="text"
-          name="handout"
-          v-model="course.handout"
-          v-if="false"
-        />
-        <input type="file" ref="handout" v-on:change="handleHandoutUpload()" />
-        <button @click="submitHandout" type="button" v-if="!handoutRecieved">
-          Upload Handout
-        </button>
-      </div>
-
       <div class="padless" v-if="!isEdit">
         <h4>
           <b>
@@ -144,9 +127,7 @@ export default {
       instructors: [],
       url: null,
       coverImage: "",
-      handout: "",
       coverRecieved: false,
-      handoutRecieved: false,
     };
   },
   computed: {
@@ -159,9 +140,6 @@ export default {
     },
     awsCover: function () {
       return this.course.coverImage;
-    },
-    awsHandout: function () {
-      return this.course.handout;
     },
   },
   async mounted() {
@@ -244,29 +222,6 @@ export default {
             );
           }
         });
-    },
-    async submitHandout() {
-      // Initialize the form data
-
-      let formData = new FormData();
-
-      // Add the form data we need to submit
-
-      formData.append("content", this.handout);
-
-      // Make the request to the POST /single-file URL
-
-      this.course.handout = (
-        await axios.post("/admin/super/upload/handout", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-      ).data;
-      this.handoutRecieved = true;
-    },
-    handleHandoutUpload() {
-      this.handout = this.$refs.handout.files[0];
     },
 
     async submitCoverImage() {

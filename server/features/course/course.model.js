@@ -13,7 +13,6 @@ const CourseSchema = new Schema({
     required: true,
     minlength: 250,
   },
-  handout: r_string,
   coverImage: r_string,
   isArchived: {
     type: Boolean,
