@@ -60,6 +60,7 @@
         name="subtitle"
         placeholder="Course subtitle in maximum 100 characters"
         :val="course.subtitle"
+        rows="3"
         maxlength="100"
         v-model="course.subtitle"
         :disabled="!isEdit"
@@ -73,7 +74,7 @@
       </h4>
       <textarea
         name="description"
-        rows="12"
+        rows="6"
         placeholder="Detailed description in minimum 250 characters."
         minlength="250"
         v-model="course.description"

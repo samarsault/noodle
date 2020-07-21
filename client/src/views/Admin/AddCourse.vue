@@ -16,7 +16,7 @@
       <h4>Subtitle</h4>
       <textarea
         name="subtitle"
-        rows="7"
+        rows="3"
         placeholder="Course subtitle in maximum 100 characters"
         maxlength="100"
         v-model="course.subtitle"
@@ -25,7 +25,7 @@
       <h4>Description</h4>
       <textarea
         name="description"
-        rows="12"
+        rows="6"
         placeholder="Detailed description in minimum 250 characters."
         minlength="250"
         v-model="course.description"
