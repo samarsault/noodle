@@ -66,7 +66,7 @@ export default {
         this.showRes = false;
       } else {
         this.courses = (
-          await axios.get(`/admin/super/courses/search/?q=${this.searchField}`)
+          await axios.get(`/public/courses/search/?q=${this.searchField}`)
         ).data;
         this.showRes = true;
       }

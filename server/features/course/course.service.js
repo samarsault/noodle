@@ -145,11 +145,13 @@ exports.create = async function (body) {
 
 exports.search = async function (query) {
   // Send any 5 for an empty query, to give user something to look upon
-  if (!query) return Course.find({}).select("name").limit(5);
+  if (!query) return Course.find({}).select("name coverImage").limit(5);
 
   const re = new RegExp(`${query}.*`, "i");
   re.ignoreCase = true;
-  const courses = await Course.find({ name: re }).select("name").limit(5);
+  const courses = await Course.find({ name: re })
+    .select("name coverImage")
+    .limit(5);
   return courses;
 };
 
