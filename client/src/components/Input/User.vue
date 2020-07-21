@@ -23,13 +23,19 @@ export default {
       users: [],
     };
   },
+  async mounted() {
+    this.users = await this.fetchOptions("");
+  },
   methods: {
-    searchUsers(search, loading) {
+    async fetchOptions(search) {
+      const { data } = await axios.get(`/admin/super/users/search?q=${search}`);
+      return data.map((x) => `${x.name} <${x.email}>`);
+    },
+    async searchUsers(search, loading) {
+      if (!search) return;
       loading(true);
-      axios.get(`/admin/super/users/search?q=${search}`).then(({ data }) => {
-        this.users = data.map((x) => `${x.name} <${x.email}>`);
-        loading(false);
-      });
+      this.users = await this.fetchOptions(search);
+      loading(false);
     },
     changed(value) {
       this.$emit("input", value);

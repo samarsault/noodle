@@ -31,6 +31,7 @@ export default {
       return data.map((x) => x.name);
     },
     async searchCourses(search, loading) {
+      if (!search) return;
       loading(true);
       this.courseOptions = await this.fetchOptions(search);
       loading(false);

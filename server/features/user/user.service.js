@@ -39,7 +39,7 @@ exports.updateAccess = function (user_id, role) {
 };
 
 exports.search = function (query) {
-  if (!query) return [];
+  if (!query) return User.find({}).select("name email").limit(5);
 
   const re = new RegExp(`${query}.*`, "i");
   re.ignoreCase = true;
