@@ -6,14 +6,12 @@ const CourseSchema = new Schema({
   subtitle: {
     type: String,
     required: true,
-    minlength: 50,
     maxlength: 100,
   },
   description: {
     type: String,
     required: true,
-    minlength: 800,
-    maxlength: 1000,
+    minlength: 250,
   },
   handout: r_string,
   coverImage: r_string,

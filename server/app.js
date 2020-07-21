@@ -2,6 +2,9 @@ const express = require("express");
 const path = require("path");
 const passport = require("passport");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const logger = require("morgan");
+const config = require("./config");
 // fallback to index.html for vue
 
 // Custom
@@ -21,9 +24,12 @@ const app = express();
 
 // Configure environment variables
 require("dotenv").config();
-// Configure database & environment
-require("./configure")(app);
 
+// Configure database & environment
+mongoose.set("useCreateIndex", true);
+mongoose.connect(config.mongo.uri, { useNewUrlParser: true });
+
+if (process.env.NODE_ENV !== "test") app.use(logger("dev"));
 // app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // parse requests of content-type - application/x-www-form-urlencoded
