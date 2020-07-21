@@ -114,8 +114,20 @@ export default {
       }
     },
     async submitForm() {
-      const sendCourse = { ...this.course, instructors: this.instructorStr };
-      await axios.post("/admin/super/addCourse", sendCourse);
+      try {
+        const sendCourse = { ...this.course, instructors: this.instructorStr };
+        const { status } = await axios.post(
+          "/admin/super/addCourse",
+          sendCourse
+        );
+        if (status === 200) {
+          this.$router.push({
+            path: "/admin/cmgt/",
+          });
+        }
+      } catch (e) {
+        alert("Error: can't add course");
+      }
     },
     async submitCoverImage() {
       // Initialize the form data

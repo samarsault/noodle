@@ -28,11 +28,10 @@ router.post(
 router.post("/addCourse", async function (req, res) {
   try {
     // Create Course
-    const course = await courseService.create(req.body);
-
-    return res.redirect(`/admin/cmgt/${course._id}`);
+    await courseService.create(req.body);
+    return res.status(200).send("OK");
   } catch (err) {
-    return res.status(500).send(err.message);
+    return res.status(400).send(err.message);
   }
 });
 
