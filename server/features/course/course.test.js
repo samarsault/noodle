@@ -152,10 +152,12 @@ describe("Course Service", function () {
         {
           _id: course1._id,
           name: "course1",
+          coverImage: course1.coverImage,
         },
         {
           _id: Course1._id,
           name: "Course1",
+          coverImage: Course1.coverImage,
         },
       ])
     );
