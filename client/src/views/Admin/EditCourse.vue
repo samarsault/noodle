@@ -271,7 +271,7 @@ export default {
 }
 .courseImage {
   width: 300px;
-  height: auto;
+  height: 178px;
 }
 .mainWrapper h2 {
   padding: 0px;
