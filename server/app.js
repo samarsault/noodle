@@ -22,10 +22,6 @@ const publicRouter = require("./routes/public");
 
 const app = express();
 
-// Configure environment variables
-require("dotenv").config();
-
-// Configure database & environment
 mongoose.set("useCreateIndex", true);
 mongoose.connect(config.mongo.uri, { useNewUrlParser: true });
 
