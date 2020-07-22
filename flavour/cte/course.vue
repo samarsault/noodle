@@ -13,11 +13,15 @@
     </div>
     <div v-if="handout" class="handout">
       <h2>Curriculum</h2>
-      <div v-for="item in Object.keys(handout)" :key="item" class="handout-item">
-        <p>{{ item }}</p>
-        <ul class="handout-list">
-          <li v-for="page in handout[item]" :key="page._id">{{ page.name }}</li>
-        </ul>
+      <div class="handout-items">
+        <div v-for="item in Object.keys(handout)" :key="item" class="handout-item">
+          <div class="handout-card">
+            <p>{{ item }}</p>
+            <ul class="handout-list">
+              <li v-for="page in handout[item]" :key="page._id">{{ page.name }}</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -87,19 +91,26 @@ ul {
   list-style-type: none;
 }
 .handout {
-  max-width: 640px;
   p {
     margin-top: 0;
     font-weight: bold;
     padding-bottom: 15px;
     border-bottom: 1px solid #eee;
   }
+  .handout-items {
+    display: flex;
+    flex-wrap: wrap;
+  }
   &-item {
+    padding: 10px;
+    flex-basis: 50%;
+  }
+  &-card {
+    padding: 20px;
     background-color: #fff;
     border: 1px solid rgba(33,36,44,0.16);
     border-radius: 4px;
-    padding: 20px;
-    margin: 10px 0;
+    height: 100%;
   }
 }
 .handout-list {
