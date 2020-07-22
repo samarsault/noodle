@@ -22,9 +22,66 @@ exports.get = function (type, _id) {
   return PageModels[type].findOne({ _id });
 };
 
-exports.create = function (type, pageObject) {
-  if (PageModels[type]) return PageModels[type].create(pageObject);
-  return Page.create(pageObject);
+exports.create = async function (type, pageObject) {
+  if (!PageModels[type]) throw new Error("Illegal page type");
+  const Model = PageModels[type];
+  // assign index
+  let index = -1;
+  if (pageObject.parent) {
+    // it is a child, how many siblings
+    index = await Model.count({ parent: pageObject.parent });
+  } else if (pageObject.type === "Module") {
+    // is a module
+    index = await Model.count({ course: pageObject.course });
+  } else {
+    throw new Error("Unable to compute page index");
+  }
+  return PageModels[type].create({
+    ...pageObject,
+    index,
+  });
+};
+
+//
+// Reorder using indexes
+//
+exports.reorder = async function (items) {
+  const updates = items.map((item) =>
+    Page.updateOne(
+      {
+        _id: item._id,
+      },
+      {
+        index: item.index,
+      }
+    )
+  );
+  await Promise.all(updates);
+};
+
+// [ { name: < >, type: < >, children: [ ... ] }]
+//
+exports.skeleton = async function (course) {
+  const modules = await Module.find({ course, parent: null })
+    .sort({
+      index: 1,
+    })
+    .select("name type");
+  const info = [];
+  for (const module of modules) {
+    // eslint-disable-next-line no-await-in-loop
+    const children = await Page.find({
+      parent: module._id,
+    })
+      .sort({ index: 1 })
+      .select("name type");
+    info.push({
+      _id: module._id,
+      name: module.name,
+      children,
+    });
+  }
+  return info;
 };
 
 exports.update = function (pageId, updateObject) {

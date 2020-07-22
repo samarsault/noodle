@@ -14,9 +14,10 @@ router.get("/", async function (req, res) {
 });
 
 router.get("/pages", async function (req, res) {
-  const parent = req.query.parent || null;
-  const pages = await page.service.getAll(req.course_id, parent);
-  return res.json(pages);
+  // const parent = req.query.parent || null;
+  // const pages = await page.service.getAll(req.course_id, parent);
+  const info = await page.service.skeleton(req.course_id);
+  return res.json(info);
 });
 
 router.get("/pages/:id", async function (req, res) {
@@ -31,12 +32,12 @@ router.get("/pages/:id", async function (req, res) {
   return res.json(pageInfo);
 });
 
-router.get("/module/:id", async function (req, res) {
-  const module = await page.service
-    .get("Module", req.params.id)
-    .populate("pages");
-  return res.json(module);
-});
+// router.get("/module/:id", async function (req, res) {
+//   const module = await page.service
+//     .get("Module", req.params.id)
+//     .populate("pages");
+//   return res.json(module);
+// });
 
 router.get("/questions", async function (req, res) {
   const list = await question.service.getAll(req.course_id, req.query.group);

@@ -18,51 +18,60 @@
           </router-link>
           <p style="font-weight: bold;">{{ course.name }}</p>
         </div>
-        <Plus v-if="isAdmin" @click="addPage()" style="cursor: pointer;" />
+        <Plus
+          v-if="isAdmin"
+          @click="newPage({ name: 'Module' })"
+          style="cursor: pointer;"
+        />
       </div>
       <nav>
-        <div v-for="module in modules" :key="module._id">
-          <a
-            :key="module._id"
-            class="icon-centre"
-            v-on:click="toggleModule(module)"
-          >
-            <FolderOpen
-              v-if="module._id === activeModule"
-              style="margin-right: 10px;"
-            />
-            <Folder v-else style="margin-right: 10px;" />
-            {{ module.name }}
-          </a>
-          <div class="module-content" v-if="module._id == activeModule">
-            <router-link
-              v-for="page in modulePages"
-              v-bind:key="page.name"
-              class="module-item"
-              :to="`/dashboard/course/${course_id}/${page.type}/${page._id}`"
-            >
-              <div>
-                {{ page.name }}
-              </div>
-            </router-link>
-            <a
-              v-if="isAdmin"
-              href="#"
-              @click="addPage(module._id)"
-              class="icon-centre"
-            >
-              <Plus />
-              Add
-            </a>
-          </div>
-        </div>
-        <router-link
-          v-for="page in content"
-          v-bind:key="page.name"
-          :to="`/dashboard/course/${course_id}/${page.type}/${page._id}`"
+        <Draggable
+          v-model="pages"
+          @change="moduleOrderChange"
+          :disabled="!isAdmin"
         >
-          <li>{{ page.name }}</li>
-        </router-link>
+          <div v-for="module in pages" :key="module._id">
+            <a
+              :key="module._id"
+              class="icon-centre"
+              v-on:click="toggleModule(module)"
+            >
+              <FolderOpen
+                v-if="module._id === activeModule"
+                style="margin-right: 10px;"
+              />
+              <Folder v-else style="margin-right: 10px;" />
+              {{ module.name }}
+            </a>
+            <div class="module-content" v-if="module._id == activeModule">
+              <Draggable
+                v-model="module.children"
+                @change="pageOrderChange(module.children)"
+                :disabled="!isAdmin"
+              >
+                <router-link
+                  v-for="page in module.children"
+                  v-bind:key="page.name"
+                  class="module-item"
+                  :to="`/dashboard/course/${course_id}/${page.type}/${page._id}`"
+                >
+                  <div>
+                    {{ page.name }}
+                  </div>
+                </router-link>
+              </Draggable>
+              <a
+                v-if="isAdmin"
+                href="#"
+                @click="addPage(module._id)"
+                class="icon-centre"
+              >
+                <Plus />
+                Add
+              </a>
+            </div>
+          </div>
+        </Draggable>
       </nav>
       <div v-if="isAdmin">
         <p style="padding-left: 10px; font-weight: bold;">Admin</p>
@@ -74,13 +83,15 @@
             Question Bank
           </a>
           <div class="module-content" v-if="isQuestionBankOpen">
-            <router-link
-              v-for="group in questionGroups"
-              v-bind:key="group"
-              :to="`/dashboard/course/${course_id}/questions/${group}`"
-            >
-              {{ group }}
-            </router-link>
+            <div>
+              <router-link
+                v-for="group in questionGroups"
+                v-bind:key="group"
+                :to="`/dashboard/course/${course_id}/questions/${group}`"
+              >
+                {{ group }}
+              </router-link>
+            </div>
             <a href="#" @click="addQuestionGroup" class="icon-centre">
               <Plus />
               Add Group
@@ -126,6 +137,7 @@
 import courseApi from "../api/course";
 import { mutations, getters } from "../utils/store";
 import SelectItem from "../components/SelectItem.vue";
+import Draggable from "vuedraggable";
 
 // Icons
 import Plus from "vue-material-design-icons/Plus";
@@ -146,12 +158,6 @@ export default {
       }
       return true;
     },
-    modules() {
-      return this.pages.filter((x) => x.type === "Module");
-    },
-    content() {
-      return this.pages.filter((x) => x.type !== "Module");
-    },
     isAdmin() {
       if (!this.course.instructors) return false;
       return this.course.instructors.indexOf(this.user._id) != -1;
@@ -164,9 +170,7 @@ export default {
     return {
       course_id: this.$route.params.course_id,
       course: {},
-      api: {},
       pages: [],
-      modulePages: [],
       addModal: false,
       // Which module is active right now
       activeModule: null,
@@ -181,11 +185,8 @@ export default {
           name: "Quiz",
           description: "Test your students",
         },
-        {
-          name: "Module",
-          description: "Enclose pages & quiz in a single entity",
-        },
       ],
+      ordering: [],
     };
   },
   async created() {
@@ -201,17 +202,44 @@ export default {
     }
   },
   components: {
+    Draggable,
+    SelectItem,
     Plus,
     Edit,
     IconX,
     Back,
     Bin,
-    SelectItem,
     Folder,
     FolderOpen,
   },
   methods: {
     ...mutations,
+    async moduleOrderChange() {
+      try {
+        const result = await this.api.reorderPages(
+          this.pages.map((page, index) => ({
+            _id: page._id,
+            index,
+          }))
+        );
+        if (!result) throw new Error("Server error");
+      } catch (err) {
+        alert("Can't change order order");
+      }
+    },
+    async pageOrderChange(pages) {
+      try {
+        const result = await this.api.reorderPages(
+          pages.map((page, index) => ({
+            _id: page._id,
+            index,
+          }))
+        );
+        if (!result) throw new Error("Server error");
+      } catch (err) {
+        alert("Can't change order order");
+      }
+    },
     toggleEdit() {
       if (this.activePage) {
         this.setActivePage({
@@ -257,7 +285,6 @@ export default {
       if (this.activeModule === page._id) {
         this.activeModule = null;
       } else {
-        this.modulePages = await this.api.getPage(page._id, page._id);
         this.activeModule = page._id;
       }
     },
@@ -272,8 +299,12 @@ export default {
         type,
         parent: this.addToModule ? this.activeModule : null,
       });
-      if (this.addToModule) this.modulePages.push(page);
-      else this.pages.push(page);
+      if (this.addToModule) {
+        const module = this.pages.find((x) => x._id === this.activeModule);
+        module.children = [...module.children, page];
+      } else {
+        this.pages = [...this.pages, page];
+      }
     },
     async deletePage(page) {
       const confirmation = confirm(
@@ -282,8 +313,9 @@ export default {
       if (!confirmation) return;
       const delPage = await this.api.deletePage(page._id);
       if (delPage) {
+        const module = this.pages.find((x) => x._id === this.activeModule);
         // successful deletion
-        this.modulePages = this.modulePages.filter((x) => x._id !== page._id);
+        module.children = module.children.filter((x) => x._id !== page._id);
         this.$router.push({
           path: `/dashboard/course/${this.course_id}`,
         });
@@ -323,11 +355,16 @@ export default {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    .module-content > a {
-      background: #222;
-      &:not(:last-child) {
+    .module-content {
+      a {
+        background: #222;
+      }
+      > div:not(:last-child) > a {
         border-bottom: 1px solid #444;
       }
+      // &:not(:last-child) {
+      // border-bottom: 1px solid #444;
+      // }
     }
     .module-item {
       display: flex;

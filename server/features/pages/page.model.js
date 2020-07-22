@@ -10,10 +10,16 @@ const CoursePageSchema = new Schema(
       ref: "Course",
       required: true,
     },
+    // parent, if any
     parent: {
       type: Schema.Types.ObjectId,
       ref: "CoursePage",
       default: null,
+    },
+    // Order of page
+    index: {
+      type: Number,
+      default: -1,
     },
     created: {
       type: Date,

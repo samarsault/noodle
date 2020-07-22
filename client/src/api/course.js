@@ -44,6 +44,13 @@ export default (course_id) => ({
     }
     return false;
   },
+  async reorderPages(items) {
+    const { status } = await axios.put(
+      `/admin/courses/${course_id}/page/reorder`,
+      items
+    );
+    return status === 200;
+  },
   questions: {
     get() {},
     async getGroups() {

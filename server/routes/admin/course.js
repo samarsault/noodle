@@ -70,6 +70,16 @@ router.post("/page", async function (req, res) {
   return res.json(page);
 });
 
+router.put("/page/reorder", async function (req, res) {
+  try {
+    // [ { index: 3, _id: }]
+    await pageService.reorder(req.body);
+    return res.status(200).send("OK");
+  } catch (e) {
+    return res.status(400).send("Error");
+  }
+});
+
 router.put("/page/:id", async function (req, res) {
   await pageService.update(req.params.id, req.body);
   return res.send({
