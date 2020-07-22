@@ -1,22 +1,24 @@
 <template>
-  <div class="card">
-    <img
-      :src="course.coverImage"
-      :alt="course.name"
-      style="width: 100%; height: 160px;"
-    />
-    <div class="card-container">
-      <h4>
-        <b>{{ course.name }}</b>
-      </h4>
-      <slot name="action">
-        <router-link
-          :to="`/admin/cmgt/${course._id}`"
-          tag="button"
-          class="secondary"
-          >View</router-link
-        >
-      </slot>
+  <div class="card-wrap">
+    <div class="card">
+      <img
+        :src="course.coverImage"
+        :alt="course.name"
+        style="width: 100%; height: 160px;"
+      />
+      <div class="card-container">
+        <h4>
+          <b>{{ course.name }}</b>
+        </h4>
+        <slot name="action">
+          <router-link
+            :to="`/admin/cmgt/${course._id}`"
+            tag="button"
+            class="secondary"
+            >View</router-link
+          >
+        </slot>
+      </div>
     </div>
   </div>
 </template>
@@ -34,6 +36,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-wrap {
+  padding: 20px;
+}
 .card {
   display: flex;
   flex-direction: column;
@@ -42,7 +47,6 @@ export default {
   transition: 0.3s;
   width: 270px;
   max-height: 340px;
-  margin: 20px;
   border-radius: 4px;
   overflow: hidden;
   background-color: white;
