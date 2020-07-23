@@ -23,14 +23,6 @@ export default {
     node: {
       type: Object,
     },
-
-    updateAttrs: {
-      type: Function,
-    },
-
-    editable: {
-      type: Boolean,
-    },
   },
 
   computed: {

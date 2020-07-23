@@ -23,6 +23,14 @@ export default (editor) => [
   },
   {
     id: 1,
+    name: "Equation",
+    description: "Math equation expression",
+    onCommand: function () {
+      editor.commands.math();
+    },
+  },
+  {
+    id: 2,
     name: "Code Block",
     description: "C/C++, Javascript, Python",
     onCommand: function () {
@@ -30,7 +38,7 @@ export default (editor) => [
     },
   },
   {
-    id: 2,
+    id: 3,
     name: "Upload",
     description: "Document/Slides/Book",
     onCommand: function () {
@@ -44,7 +52,7 @@ export default (editor) => [
     },
   },
   {
-    id: 3,
+    id: 4,
     name: "Youtube Video",
     description: "Embed using youtube link",
     onCommand: function () {

@@ -142,6 +142,7 @@ import {
   Blockquote,
 } from "tiptap-extensions";
 import Iframe from "./Butler/nodes/iframe";
+import Math from "./Butler/nodes/math";
 import Resources from "./Butler/nodes/resource";
 import ButlerCommands from "./Butler/commands";
 
@@ -240,6 +241,7 @@ export default {
         new Bold(),
         new Italic(),
         new Underline(),
+        new Math(),
       ],
       onUpdate: ({ getHTML }) => {
         this.emitAfterOnUpdate = true;

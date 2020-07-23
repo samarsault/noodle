@@ -27,11 +27,6 @@
 export default {
   name: "Card",
   props: ["course"],
-  methods: {
-    editCourse(next) {
-      next();
-    },
-  },
 };
 </script>
 
