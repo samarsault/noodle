@@ -2,13 +2,13 @@
   <div class="resource">
     <div style="display: flex;">
       <div class="resource-icon">
-        <FallbackIcon :size="72" />
+        <FallbackIcon :size="48" />
       </div>
-      <h3 class="resource-text">{{ title }}</h3>
+      <div class="resource-text">
+        <h4>{{ title }}</h4>
+        <a :href="src">Download</a>
+      </div>
     </div>
-    <a :href="src">
-      <button style="margin-right: 30px;" class="secondary">Download</button>
-    </a>
   </div>
 </template>
 
@@ -47,18 +47,26 @@ export default {
 <style lang="scss">
 .resource {
   background-color: #fff;
-  border: 1px solid #eee;
+  padding-right: 40px;
+  border: 1px solid rgba($black, 0.05);
+  box-shadow: 0 1px 2px 0 rgba($black, 0.03);
+  border-radius: 4px;
   display: flex;
   align-items: center;
+  width: fit-content;
   justify-content: space-between;
+
   .resource-icon {
-    padding: 25px;
+    padding: 16px;
     background-color: #eee;
+    display: flex;
+    align-items: center;
   }
   .resource-text {
-    margin-left: 20px;
-    h3 {
-      margin: 0.4em 0;
+    padding: 20px;
+    h4 {
+      margin-top: 0;
+      margin-bottom: 0.4em;
     }
     p {
       margin-top: 0;

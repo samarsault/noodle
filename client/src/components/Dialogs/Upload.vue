@@ -5,6 +5,7 @@
         method="post"
         enctype="multipart/form-data"
         v-on:keydown.enter.prevent
+        v-if="uploadedFiles.length === 0"
       >
         <!-- <input name="name" type="text" placeholder="Name"> -->
         <div class="dropbox">
@@ -28,9 +29,8 @@
         </div>
       </form>
       <div v-if="isSuccess">
-        <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
-        <p>
-          <a href="javascript:void(0)" @click="reset()">Upload again</a>
+        <p style="margin-top: 0;">
+          Uploaded {{ uploadedFiles.length }} file(s) successfully.
         </p>
         <ul class="list-unstyled">
           <li v-for="(item, index) in uploadedFiles" :key="index">
@@ -166,12 +166,16 @@ input[type="text"] {
   border: 1px solid #ddd;
   width: 100%;
 }
+.list-unstyled {
+  list-style-type: none;
+  padding: 0;
+}
 .dropbox {
   outline: 2px dashed grey; /* the dash box */
   outline-offset: -10px;
   background: lightcyan;
   color: dimgray;
-  padding: 10px 10px;
+  padding: 10px;
   min-height: 200px; /* minimum height */
   position: relative;
   cursor: pointer;
