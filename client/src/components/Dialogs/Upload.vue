@@ -18,7 +18,7 @@
               filesChange($event.target.name, $event.target.files);
               fileCount = $event.target.files.length;
             "
-            accept="image/*"
+            :accept="uploadBox.accept"
             class="input-file"
           />
           <p v-if="isInitial">

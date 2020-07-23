@@ -34,9 +34,13 @@ export default (editor) => [
     name: "Upload",
     description: "Document/Slides/Book",
     onCommand: function () {
-      mutations.toggleUploadBox(true, (data) => {
-        editor.commands.resource({ src: data[0].url, title: data[0].name });
-      });
+      mutations.toggleUploadBox(
+        true,
+        (data) => {
+          editor.commands.resource({ src: data[0].url, title: data[0].name });
+        },
+        "*"
+      );
     },
   },
   {

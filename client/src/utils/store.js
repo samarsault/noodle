@@ -15,6 +15,8 @@ const store = Vue.observable({
   uploadBox: {
     show: false,
     onSuccess: null,
+    // type of files to accept
+    accept: "image/*",
   },
   activePage: null,
 });
@@ -47,8 +49,9 @@ export const mutations = {
   hideAlert() {
     store.alert.show = false;
   },
-  toggleUploadBox(value, cb) {
+  toggleUploadBox(value, cb, accept) {
     store.uploadBox.show = value;
     store.uploadBox.onSuccess = cb;
+    store.uploadBox.accept = accept || "image/*";
   },
 };
