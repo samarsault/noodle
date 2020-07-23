@@ -16,8 +16,9 @@ export default (editor) => [
     name: "Image",
     description: "Insert an image",
     onCommand: function () {
-      const src = prompt("URL:");
-      editor.commands.image({ src });
+      mutations.toggleUploadBox(true, (data) => {
+        editor.commands.image({ src: data[0].url });
+      });
     },
   },
   {
