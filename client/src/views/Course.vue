@@ -279,6 +279,7 @@ export default {
     },
     addQuestionGroup() {
       const name = prompt("Name:");
+      if (!name) return;
       this.questionGroups = [...this.questionGroups, name];
     },
     async toggleModule(page) {
