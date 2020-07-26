@@ -59,6 +59,26 @@ module.exports = {
         }
       }
     },
+    "/public/courses/search": {
+      get: {
+        tags: [
+          "courses"
+        ],
+        summary: "Search available courses",
+        responses: {
+          200: {
+            description: "OK",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/courses"
+                }
+              }
+            }    
+          }
+        }
+      }
+    },
     "/api/courses/{course_id}": {
       get: {
         summary: "Retrieve specific course",
