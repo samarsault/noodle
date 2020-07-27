@@ -24,84 +24,89 @@
           style="cursor: pointer;"
         />
       </div>
-      <nav>
-        <Draggable
-          v-model="pages"
-          @change="moduleOrderChange"
-          :disabled="!isAdmin"
-        >
-          <div v-for="module in pages" :key="module._id">
-            <a
-              :key="module._id"
-              class="icon-centre"
-              v-on:click="toggleModule(module)"
-            >
+      <div id="sidebar-items">
+        <nav>
+          <Draggable
+            v-model="pages"
+            @change="moduleOrderChange"
+            :disabled="!isAdmin"
+          >
+            <div v-for="module in pages" :key="module._id">
+              <a
+                :key="module._id"
+                class="icon-centre"
+                v-on:click="toggleModule(module)"
+              >
+                <FolderOpen
+                  v-if="module._id === activeModule"
+                  style="margin-right: 10px;"
+                />
+                <Folder v-else style="margin-right: 10px;" />
+                {{ module.name }}
+              </a>
+              <div class="module-content" v-if="module._id == activeModule">
+                <Draggable
+                  v-model="module.children"
+                  @change="pageOrderChange(module.children)"
+                  :disabled="!isAdmin"
+                >
+                  <router-link
+                    v-for="page in module.children"
+                    v-bind:key="page.name"
+                    class="module-item"
+                    :to="`/dashboard/course/${course_id}/${page.type}/${page._id}`"
+                  >
+                    <div>
+                      {{ page.name }}
+                    </div>
+                  </router-link>
+                </Draggable>
+                <a
+                  v-if="isAdmin"
+                  href="#"
+                  @click="addPage(module._id)"
+                  class="icon-centre"
+                >
+                  <Plus />
+                  Add
+                </a>
+              </div>
+            </div>
+          </Draggable>
+        </nav>
+        <div v-if="isAdmin">
+          <p style="padding-left: 10px; font-weight: bold;">Admin</p>
+          <nav>
+            <!-- Question bank -->
+            <a class="icon-centre" v-on:click="toggleQuestionBank">
               <FolderOpen
-                v-if="module._id === activeModule"
+                v-if="isQuestionBankOpen"
                 style="margin-right: 10px;"
               />
               <Folder v-else style="margin-right: 10px;" />
-              {{ module.name }}
+              Question Bank
             </a>
-            <div class="module-content" v-if="module._id == activeModule">
-              <Draggable
-                v-model="module.children"
-                @change="pageOrderChange(module.children)"
-                :disabled="!isAdmin"
-              >
+            <div class="module-content" v-if="isQuestionBankOpen">
+              <div>
                 <router-link
-                  v-for="page in module.children"
-                  v-bind:key="page.name"
-                  class="module-item"
-                  :to="`/dashboard/course/${course_id}/${page.type}/${page._id}`"
+                  v-for="group in questionGroups"
+                  v-bind:key="group"
+                  :to="`/dashboard/course/${course_id}/questions/${group}`"
                 >
-                  <div>
-                    {{ page.name }}
-                  </div>
+                  {{ group }}
                 </router-link>
-              </Draggable>
-              <a
-                v-if="isAdmin"
-                href="#"
-                @click="addPage(module._id)"
-                class="icon-centre"
-              >
+              </div>
+              <a href="#" @click="addQuestionGroup" class="icon-centre">
                 <Plus />
-                Add
+                Add Group
               </a>
             </div>
-          </div>
-        </Draggable>
-      </nav>
-      <div v-if="isAdmin">
-        <p style="padding-left: 10px; font-weight: bold;">Admin</p>
-        <nav>
-          <!-- Question bank -->
-          <a class="icon-centre" v-on:click="toggleQuestionBank">
-            <FolderOpen v-if="isQuestionBankOpen" style="margin-right: 10px;" />
-            <Folder v-else style="margin-right: 10px;" />
-            Question Bank
-          </a>
-          <div class="module-content" v-if="isQuestionBankOpen">
-            <div>
-              <router-link
-                v-for="group in questionGroups"
-                v-bind:key="group"
-                :to="`/dashboard/course/${course_id}/questions/${group}`"
-              >
-                {{ group }}
-              </router-link>
-            </div>
-            <a href="#" @click="addQuestionGroup" class="icon-centre">
-              <Plus />
-              Add Group
-            </a>
-          </div>
-          <!-- Registrations -->
-          <router-link :to="`/dashboard/course/${course_id}/registrations`"
-            >Registrations</router-link
-          >
-        </nav>
+            <!-- Registrations -->
+            <router-link :to="`/dashboard/course/${course_id}/registrations`"
+              >Registrations</router-link
+            >
+          </nav>
+        </div>
       </div>
     </div>
     <div :class="`course-pages ${sidebarHidden ? '' : 'hidden-mobile'}`">
@@ -334,7 +339,9 @@ export default {
     display: none;
   }
 }
-
+#sidebar-items {
+  overflow-y: scroll;
+}
 .sidebar {
   background-color: #222;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
