@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import SignUp from "./views/SignUp";
 
 import admin from "./routes/admin";
 import dashboard from "./routes/dashboard";
@@ -20,7 +19,7 @@ const router = new Router({
     {
       path: "/signup",
       name: "signup",
-      component: SignUp,
+      component: () => import("./views/SignUp"),
     },
     {
       path: "/authorized",

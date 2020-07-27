@@ -1,17 +1,13 @@
 //
 // Dashboard related routes
 //
-import Registrations from "../views/Course/Registrations.vue";
-import Quizzer from "../views/Course/Quiz/Quizzer.vue";
-import QuestionBank from "../views/Course/Quiz/QuestionBank.vue";
-import Quiz from "../views/Course/Quiz/Quiz.vue";
-import QuizAttempts from "../views/Course/Quiz/Attempts.vue";
+import Home from "../views/Home.vue";
 
 export default [
   {
     path: "/dashboard",
     name: "home",
-    component: () => import("../views/Home.vue"),
+    component: () => Home,
   },
   {
     path: "/dashboard/course/:course_id",
@@ -28,23 +24,23 @@ export default [
       },
       {
         path: "registrations",
-        component: Registrations,
+        component: () => import("../views/Course/Registrations.vue"),
       },
       {
         path: "Quiz/:quiz_id",
-        component: Quiz,
+        component: () => import("../views/Course/Quiz/Quiz.vue"),
       },
       {
         path: "attempts/:quiz_id",
-        component: QuizAttempts,
+        component: () => import("../views/Course/Quiz/Attempts.vue"),
       },
       {
         path: "Quizzer/:quiz_id",
-        component: Quizzer,
+        component: () => import("../views/Course/Quiz/Quizzer.vue"),
       },
       {
         path: "questions/:group",
-        component: QuestionBank,
+        component: () => import("../views/Course/Quiz/QuestionBank.vue"),
       },
     ],
   },

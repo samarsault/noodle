@@ -1,31 +1,30 @@
 //
 // Admin related routes
 //
-import Admin from "../views/Admin.vue";
-import CourseMgmt from "../views/Admin/CourseMgmt.vue";
-import UserMgmt from "../views/Admin/UserMgmt.vue";
-import EditCourse from "../views/Admin/EditCourse.vue";
-import AddCourse from "../views/Admin/AddCourse.vue";
-import EditUser from "../views/Admin/EditUser.vue";
-
 export default [
   {
     path: "/admin",
     redirect: "/admin/cmgt",
     name: "admin",
-    component: Admin,
+    component: () => import("../views/Admin.vue"),
     children: [
       {
         path: "cmgt",
-        component: CourseMgmt,
+        component: () => import("../views/Admin/CourseMgmt.vue"),
       },
-      { path: "cmgt/add", component: AddCourse },
-      { path: "cmgt/:course_id", component: EditCourse },
+      { path: "cmgt/add", component: () => import("../views/Admin/AddCourse") },
+      {
+        path: "cmgt/:course_id",
+        component: () => import("../views/Admin/EditCourse.vue"),
+      },
       {
         path: "umgt",
-        component: UserMgmt,
+        component: () => import("../views/Admin/UserMgmt"),
       },
-      { path: "umgt/:user_id", component: EditUser },
+      {
+        path: "umgt/:user_id",
+        component: () => import("../views/Admin/EditUser.vue"),
+      },
     ],
     meta: {
       requiresAuth: true,
