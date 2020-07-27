@@ -3,19 +3,9 @@
 //
 const Quiz = require("./quiz.model");
 const QuizAttempt = require("./attempt.model");
-const { Question } = require("../models");
+const questionService = require("../question/question.service");
 // TODO: Use alternative
 const userService = require("../user/user.service");
-
-function resolveQuestions(questionIds) {
-  return Promise.all(
-    questionIds.map((id) =>
-      Question.findOne({
-        _id: id,
-      }).populate("questions")
-    )
-  );
-}
 
 function getStringTime(ms) {
   const seconds = Math.round(ms / 1000);
@@ -73,18 +63,13 @@ exports.attempt = async function (attempt) {
 exports.evaluate = async function (attempt) {
   try {
     // Calculate Score
-    const { questions } = await Quiz.findOne(
+    const { questions: quizQuestions } = await Quiz.findOne(
       {
         _id: attempt.quiz_id,
       },
       "questions"
-    ).populate({
-      path: "questions",
-      // populate questions of multi-part
-      populate: {
-        path: "questions",
-      },
-    });
+    ).populate("questions");
+    const questions = await questionService.resolve(quizQuestions);
     const questionMap = questions.flatMap((question) => {
       if (question.questions) return [...question.questions];
       return question;
@@ -153,10 +138,12 @@ exports.deleteQuestion = function (quizId, questionId) {
 exports.getById = async function (quiz_id) {
   const quiz = await Quiz.findOne({
     _id: quiz_id,
-  });
-  const questions = await resolveQuestions(quiz.questions);
+  })
+    .populate("questions")
+    .lean();
+  const questions = await questionService.resolve(quiz.questions);
   return {
-    ...quiz.toObject(),
+    ...quiz,
     questions,
   };
 };

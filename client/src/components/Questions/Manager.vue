@@ -11,28 +11,65 @@
         >
           <Plus decorative /><span class="icon-left">Add New Question</span>
         </button>
+        <button
+          style="height: fit-content;"
+          class="secondary icon-button"
+          @click="questionTypeSelect({ name: 'NoBody' })"
+          v-if="showAdd"
+        >
+          <Plus decorative /><span class="icon-left">Add Question Group</span>
+        </button>
       </div>
-      <table v-if="questions && questions.length > 0">
-        <thead>
-          <tr>
-            <th>Question</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-bind:key="index" v-for="(question, index) in questions">
-            <td v-html="question.question" class="manager-question" />
-            <td>
-              <button class="small outline" @click="editQuestion(index)">
+      <div v-if="questions && questions.length > 0">
+        <div
+          class="manager-question"
+          :key="index"
+          v-for="(question, index) in questions"
+        >
+          <div class="manager-question-container">
+            <div v-html="question.question" />
+            <div>
+              <button
+                @click="newGroupQuestion(question._id)"
+                class="small secondary"
+                v-if="question.type === 'NoBody'"
+              >
+                <Plus />
+              </button>
+              <button class="small outline" @click="editQuestion(question)">
                 <Edit />
               </button>
-              <button class="small error" @click="deleteQuestion(index)">
+              <button class="small error" @click="deleteQuestion(question)">
                 <Bin />
               </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </div>
+          <div v-if="question.type === 'NoBody'" class="manager-question-group">
+            <div
+              v-for="(questionPart, partIndex) in question.questions"
+              :key="partIndex"
+            >
+              <div class="manager-question-container">
+                <div v-html="questionPart.question" />
+                <div>
+                  <button
+                    class="small outline"
+                    @click="editQuestion(questionPart)"
+                  >
+                    <Edit />
+                  </button>
+                  <button
+                    class="small error"
+                    @click="deleteQuestion(questionPart)"
+                  >
+                    <Bin />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <QuestionEditor
       :preset="preset"
@@ -77,10 +114,9 @@ export default {
     return {
       showEditor: false,
       showSelect: false,
-      presetIndex: -1,
       preset: {},
+      activeParent: null,
       questionTypes: [
-        { name: "MultiPart", description: "A question with multiple parts" },
         { name: "MCQ", description: "Multiple choice question" },
         { name: "Numeric", description: "Numeric data type answer" },
       ],
@@ -90,45 +126,80 @@ export default {
     this.preset.course = this.course_id;
   },
   methods: {
+    newGroupQuestion(parent_id) {
+      this.activeParent = parent_id;
+      this.showSelect = true;
+    },
     questionTypeSelect(item) {
       this.preset = {
         course: this.course_id,
         type: item.name,
         group: this.group,
+        parent: this.activeParent,
       };
+      this.activeParent = null;
       this.showEditor = true;
     },
-    editQuestion(index) {
-      this.presetIndex = index;
-      this.preset = this.questions[index];
+    editQuestion(question) {
+      this.preset = question;
       this.showEditor = true;
     },
     editQuestionSuccessful(question) {
-      if (this.presetIndex >= 0 && this.preset) {
-        // its an update
-        this.$set(this.questions, this.presetIndex, question);
-
-        // reset
-        this.presetIndex = -1;
-        this.preset = null;
+      if (question.parent) {
+        const parentIndex = this.questions.findIndex(
+          (q) => q._id === question.parent
+        );
+        const parent = this.questions[parentIndex];
+        const partIndex = parent.questions.findIndex(
+          (x) => x._id === question._id
+        );
+        if (partIndex !== -1) {
+          // update
+          this.$set(parent.questions, partIndex, question);
+        } else {
+          // new item
+          parent.questions = [...parent.questions, question];
+        }
       } else {
-        this.questions.push(question);
+        const index = this.questions.findIndex((q) => q._id === question._id);
+        if (index !== -1) {
+          // update
+          this.$set(this.questions, index, question);
+        } else {
+          // new item
+          this.questions = [...this.questions, question];
+        }
       }
       this.showEditor = false;
     },
-
-    deleteQuestion(index) {
-      const question = this.questions[index];
+    removeQuestionFromView(question) {
+      if (question.parent) {
+        const index = this.questions.findIndex(
+          (x) => x._id === question.parent
+        );
+        const partIndex = this.questions[index].questions.findIndex(
+          (x) => x._id === question._id
+        );
+        this.questions[index].questions.splice(partIndex, 1);
+      } else {
+        const index = this.questions.findIndex((x) => x._id === question._id);
+        this.questions.splice(index, 1);
+      }
+    },
+    deleteQuestion(question) {
       if (this.onDelete) {
-        if (this.onDelete(question)) this.questions.splice(index, 1);
-        else alert("Error removing item.");
+        if (this.onDelete(question)) {
+          this.removeQuestionFromView(question);
+        } else {
+          alert("Error removing item.");
+        }
       } else {
         axios
           .delete(`/admin/courses/${this.course_id}/questions/${question._id}`)
           .then(({ data }) => {
             if (data.ok) {
               alert("Item deleted");
-              this.questions.splice(index, 1);
+              this.removeQuestionFromView(question);
             }
           })
           .catch((err) => {
@@ -152,8 +223,24 @@ button {
     padding: 6px;
   }
 }
-td {
-  padding: inherit;
+.manager-question {
+  margin-bottom: 10px;
+  padding: 5px 15px;
+  background-color: #fff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  &-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  &-group {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    text-indent: 1.6em;
+    > div:not(:last-child) {
+      border-bottom: 1px solid #ddd;
+    }
+  }
 }
 </style>
 <style lang="scss">

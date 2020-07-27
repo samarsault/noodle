@@ -26,6 +26,11 @@ module.exports = model(
         type: Number,
         default: 1,
       },
+      parent: {
+        type: Schema.Types.ObjectId,
+        ref: "Course",
+        default: null,
+      },
       // Group the question belongs to
       group: {
         type: String,

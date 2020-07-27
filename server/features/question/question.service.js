@@ -2,17 +2,31 @@
  * Question Bank Service
  */
 const Question = require("./question.model");
-const { MCQ, Numeric, MultiPart } = require("./types");
+const { MCQ, Numeric, NoBody } = require("./types");
 
 const QuestionModels = {
   MCQ,
   Numeric,
-  MultiPart,
+  NoBody,
 };
-// console.log(Question.discriminators)
 
-exports.getAll = function (course, group = "default") {
-  return Question.find({ course, group }).populate("questions");
+//
+// Return questions in proper format (legacy)
+//
+exports.resolve = function (questions) {
+  const promises = questions.map(async (q) => {
+    if (q.type === "NoBody") {
+      const parts = await Question.find({ parent: q._id });
+      return { ...q, questions: parts };
+    }
+    return q;
+  });
+  return Promise.all(promises);
+};
+
+exports.getAll = async function (course, group = "default") {
+  const questions = await Question.find({ course, group, parent: null }).lean();
+  return this.resolve(questions);
 };
 
 exports.getGroups = function (course) {

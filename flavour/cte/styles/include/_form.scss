@@ -5,7 +5,7 @@ input[type="text"], input[type="number"], input[type="password"], input[type="em
 
 input[type="text"], input[type="password"], input[type="number"], input[type="email"], textarea {
 	background: $white;
-	border: 1px solid $gray;
+	border: 1px solid rgba(17, 17, 17, 0.1);
 	padding: 10px 20px;
 	transition: border $animTime;
 	&:focus {

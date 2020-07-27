@@ -14,7 +14,6 @@
         <Editor v-model="question.question" :edit="true" />
         <MCQEdit v-if="question.type == 'MCQ'" v-model="question" />
         <NumericEdit v-if="question.type == 'Numeric'" v-model="question" />
-        <MultiEditor v-if="question.type == 'MultiPart'" v-model="question" />
       </div>
     </template>
     <template slot="footer">
@@ -31,7 +30,6 @@ import Editor from "../Editor.vue";
 import QuestionView from "../Questions/View.vue";
 import MCQEdit from "../Questions/MCQ/Edit";
 import NumericEdit from "../Questions/Numeric/Edit";
-import MultiEditor from "../Questions/MultiPart/Edit";
 
 export default {
   name: "QuestionEditor",
@@ -40,7 +38,6 @@ export default {
     Editor,
     MCQEdit,
     NumericEdit,
-    MultiEditor,
     QuestionView,
   },
   props: ["preset"],

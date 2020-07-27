@@ -14,7 +14,7 @@
       :onAnswer="onAnswer"
     />
     <MultiPart
-      v-if="question.type == 'MultiPart'"
+      v-if="question.type == 'NoBody'"
       :question="question"
       :answer="answer"
       :onAnswer="onAnswer"
