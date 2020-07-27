@@ -7,7 +7,7 @@ export default [
   {
     path: "/dashboard",
     name: "home",
-    component: () => Home,
+    component: Home,
   },
   {
     path: "/dashboard/course/:course_id",
