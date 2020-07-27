@@ -11,7 +11,11 @@
       </div>
       <div v-else>
         <label>Question</label>
-        <Editor v-model="question.question" :edit="true" />
+        <Editor
+          v-model="question.question"
+          :edit="true"
+          :course_id="question.course"
+        />
         <MCQEdit v-if="question.type == 'MCQ'" v-model="question" />
         <NumericEdit v-if="question.type == 'Numeric'" v-model="question" />
       </div>
@@ -47,7 +51,7 @@ export default {
       question: {},
     };
   },
-  mounted() {
+  created() {
     this.question = this.preset;
   },
   methods: {

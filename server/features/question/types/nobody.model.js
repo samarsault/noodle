@@ -14,6 +14,10 @@ module.exports = Question.discriminator(
         type: Number,
         default: 0,
       },
+      answer: {
+        type: Schema.Types.Mixed,
+        default: null,
+      },
     },
     Options
   )

@@ -45,7 +45,7 @@ router.post("/upload", upload.fields([{ name: "content" }]), async function (
   const uploadEntry = await Uploads.create({
     name: file.originalname,
     course: req.course_id,
-    user: req.user,
+    user: req.user._id,
     url,
   });
   return res.send({ name: uploadEntry.name, url });
