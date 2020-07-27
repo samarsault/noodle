@@ -19,10 +19,11 @@ module.exports = model(
     correctQs: Number,
     start: {
       type: Date,
-      deafult: Date.now(),
+      default: Date.now(),
     },
-    end: Date,
-    // type: r_string -> Used to show different icons
+    end: {
+      type: Date,
+    },
   }),
   "quizAttempts"
 );

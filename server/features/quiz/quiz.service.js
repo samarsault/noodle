@@ -31,6 +31,9 @@ exports.getUserAttempt = async function (quiz_id, user_id) {
   const attempts = await QuizAttempt.find({
     quiz_id,
     user_id,
+    end: {
+      $exists: true,
+    },
   });
   return resolveAttempts(attempts);
 };
@@ -38,6 +41,9 @@ exports.getUserAttempt = async function (quiz_id, user_id) {
 exports.getAttempts = async function (quiz_id) {
   const attempts = await QuizAttempt.find({
     quiz_id,
+    end: {
+      $exists: true,
+    },
   });
   return resolveAttempts(attempts);
 };
