@@ -341,6 +341,7 @@ export default {
 }
 #sidebar-items {
   overflow-y: scroll;
+  height: calc(100% - 50px);
 }
 .sidebar {
   background-color: #222;
