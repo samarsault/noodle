@@ -35,6 +35,15 @@ export default (course_id) => ({
     const { data } = await axios.post(`/admin/courses/${course_id}/page`, body);
     return data;
   },
+  async updatePage(page_id, body) {
+    if (!page_id || !body) throw new Error("Missing data");
+
+    const { status } = await axios.put(
+      `/admin/courses/${course_id}/page/${page_id}`,
+      body
+    );
+    return status === 200;
+  },
   async deletePage(page_id) {
     if (page_id) {
       const { status } = await axios.delete(

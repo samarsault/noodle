@@ -117,7 +117,26 @@
           align-items: center;
         "
       >
-        <h2 style="margin-bottom: 0;">{{ activePage && activePage.name }}</h2>
+        <!-- page name -->
+        <div v-if="editPageHeading">
+          <input
+            type="text"
+            style="font-size: 24px; display: inline-block;"
+            v-model="newPageName"
+          />
+          <Tick
+            style="display: inline-block; padding: 10px;"
+            @click="updatePageHeading"
+          />
+        </div>
+        <h2 style="margin-bottom: 0;" v-else>
+          {{ activePage && activePage.name }}
+          <!-- only Quiz, Article etc. -->
+          <Edit
+            v-if="isAdmin && activePage && activePage.type"
+            @click="editPageHeadingSetup"
+          />
+        </h2>
         <div v-if="isAdmin && activePage">
           <button class="secondary" @click="toggleEdit">
             <Edit v-if="!activePage.isEditing" />
@@ -147,6 +166,7 @@ import Draggable from "vuedraggable";
 // Icons
 import Plus from "vue-material-design-icons/Plus";
 import Edit from "vue-material-design-icons/Pencil";
+import Tick from "vue-material-design-icons/Check";
 import IconX from "vue-material-design-icons/Close";
 import Bin from "vue-material-design-icons/TrashCan";
 import Folder from "vue-material-design-icons/Folder";
@@ -180,6 +200,9 @@ export default {
       // Which module is active right now
       activeModule: null,
       addToModule: null,
+      newPageName: "",
+      // is page heading being edited rn
+      editPageHeading: false,
       questionGroups: [],
       itemsToAdd: [
         {
@@ -211,6 +234,7 @@ export default {
     SelectItem,
     Plus,
     Edit,
+    Tick,
     IconX,
     Back,
     Bin,
@@ -244,6 +268,36 @@ export default {
       } catch (err) {
         alert("Can't change order order");
       }
+    },
+    async updatePageHeading() {
+      if (!this.activePage) return;
+      this.newPageName = this.newPageName.trim();
+      // Nothing changed
+      if (this.newPageName === this.activePage.name) {
+        this.editPageHeading = false;
+        return;
+      }
+      const result = await this.api.updatePage(this.activePage._id, {
+        name: this.newPageName,
+        type: this.activePage.type,
+      });
+      if (!result) {
+        alert("Error: can't update");
+        this.newPageName = this.activePage.name;
+      } else {
+        // success
+        this.activePage.name = this.newPageName;
+        this.editPageHeading = false;
+        // Update in sidebar
+        const module = this.pages.find((x) => x._id === this.activeModule);
+        const item = module.children.find((x) => x._id === this.activePage._id);
+        item.name = this.newPageName;
+      }
+    },
+    editPageHeadingSetup() {
+      if (!this.activePage) return;
+      this.newPageName = this.activePage.name;
+      this.editPageHeading = true;
     },
     toggleEdit() {
       if (this.activePage) {

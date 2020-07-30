@@ -44,6 +44,7 @@ export default {
         _id: page._id,
         parent: page.parent,
         name: page.name,
+        type: page.type,
       });
     }
   },

@@ -96,6 +96,7 @@ export default {
           _id: this.quiz._id,
           parent: this.quiz.parent,
           name: this.quiz.name,
+          type: this.quiz.type,
         });
       });
     axios

@@ -82,9 +82,7 @@ router.put("/page/reorder", async function (req, res) {
 
 router.put("/page/:id", async function (req, res) {
   await pageService.update(req.params.id, req.body);
-  return res.send({
-    success: true,
-  });
+  return res.status(200).send("OK");
 });
 
 router.delete("/page/:id", async function (req, res) {
