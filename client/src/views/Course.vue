@@ -121,7 +121,7 @@
         <div v-if="editPageHeading">
           <input
             type="text"
-            style="font-size: 24px; display: inline-block;"
+            style="font-size: 24px; display: inline-block; margin-bottom: 0;"
             v-model="newPageName"
           />
           <Tick
@@ -223,7 +223,18 @@ export default {
     try {
       this.course = await this.api.get();
       this.pages = await this.api.getPages();
-
+      if (
+        this.$route.path === `/dashboard/course/${this.course_id}` &&
+        this.pages.length > 0
+      ) {
+        const item = this.pages[0];
+        if (item.children.length > 0) {
+          const page = item.children[0];
+          this.$router.push({
+            path: `/dashboard/course/${this.course_id}/${page.type}/${page._id}`,
+          });
+        }
+      }
       this.setLoading(false);
     } catch (error) {
       throw error;
