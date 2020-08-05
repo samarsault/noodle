@@ -3,9 +3,10 @@ section#courses
   .container
     h1 Courses
     .courses
-      CourseCard(v-for="course in courses", :course="course", :key="course._id", style="max-height: 400px")
-        template(slot='action')
+      CourseCard(v-for="course in courses", :course="course", :key="course._id")
+        template(slot='body')
           p(style='margin-top: 0') {{ course.subtitle }}
+        template(slot='action')
           router-link(:to="`/course/${course._id}`")
             button.secondary View
 </template>
@@ -30,19 +31,11 @@ export default {
 <style lang="scss">
 .courses {
   display: flex;
+  flex-wrap: wrap;
   button {
     width: 90px;
     margin: 0 auto;
     display: block;
-  }
-  @media screen and (max-width: 720px) {
-    flex-direction: column;
-    .card {
-      width: calc(100% - 40px);
-    }
-    img {
-      height: 240px !important;
-    }
   }
 }
 </style>

@@ -7,9 +7,12 @@
         style="width: 100%; height: 160px;"
       />
       <div class="card-container">
-        <h4>
-          <b>{{ course.name }}</b>
-        </h4>
+        <div>
+          <h4>
+            <b>{{ course.name }}</b>
+          </h4>
+          <slot name="body"></slot>
+        </div>
         <slot name="action">
           <router-link
             :to="`/admin/cmgt/${course._id}`"
@@ -32,15 +35,23 @@ export default {
 
 <style lang="scss" scoped>
 .card-wrap {
-  padding: 20px;
+  padding: 15px;
+  width: 33%;
+  @media screen and (max-width: 960px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 640px) {
+    width: 100%;
+  }
 }
 .card {
   display: flex;
+  width: 100%;
+  height: 100%;
   flex-direction: column;
   padding: 0px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
-  width: 270px;
+  transition: box-shadow 0.3s;
   max-height: 340px;
   border-radius: 4px;
   overflow: hidden;
@@ -66,9 +77,10 @@ export default {
 .card-container {
   background-color: white;
   width: 100%;
+  height: 100%;
   display: inline-flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   padding: 10px 16px;
   overflow: hidden;
 }
