@@ -132,14 +132,14 @@ export default {
       return !this.quiz.questions.find((x) => x._id == question._id);
     },
     async saveDescription() {
-      const { data } = await axios.put(
+      const { status } = await axios.put(
         `/admin/courses/${this.course_id}/page/${this.quiz_id}`,
         {
           type: "Quiz",
           description: this.quiz.description,
         }
       );
-      if (!data.success) alert("Can't save details");
+      if (status !== 200) alert("Can't save details");
     },
   },
 };

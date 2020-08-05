@@ -51,14 +51,14 @@ export default {
   methods: {
     async save() {
       const docData = this.page;
-      const resp = await axios.put(
+      const { status } = await axios.put(
         `/admin/courses/${this.course_id}/page/${this.page_id}`,
         {
           type: "Article",
           doc: docData,
         }
       );
-      if (!resp.data.success) alert("Can't save");
+      if (status !== 200) alert("Can't save");
     },
   },
 };
