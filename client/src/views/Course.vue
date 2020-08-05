@@ -1,6 +1,16 @@
 <template>
   <div class="course-main">
     <div :class="`sidebar ${sidebarHidden ? 'hidden-mobile' : ''}`">
+      <vue-context ref="menu">
+        <template slot-scope="child">
+          <li>
+            <a href="#" @click.prevent="renameClick(child.data)">Rename</a>
+          </li>
+          <li>
+            <a href="#" @click.prevent="deleteClick(child.data)">Delete</a>
+          </li>
+        </template>
+      </vue-context>
       <div
         style="
           display: flex;
@@ -32,6 +42,7 @@
                 :key="module._id"
                 class="icon-centre"
                 v-on:click="toggleModule(module)"
+                @contextmenu="(e) => openContextMenu(e, module)"
               >
                 <FolderOpen
                   v-if="module._id === activeModule"
@@ -46,30 +57,25 @@
                   @change="pageOrderChange(module.children)"
                   :disabled="!isAdmin"
                 >
-                  <router-link
+                  <div
                     v-for="page in module.children"
                     v-bind:key="page.name"
-                    class="module-item"
-                    :to="`/dashboard/course/${course_id}/${page.type}/${page._id}`"
+                    @contextmenu="(e) => openContextMenu(e, page)"
                   >
-                    <div>
-                      {{ page.name }}
-                    </div>
-                  </router-link>
+                    <router-link
+                      class="module-item"
+                      :to="`/dashboard/course/${course_id}/${page.type}/${page._id}`"
+                    >
+                      <div>
+                        {{ page.name }}
+                      </div>
+                    </router-link>
+                  </div>
                 </Draggable>
                 <div style="display: flex;" v-if="isAdmin">
                   <a href="#" @click="addPage(module._id)" class="icon-centre">
                     <Plus />
                     Add
-                  </a>
-                  <a
-                    href="#"
-                    style="border: 0;"
-                    @click="deleteModule(module)"
-                    class="icon-centre"
-                  >
-                    <Bin />
-                    Delete
                   </a>
                 </div>
               </div>
@@ -93,6 +99,7 @@
                 <router-link
                   v-for="group in questionGroups"
                   v-bind:key="group"
+                  class="module-item"
                   :to="`/dashboard/course/${course_id}/questions/${group}`"
                 >
                   {{ group }}
@@ -120,31 +127,14 @@
         "
       >
         <!-- page name -->
-        <div v-if="editPageHeading">
-          <input
-            type="text"
-            style="font-size: 24px; display: inline-block; margin-bottom: 0;"
-            v-model="newPageName"
-          />
-          <Tick
-            style="display: inline-block; padding: 10px;"
-            @click="updatePageHeading"
-          />
-        </div>
-        <h2 style="margin-bottom: 0;" v-else>
+        <h2 style="margin-bottom: 0;">
           {{ activePage && activePage.name }}
-          <!-- only Quiz, Article etc. -->
-          <Edit
-            v-if="isAdmin && activePage && activePage.type"
-            @click="editPageHeadingSetup"
-          />
         </h2>
         <div v-if="isAdmin && activePage">
           <button class="secondary" @click="toggleEdit">
             <Edit v-if="!activePage.isEditing" />
             <IconX v-if="activePage.isEditing" />
           </button>
-          <button class="error" @click="deletePage(activePage)"><Bin /></button>
         </div>
       </div>
       <router-view :isAdmin="isAdmin" :key="$route.path" :onLoad="onPageLoad" />
@@ -164,11 +154,11 @@ import courseApi from "../api/course";
 import { mutations, getters } from "../utils/store";
 import SelectItem from "../components/SelectItem.vue";
 import Draggable from "vuedraggable";
+import VueContext from "vue-context";
 
 // Icons
 import Plus from "vue-material-design-icons/Plus";
 import Edit from "vue-material-design-icons/Pencil";
-import Tick from "vue-material-design-icons/Check";
 import IconX from "vue-material-design-icons/Close";
 import Bin from "vue-material-design-icons/TrashCan";
 import Folder from "vue-material-design-icons/Folder";
@@ -202,9 +192,7 @@ export default {
       // Which module is active right now
       activeModule: null,
       addToModule: null,
-      newPageName: "",
       // is page heading being edited rn
-      editPageHeading: false,
       questionGroups: [],
       itemsToAdd: [
         {
@@ -245,9 +233,9 @@ export default {
   components: {
     Draggable,
     SelectItem,
+    VueContext,
     Plus,
     Edit,
-    Tick,
     IconX,
     Back,
     Bin,
@@ -256,6 +244,57 @@ export default {
   },
   methods: {
     ...mutations,
+    openContextMenu(event, page) {
+      if (this.isAdmin) {
+        event.preventDefault();
+        this.$refs.menu.open(event, page);
+      }
+    },
+    async renameClick(page) {
+      const newName = prompt("New Name:");
+      if (!newName) return;
+      if (newName === page.name) return;
+      if (page.children) {
+        // is a module
+        const success = await this.api.updatePage(page._id, {
+          name: newName,
+          type: "Module",
+        });
+        if (success) {
+          const module = this.pages.find((x) => x._id === page._id);
+          module.name = newName;
+        }
+      } else {
+        // is a page
+
+        const result = await this.api.updatePage(page._id, {
+          name: newName,
+          type: page.type,
+        });
+        if (!result) {
+          alert("Error: can't update");
+        } else {
+          // success
+          if (this.activePage._id === page._id) {
+            // if currently the active page
+            this.activePage.name = newName;
+          }
+          // Update in sidebar
+          const module = this.pages.find((x) => x._id === this.activeModule);
+          const item = module.children.find((x) => x._id === page._id);
+          item.name = newName;
+        }
+      }
+    },
+    deleteClick(page) {
+      if (page.children) {
+        // is a module
+        return this.deleteModule(page);
+      } else {
+        // is a page
+        return this.deletePage(page);
+      }
+    },
     async moduleOrderChange() {
       try {
         const result = await this.api.reorderPages(
@@ -281,36 +320,6 @@ export default {
       } catch (err) {
         alert("Can't change order order");
       }
-    },
-    async updatePageHeading() {
-      if (!this.activePage) return;
-      this.newPageName = this.newPageName.trim();
-      // Nothing changed
-      if (this.newPageName === this.activePage.name) {
-        this.editPageHeading = false;
-        return;
-      }
-      const result = await this.api.updatePage(this.activePage._id, {
-        name: this.newPageName,
-        type: this.activePage.type,
-      });
-      if (!result) {
-        alert("Error: can't update");
-        this.newPageName = this.activePage.name;
-      } else {
-        // success
-        this.activePage.name = this.newPageName;
-        this.editPageHeading = false;
-        // Update in sidebar
-        const module = this.pages.find((x) => x._id === this.activeModule);
-        const item = module.children.find((x) => x._id === this.activePage._id);
-        item.name = this.newPageName;
-      }
-    },
-    editPageHeadingSetup() {
-      if (!this.activePage) return;
-      this.newPageName = this.activePage.name;
-      this.editPageHeading = true;
     },
     toggleEdit() {
       if (this.activePage) {
@@ -408,9 +417,11 @@ export default {
         const module = this.pages.find((x) => x._id === this.activeModule);
         // successful deletion
         module.children = module.children.filter((x) => x._id !== page._id);
-        this.$router.push({
-          path: `/dashboard/course/${this.course_id}`,
-        });
+        if (page._id === this.activePage._id) {
+          this.$router.push({
+            path: `/dashboard/course/${this.course_id}`,
+          });
+        }
       } else {
         alert("Error can't delete");
       }
@@ -420,6 +431,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~vue-context/src/sass/vue-context";
+
 @media screen and (max-width: $burgerToggleWidth) {
   .hidden-mobile {
     display: none;
@@ -454,17 +467,12 @@ export default {
       a {
         background: #222;
       }
-      > div:not(:last-child) > a {
-        border-bottom: 1px solid #444;
-      }
-      // &:not(:last-child) {
-      // border-bottom: 1px solid #444;
-      // }
     }
     .module-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid #444;
       span {
         color: #999;
         padding: 0 5px;
