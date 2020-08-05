@@ -60,6 +60,12 @@ export default (course_id) => ({
     );
     return status === 200;
   },
+  async deleteModule(module_id) {
+    const { status } = await axios.delete(
+      `/admin/courses/${course_id}/module/${module_id}`
+    );
+    return status === 200;
+  },
   questions: {
     get() {},
     async getGroups() {

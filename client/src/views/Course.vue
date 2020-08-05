@@ -18,11 +18,7 @@
           </router-link>
           <p style="font-weight: bold;">{{ course.name }}</p>
         </div>
-        <Plus
-          v-if="isAdmin"
-          @click="newPage({ name: 'Module' })"
-          style="cursor: pointer;"
-        />
+        <Plus v-if="isAdmin" @click="newModule" style="cursor: pointer;" />
       </div>
       <div id="sidebar-items">
         <nav>
@@ -61,15 +57,21 @@
                     </div>
                   </router-link>
                 </Draggable>
-                <a
-                  v-if="isAdmin"
-                  href="#"
-                  @click="addPage(module._id)"
-                  class="icon-centre"
-                >
-                  <Plus />
-                  Add
-                </a>
+                <div style="display: flex;" v-if="isAdmin">
+                  <a href="#" @click="addPage(module._id)" class="icon-centre">
+                    <Plus />
+                    Add
+                  </a>
+                  <a
+                    href="#"
+                    style="border: 0;"
+                    @click="deleteModule(module)"
+                    class="icon-centre"
+                  >
+                    <Bin />
+                    Delete
+                  </a>
+                </div>
               </div>
             </div>
           </Draggable>
@@ -359,6 +361,24 @@ export default {
         this.activeModule = page._id;
       }
     },
+    async newModule() {
+      this.activeModule = null;
+      const page = await this.newPage({ name: "Module" });
+      this.activeModule = page._id;
+    },
+    async deleteModule(module) {
+      const confirmation = confirm(
+        `Are you sure you want to delete ${module.name}?`
+      );
+      if (!confirmation) return;
+      const result = await this.api.deleteModule(module._id);
+      if (result) {
+        // Success
+        this.pages = this.pages.filter((x) => x._id !== module._id);
+      } else {
+        alert("Error deleting.");
+      }
+    },
     async newPage(value) {
       const type = value.name;
       const name = prompt("Name:");
@@ -376,6 +396,7 @@ export default {
       } else {
         this.pages = [...this.pages, page];
       }
+      return page;
     },
     async deletePage(page) {
       const confirmation = confirm(

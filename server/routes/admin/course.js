@@ -85,6 +85,14 @@ router.put("/page/:id", async function (req, res) {
   return res.status(200).send("OK");
 });
 
+router.delete("/module/:id", async function (req, res) {
+  try {
+    await pageService.deleteModule(req.params.id);
+    return res.status(200).send("OK");
+  } catch (e) {
+    throw new Error(e.message);
+  }
+});
 router.delete("/page/:id", async function (req, res) {
   try {
     await pageService.delete(req.params.id);

@@ -106,3 +106,14 @@ exports.delete = function (pageId) {
     _id: pageId,
   });
 };
+
+exports.deleteModule = async function (module_id) {
+  // Delete Children
+  await Page.deleteMany({
+    parent: module_id,
+  });
+  // Delete Module
+  await Page.deleteOne({
+    _id: module_id,
+  });
+};
