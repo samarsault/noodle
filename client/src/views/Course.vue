@@ -160,7 +160,6 @@ import VueContext from "vue-context";
 import Plus from "vue-material-design-icons/Plus";
 import Edit from "vue-material-design-icons/Pencil";
 import IconX from "vue-material-design-icons/Close";
-import Bin from "vue-material-design-icons/TrashCan";
 import Folder from "vue-material-design-icons/Folder";
 import FolderOpen from "vue-material-design-icons/FolderOpen";
 import Back from "vue-material-design-icons/ChevronLeft";
@@ -238,7 +237,6 @@ export default {
     Edit,
     IconX,
     Back,
-    Bin,
     Folder,
     FolderOpen,
   },
