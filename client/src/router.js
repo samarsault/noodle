@@ -5,8 +5,6 @@ import admin from "./routes/admin";
 import dashboard from "./routes/dashboard";
 import adapted from "./routes/adapted";
 
-import { getters } from "./utils/store";
-
 Vue.use(Router);
 
 const router = new Router({
