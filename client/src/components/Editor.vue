@@ -4,7 +4,7 @@
       <editor-menu-bar
         v-if="edit"
         :editor="editor"
-        v-slot="{ commands, isActive }"
+        v-slot="{ commands, isActive, getMarkAttrs }"
       >
         <div class="menubar">
           <button
@@ -69,6 +69,14 @@
             @click="commands.heading({ level: 3 })"
           >
             H3
+          </button>
+
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.link() }"
+            @click="showLinkMenu(commands, getMarkAttrs('link'))"
+          >
+            <IconLink />
           </button>
 
           <button
@@ -140,6 +148,7 @@ import {
   ListItem,
   Placeholder,
   Blockquote,
+  Link,
 } from "tiptap-extensions";
 import Iframe from "./Butler/nodes/iframe";
 import Math from "./Butler/nodes/math";
@@ -163,6 +172,7 @@ import IconListNumber from "vue-material-design-icons/FormatListNumbered";
 import IconCode from "vue-material-design-icons/CodeBraces";
 import IconBlockquote from "vue-material-design-icons/FormatQuoteClose";
 import IconPlus from "vue-material-design-icons/Plus";
+import IconLink from "vue-material-design-icons/Link";
 
 export default {
   // Implment v-model
@@ -183,6 +193,7 @@ export default {
     IconCode,
     IconBlockquote,
     IconPlus,
+    IconLink,
   },
   data() {
     return {
@@ -220,6 +231,7 @@ export default {
         new BulletList(),
         new OrderedList(),
         new ListItem(),
+        new Link(),
         new Heading({ levels: [1, 2, 3] }),
         new Image(),
         new CodeBlockHighlight({
@@ -258,6 +270,10 @@ export default {
       // Run selected commands
       onCommand();
       this.editor.focus();
+    },
+    showLinkMenu(commands, attrs) {
+      const link = prompt("Add Link", attrs.href);
+      commands.link({ href: link });
     },
   },
 };
