@@ -100,6 +100,9 @@ ul {
   .handout-items {
     display: flex;
     flex-wrap: wrap;
+    @media screen and (max-width: 720px) {
+      flex-direction: column;
+    }
   }
   &-item {
     padding: 10px;
