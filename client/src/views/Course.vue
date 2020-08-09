@@ -400,6 +400,9 @@ export default {
       if (this.addToModule) {
         const module = this.pages.find((x) => x._id === this.activeModule);
         module.children = [...module.children, page];
+        this.$router.push({
+          path: `/dashboard/course/${this.course_id}/${page.type}/${page._id}`,
+        });
       } else {
         this.pages = [...this.pages, page];
       }
