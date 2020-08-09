@@ -1,5 +1,12 @@
 <template>
   <div class="course-main">
+    <router-link
+      v-if="sidebarHidden"
+      :to="`/dashboard/course/${course_id}`"
+      id="sidebar-mobile-button"
+    >
+      <button class="primary"><IconSide :size="32" /></button>
+    </router-link>
     <div :class="`sidebar ${sidebarHidden ? 'hidden-mobile' : ''}`">
       <vue-context ref="menu">
         <template slot-scope="child">
@@ -160,6 +167,7 @@ import VueContext from "vue-context";
 import Plus from "vue-material-design-icons/Plus";
 import Edit from "vue-material-design-icons/Pencil";
 import IconX from "vue-material-design-icons/Close";
+import IconSide from "vue-material-design-icons/MenuOpen";
 import Folder from "vue-material-design-icons/Folder";
 import FolderOpen from "vue-material-design-icons/FolderOpen";
 import Back from "vue-material-design-icons/ChevronLeft";
@@ -236,6 +244,7 @@ export default {
     Plus,
     Edit,
     IconX,
+    IconSide,
     Back,
     Folder,
     FolderOpen,
@@ -437,6 +446,28 @@ export default {
 @media screen and (max-width: $burgerToggleWidth) {
   .hidden-mobile {
     display: none;
+  }
+}
+#sidebar-mobile-button {
+  display: none;
+  @media screen and (max-width: $burgerToggleWidth) {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: block;
+    z-index: 9;
+    button {
+      border-radius: 100%;
+      cursor: pointer;
+      width: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+      padding: 5px;
+      text-align: center;
+    }
+    text-align: center;
   }
 }
 #sidebar-items {
