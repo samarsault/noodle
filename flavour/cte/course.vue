@@ -14,11 +14,11 @@
     <div v-if="handout" class="handout">
       <h2>Curriculum</h2>
       <div class="handout-items">
-        <div v-for="item in Object.keys(handout)" :key="item" class="handout-item">
+        <div v-for="item in handout" :key="item._id" class="handout-item">
           <div class="handout-card">
-            <p>{{ item }}</p>
+            <p>{{ item.name }}</p>
             <ul class="handout-list">
-              <li v-for="page in handout[item]" :key="page._id">{{ page.name }}</li>
+              <li v-for="page in item.children" :key="page._id">{{ page.name }}</li>
             </ul>
           </div>
         </div>

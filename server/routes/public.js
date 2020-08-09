@@ -1,5 +1,5 @@
 const express = require("express");
-const { course: courseService } = require("../features/services");
+const { course: courseService, page } = require("../features/services");
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.get("/course/:course_id", async (req, res) => {
 
 router.get("/course/:course_id/handout", async (req, res) => {
   if (!req.params.course_id) return res.status(400).json({});
-  const tree = await courseService.pageTree(req.params.course_id);
+  const tree = await page.skeleton(req.params.course_id);
   return res.status(200).json(tree);
 });
 
