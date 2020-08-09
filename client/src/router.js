@@ -28,19 +28,19 @@ const router = new Router({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    const user = getters.user();
-    if (user.role === "student") {
-      next({
-        name: "home",
-      });
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.requiresAuth) {
+//     const user = getters.user();
+//     if (user.role === "student") {
+//       next({
+//         name: "home",
+//       });
+//     } else {
+//       next();
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

@@ -4,7 +4,6 @@
 export default [
   {
     path: "/admin",
-    redirect: "/admin/cmgt",
     name: "admin",
     component: () => import("../views/Admin.vue"),
     children: [

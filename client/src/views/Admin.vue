@@ -1,6 +1,6 @@
 <template>
   <div class="admin-main">
-    <div class="sidebar">
+    <div :class="`sidebar ${isNotAdminBaseRoute ? 'hidden-mobile' : ''}`">
       <p style="font-weight: bold; padding: 0 10px;">Admin</p>
       <nav>
         <router-link :to="'/admin/cmgt'" class="icon-centre">
@@ -13,29 +13,47 @@
         </router-link>
       </nav>
     </div>
-    <div :class="`admin-page ${sidebarHidden ? '' : 'hidden-mobile'}`">
+    <div :class="`admin-page ${!isNotAdminBaseRoute ? 'hidden-mobile' : ''}`">
       <router-view :key="$route.path" />
     </div>
+    <router-link
+      v-if="isNotAdminBaseRoute"
+      to="/admin"
+      id="sidebar-mobile-button"
+    >
+      <button class="primary"><IconSide :size="32" /></button>
+    </router-link>
   </div>
 </template>
 
 <script>
 import BookOpen from "vue-material-design-icons/BookOpenVariant";
 import Account from "vue-material-design-icons/Account";
+import IconSide from "vue-material-design-icons/MenuOpen";
 
 export default {
   components: {
+    IconSide,
     BookOpen,
     Account,
   },
   computed: {
-    sidebarHidden() {
+    isNotAdminBaseRoute() {
       if (this.$route.name && this.$route.name === "admin") {
         // Navigation page
         return false;
       }
       return true;
     },
+  },
+  mounted() {
+    // $burgerToggle
+    if (!this.isNotAdminBaseRoute && window.innerWidth > 768) {
+      // is /admin
+      this.$router.push({
+        path: "/admin/cmgt",
+      });
+    }
   },
 };
 </script>
@@ -123,5 +141,27 @@ export default {
 .icon-centre {
   display: flex !important;
   align-items: center;
+}
+#sidebar-mobile-button {
+  display: none;
+  @media screen and (max-width: $burgerToggleWidth) {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: block;
+    z-index: 9;
+    button {
+      border-radius: 100%;
+      cursor: pointer;
+      width: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+      padding: 5px;
+      text-align: center;
+    }
+    text-align: center;
+  }
 }
 </style>
