@@ -68,13 +68,19 @@ export default {
       } else {
         req = axios.post(`${baseURL}`, Q);
       }
-      req.then(({ status }) => {
+      req.then(({ status, data }) => {
         if (status !== 200) {
           alert("Error saving question");
+        } else {
+          if (Q._id) {
+            this.$emit("ok", question);
+          } else {
+            if (Q.type === "NoBody")
+              this.$emit("ok", { ...data, questions: [] });
+            else this.$emit("ok", data);
+          }
         }
       });
-
-      this.$emit("ok", question);
     },
   },
 };

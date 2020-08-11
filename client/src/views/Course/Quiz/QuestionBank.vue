@@ -7,6 +7,7 @@
       :course_id="course_id"
       :showAdd="true"
       :group="group"
+      @update="updateQuestion"
     />
   </div>
 </template>
@@ -40,6 +41,11 @@ export default {
       .then(({ data }) => {
         this.questions = data;
       });
+  },
+  methods: {
+    updateQuestion(index, newValue) {
+      this.$set(index, newValue);
+    },
   },
 };
 </script>
