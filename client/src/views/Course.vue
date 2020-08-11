@@ -102,10 +102,14 @@
               Question Bank
             </a>
             <div class="module-content" v-if="isQuestionBankOpen">
-              <div>
+              <div
+                v-for="group in questionGroups"
+                @contextmenu="
+                  (e) => openContextMenu(e, { name: group, qb: true })
+                "
+                v-bind:key="group"
+              >
                 <router-link
-                  v-for="group in questionGroups"
-                  v-bind:key="group"
                   class="module-item"
                   :to="`/dashboard/course/${course_id}/questions/${group}`"
                 >
@@ -261,6 +265,13 @@ export default {
       const newName = prompt("New Name:");
       if (!newName) return;
       if (newName === page.name) return;
+
+      // Check if Question Bank Item
+      if (page.qb) {
+        return this.renameQuestionGroup(page.name, newName);
+      }
+
+      // Normal page/module
       if (page.children) {
         // is a module
         const success = await this.api.updatePage(page._id, {
@@ -294,6 +305,11 @@ export default {
       }
     },
     deleteClick(page) {
+      if (page.qb) {
+        // Question Bank Item
+        return this.deleteQuestionGroup(page.name);
+      }
+
       if (page.children) {
         // is a module
         return this.deleteModule(page);
@@ -434,6 +450,32 @@ export default {
         }
       } else {
         alert("Error can't delete");
+      }
+    },
+    async deleteQuestionGroup(group) {
+      const success = await this.api.questions.deleteGroup(group);
+      if (success) {
+        this.questionGroups = this.questionGroups.filter((x) => x !== group);
+        if (this.questionGroups.length > 0) {
+          this.$router.push({
+            path: `/dashboard/course/${this.course_id}/questions/${this.questionGroups[0]}`,
+          });
+        }
+      } else {
+        alert("Can't delete group");
+      }
+    },
+    async renameQuestionGroup(group1, group2) {
+      const success = await this.api.questions.renameGroup(group1, group2);
+      if (success) {
+        this.questiongroups = this.questiongroups.map((x) =>
+          x === group1 ? group2 : x
+        );
+        this.$router.push({
+          path: `/dashboard/course/${this.course_id}/questions/${group2}`,
+        });
+      } else {
+        alert("Can't rename ");
       }
     },
   },

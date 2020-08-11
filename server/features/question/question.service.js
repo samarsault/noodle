@@ -3,6 +3,7 @@
  */
 const Question = require("./question.model");
 const { MCQ, Numeric, NoBody } = require("./types");
+const { Quiz } = require("../models");
 
 const QuestionModels = {
   MCQ,
@@ -31,6 +32,14 @@ exports.getAll = async function (course, group = "default") {
 
 exports.getGroups = function (course) {
   return Question.find({ course }).distinct("group");
+};
+
+exports.deleteGroup = function (course, group) {
+  return Question.deleteMany({ course, group });
+};
+
+exports.moveGroup = function (course, group1, group2) {
+  return Question.updateMany({ course, group: group1 }, { group: group2 });
 };
 
 exports.create = function (type, questionObject) {

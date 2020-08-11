@@ -51,15 +51,31 @@ router.post("/upload", upload.fields([{ name: "content" }]), async function (
   return res.send({ name: uploadEntry.name, url });
 });
 
+router.put("/questions/groups", async function (req, res) {
+  const { group1, group2 } = req.body;
+  if (group1 && group2) {
+    await questionService.moveGroup(req.course_id, group1, group2);
+    return res.status(200).send("OK");
+  }
+  return res.status(400).send("Invalid fields");
+});
+router.delete("/questions/groups/:group", async function (req, res) {
+  const { group } = req.params;
+  if (group) {
+    await questionService.deleteGroup(req.course_id, group);
+    return res.status(200).send("OK");
+  }
+  return res.status(400).send("Invalid fields");
+});
+
 router.post("/questions", async function (req, res) {
   const question = await questionService.create(req.body.type, req.body);
-  return res.json(question);
+  return res.statu(200).json(question);
 });
 router.delete("/questions/:id", async function (req, res) {
   const q = await questionService.delete(req.params.id);
-  return res.json(q);
+  return res.status(200).json(q);
 });
-
 router.put("/questions/:id", async function (req, res) {
   const q = await questionService.update(req.params.id, req.body);
   return res.json(q);

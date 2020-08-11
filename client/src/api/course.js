@@ -74,5 +74,22 @@ export default (course_id) => ({
       );
       return data;
     },
+    async deleteGroup(group) {
+      const { status } = await axios.delete(
+        `/admin/courses/${course_id}/questions/groups/${group}`
+      );
+      return status === 200;
+    },
+    // group1->group2
+    async renameGroup(group1, group2) {
+      const { status } = await axios.put(
+        `/admin/courses/${course_id}/questions/groups`,
+        {
+          group1,
+          group2,
+        }
+      );
+      return status === 200;
+    },
   },
 });
