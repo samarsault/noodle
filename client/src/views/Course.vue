@@ -468,7 +468,7 @@ export default {
     async renameQuestionGroup(group1, group2) {
       const success = await this.api.questions.renameGroup(group1, group2);
       if (success) {
-        this.questiongroups = this.questiongroups.map((x) =>
+        this.questionGroups = this.questionGroups.map((x) =>
           x === group1 ? group2 : x
         );
         this.$router.push({
