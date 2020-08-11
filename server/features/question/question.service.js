@@ -3,7 +3,6 @@
  */
 const Question = require("./question.model");
 const { MCQ, Numeric, NoBody } = require("./types");
-const { Quiz } = require("../models");
 
 const QuestionModels = {
   MCQ,

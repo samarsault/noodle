@@ -70,7 +70,7 @@ router.delete("/questions/groups/:group", async function (req, res) {
 
 router.post("/questions", async function (req, res) {
   const question = await questionService.create(req.body.type, req.body);
-  return res.statu(200).json(question);
+  return res.status(200).json(question);
 });
 router.delete("/questions/:id", async function (req, res) {
   const q = await questionService.delete(req.params.id);
