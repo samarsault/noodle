@@ -86,6 +86,10 @@ export default {
     async alterAccess() {
       const oppositeRole = this.user.role === "admin" ? "student" : "admin";
       try {
+        const confirmation = confirm(
+          `Are you sure you want to change your access level to a ${oppositeRole}?`
+        );
+        if(!confirmation) return;
         const { status } = await axios.post("/admin/super/users/updateAccess", {
           user_id: this.user._id,
           role: oppositeRole,
