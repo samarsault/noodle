@@ -45,6 +45,7 @@
 <script>
 import axios from "axios";
 import CourseCard from "@/components/CourseCard.vue";
+import { getters } from '../../utils/store';
 
 export default {
   data() {
@@ -74,6 +75,12 @@ export default {
     });
     this.courses = await Promise.all(courses);
   },
+  computed: {
+    ...getters,
+    adminInfo(){
+      return this.user
+    }
+  },
   methods: {
     async dereg(courseName) {
       await axios.post("/admin/super/deregister", {
@@ -86,10 +93,12 @@ export default {
     async alterAccess() {
       const oppositeRole = this.user.role === "admin" ? "student" : "admin";
       try {
-        const confirmation = confirm(
-          `Are you sure you want to change your access level to a ${oppositeRole}?`
-        );
-        if(!confirmation) return;
+        if(this.user._id === adminInfo()._id){
+          const confirmation = confirm(
+            `Warning! you will be demoted to a ${oppositeRole}?`
+          );
+          if(!confirmation) return;
+        }
         const { status } = await axios.post("/admin/super/users/updateAccess", {
           user_id: this.user._id,
           role: oppositeRole,
