@@ -2,13 +2,13 @@
   <div>
     <div class="header">
       <div>
-        <h2>{{ user.name }}</h2>
-        <p style="color: #999;">{{ user.email }}</p>
-        <p style="color: #999;">{{ user.bits_id }}</p>
+        <h2>{{ pseudoUser.name }}</h2>
+        <p style="color: #999;">{{ pseudoUser.email }}</p>
+        <p style="color: #999;">{{ pseudoUser.bits_id }}</p>
         <p>
-          {{ user.role | title }}
+          {{ pseudoUser.role | title }}
           <a href="#" @click="alterAccess">
-            {{ user.role === "student" ? "Upgrade" : "Downgrade" }}
+            {{ pseudoUser.role === "student" ? "Upgrade" : "Downgrade" }}
           </a>
         </p>
       </div>
@@ -50,7 +50,7 @@ import { getters } from '../../utils/store';
 export default {
   data() {
     return {
-      user: null,
+      pseudoUser: null,
       courses: [],
     };
   },
@@ -65,46 +65,41 @@ export default {
     CourseCard,
   },
   async mounted() {
-    this.user = (
+    this.pseudoUser = (
       await axios.get(
         `/admin/super/users/searchById/?q=${this.$route.params.user_id}`
       )
     ).data;
-    const courses = this.user.courses.map(async (course_id) => {
+    const courses = this.pseudoUser.courses.map(async (course_id) => {
       return (await axios.get(`/admin/super/courses/${course_id}`)).data;
     });
     this.courses = await Promise.all(courses);
   },
-  computed: {
-    ...getters,
-    adminInfo(){
-      return this.user
-    }
-  },
   methods: {
+    ...getters,
     async dereg(courseName) {
       await axios.post("/admin/super/deregister", {
-        email: this.user.email,
+        email: this.pseudoUser.email,
         course: courseName,
       });
 
-      this.$router.push({ path: `/admin/umgt/${this.user._id}` });
+      this.$router.push({ path: `/admin/umgt/${this.pseudoUser._id}` });
     },
     async alterAccess() {
-      const oppositeRole = this.user.role === "admin" ? "student" : "admin";
+      const oppositeRole = this.pseudoUser.role === "admin" ? "student" : "admin";
       try {
-        if(this.user._id === adminInfo()._id){
+        if(this.pseudoUser._id === this.user()._id){
           const confirmation = confirm(
             `Warning! you will be demoted to a ${oppositeRole}?`
           );
           if(!confirmation) return;
         }
         const { status } = await axios.post("/admin/super/users/updateAccess", {
-          user_id: this.user._id,
+          user_id: this.pseudoUser._id,
           role: oppositeRole,
         });
         if (status !== 200) throw new Error("Error updating access level");
-        this.user.role = oppositeRole;
+        this.pseudoUser.role = oppositeRole;
       } catch (err) {
         alert(err.message);
       }
