@@ -35,6 +35,10 @@ export default [
         component: () => import("../views/Course/Quiz/Attempts.vue"),
       },
       {
+        path: "review/:attempt_id",
+        component: () => import("../views/Course/Quiz/Review.vue"),
+      },
+      {
         path: "Quizzer/:quiz_id",
         component: () => import("../views/Course/Quiz/Quizzer.vue"),
       },

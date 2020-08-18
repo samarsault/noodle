@@ -60,6 +60,42 @@ exports.attempt = async function (attempt) {
   });
 };
 
+exports.reviewAttempt = async function (attempt_id) {
+  const attempt = await QuizAttempt.findOne({
+    _id: attempt_id,
+  })
+    .populate({
+      path: "quiz_id",
+      populate: {
+        path: "questions",
+      },
+    })
+    .lean();
+  const quiz = attempt.quiz_id;
+  const questions = await questionService.resolve(quiz.questions);
+  const { answers } = attempt;
+  const newAnswers = [];
+
+  for (let i = 0; i < questions.length; i++) {
+    const question = questions[i];
+    if (question.type === "NoBody") {
+      // eslint-disable-next-line no-await-in-loop
+      const count = question.questions.length;
+      newAnswers.push(answers.slice(i, i + count));
+    } else {
+      newAnswers.push(answers[i]);
+    }
+  }
+
+  return {
+    name: quiz.name,
+    questions,
+    answers: newAnswers,
+    time: getStringTime(attempt.end - attempt.start),
+    quiz_id: quiz._id,
+  };
+};
+
 //
 // attempt: {
 //    quiz_id,

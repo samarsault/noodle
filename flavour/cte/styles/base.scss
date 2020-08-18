@@ -74,7 +74,7 @@ a {
 }
 
 .big-type {
-	@include fluidType(16px,22px);
+	@include fluidType(16px, 22px);
 }
 
 button {
@@ -111,9 +111,9 @@ button {
 		}	
 	}
 	&.error {
-		background-color: rgb(221, 39, 39);
+		background-color: $red;
 		&:hover {
-			background-color: lighten(rgb(221, 39, 39), 4%);
+			background-color: lighten($red, 4%);
 		}
 	}
 	&:focus {

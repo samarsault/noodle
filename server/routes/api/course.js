@@ -54,6 +54,12 @@ router.get("/quiz", async function (req, res) {
   return res.json(quizzes);
 });
 
+router.get("/quiz/review/:attempt_id", async function (req, res) {
+  const { attempt_id } = req.params;
+  const quizAttempt = await quiz.service.reviewAttempt(attempt_id);
+  return res.status(200).json(quizAttempt);
+});
+
 // note: sends answer as well
 router.get("/quiz/:quiz_id", async function (req, res) {
   const quizInfo = await quiz.service.getById(req.params.quiz_id);
@@ -67,7 +73,6 @@ router.get("/quiz/:quiz_id/attempt", async function (req, res) {
   );
   return res.status(200).json(quizAttempt);
 });
-
 router.post("/quiz/attempt", async function (req, res) {
   const quizAttempt = await quiz.service.attempt({
     user_id: req.user._id,
