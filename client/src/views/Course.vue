@@ -226,7 +226,8 @@ export default {
       this.pages = await this.api.getPages();
       if (
         this.$route.path === `/dashboard/course/${this.course_id}` &&
-        this.pages.length > 0
+        this.pages.length > 0 &&
+        this.sidebarHidden
       ) {
         const item = this.pages[0];
         if (item.children.length > 0) {
