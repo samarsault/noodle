@@ -1,5 +1,6 @@
 <template>
   <div class="course-main">
+    <!-- Mobile Buttons -->
     <router-link
       v-if="sidebarHidden"
       :to="`/dashboard/course/${course_id}`"
@@ -7,6 +8,12 @@
     >
       <button class="primary"><IconSide :size="32" /></button>
     </router-link>
+    <div id="sidebar-mobile-button" v-else>
+      <button class="primary" @click="$router.go(-1)">
+        <IconX :size="32" />
+      </button>
+    </div>
+    <!-- Sidebar -->
     <div :class="`sidebar ${sidebarHidden ? 'hidden-mobile' : ''}`">
       <vue-context ref="menu">
         <template slot-scope="child">
