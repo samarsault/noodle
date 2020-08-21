@@ -45,5 +45,10 @@ export default {
       this.doLogOut();
     }
   },
+  watch: {
+    '$route'() {
+      this.menuOpen = false;
+    }
+  }
 };
 </script>
