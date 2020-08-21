@@ -234,7 +234,7 @@ export default {
       if (
         this.$route.path === `/dashboard/course/${this.course_id}` &&
         this.pages.length > 0 &&
-        this.sidebarHidden
+        window.innerWidth > 768
       ) {
         const item = this.pages[0];
         if (item.children.length > 0) {
