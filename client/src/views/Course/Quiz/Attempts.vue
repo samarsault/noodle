@@ -1,10 +1,12 @@
 <template>
-  <div v-if="attempts && attempts.length > 0">
-    <h1 style>{{ quiz.name }}</h1>
-    <AttemptView :attempts="attempts" :quiz="quiz" />
-  </div>
-  <div v-else>
-    <h1>No one has attempted this quiz yet.</h1>
+  <div v-if="attempts">
+    <div v-if="attempts.length > 0">
+      <h1 style>{{ quiz.name }}</h1>
+      <AttemptView :attempts="attempts" :quiz="quiz" />
+    </div>
+    <div v-else>
+      <h1>No one has attempted this quiz yet.</h1>
+    </div>
   </div>
 </template>
 <script>
