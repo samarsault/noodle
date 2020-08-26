@@ -1,5 +1,5 @@
 <template>
-  <div v-if="attempts.length > 0">
+  <div v-if="attempts && attempts.length > 0">
     <h1 style>{{ quiz.name }}</h1>
     <AttemptView :attempts="attempts" :quiz="quiz" />
   </div>
@@ -22,7 +22,7 @@ export default {
     return {
       quiz_id: this.$route.params.quiz_id,
       course_id: this.$route.params.course_id,
-      attempts: [],
+      attempts: null,
       quiz: {},
     };
   },
