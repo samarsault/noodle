@@ -25,7 +25,7 @@
 <script>
 export default {
   name: "MCQView",
-  props: ["question", "answer", "onAnswer"],
+  props: ["question", "answer", "onAnswer", "review"],
   filters: {
     optionify(index) {
       return String.fromCharCode("A".charCodeAt(0) + index);
@@ -33,6 +33,7 @@ export default {
   },
   methods: {
     selectOption(index) {
+      if (this.review) return;
       this.onAnswer(index);
     },
   },

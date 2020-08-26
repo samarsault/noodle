@@ -5,6 +5,7 @@
       type="number"
       :value="answer"
       step="any"
+      :disabled="review"
       @input="onAnswer(parseFloat($event.target.value))"
     />
     <div v-if="review">
