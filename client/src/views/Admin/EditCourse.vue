@@ -293,6 +293,7 @@ export default {
   color: inherit;
   margin: 0px;
   background-color: inherit;
+  border: 0px;
 }
 
 .edit {
