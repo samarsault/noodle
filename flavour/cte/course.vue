@@ -21,7 +21,7 @@
             <p>{{ item.name }}</p>
             <ul class="handout-list">
               <li v-for="page in item.children" :key="page._id">
-                <router-link v-if="courseRegistered" :to="`/dashboard/course/${course.identifier}/${page.type}/${page.identifier}`">{{ page.name }}</router-link>
+                <router-link v-if="courseRegistered" :to="`/dashboard/course/${course._id}/${page.type}/${page._id}`">{{ page.name }}</router-link>
                 <span v-else>{{ page.name }}</span>
               </li>
             </ul>
