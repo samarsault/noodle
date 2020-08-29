@@ -34,12 +34,18 @@ router.get(
 
 // Update user with BITS ID, Phone Number
 router.post("/update", async (req, res) => {
-  const user_id = req.session.passport.user;
+  const user_id = req.user._id;
   // const { bits_id, phone }  =  req.body;
-  await userService.updateInfo(user_id, req.body);
-  return res.json({
-    success: true,
-  });
+  try {
+    await userService.updateInfo(user_id, req.body);
+    return res.status(200).json({
+      success: true,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+    });
+  }
 });
 
 module.exports = router;

@@ -64,6 +64,11 @@
                 />
                 <Folder v-else style="margin-right: 10px;" />
                 {{ module.name }}
+                <IconMenu
+                  v-if="isAdmin"
+                  style="margin-left: auto;"
+                  @click.stop="(e) => openContextMenu(e, module)"
+                />
               </a>
               <div class="module-content" v-if="module._id == activeModule">
                 <Draggable
@@ -83,6 +88,11 @@
                       <div>
                         {{ page.name }}
                       </div>
+                      <IconMenu
+                        v-if="isAdmin"
+                        style="margin-left: auto;"
+                        @click.stop="(e) => openContextMenu(e, page)"
+                      />
                     </router-link>
                   </div>
                 </Draggable>
@@ -121,6 +131,13 @@
                   :to="`/dashboard/course/${course_id}/questions/${group}`"
                 >
                   {{ group }}
+                  <IconMenu
+                    v-if="isAdmin"
+                    style="margin-left: auto;"
+                    @click.stop="
+                      (e) => openContextMenu(e, { name: group, qb: true })
+                    "
+                  />
                 </router-link>
               </div>
               <a href="#" @click="addQuestionGroup" class="icon-centre">
@@ -182,6 +199,7 @@ import IconSide from "vue-material-design-icons/MenuOpen";
 import Folder from "vue-material-design-icons/Folder";
 import FolderOpen from "vue-material-design-icons/FolderOpen";
 import Back from "vue-material-design-icons/ChevronLeft";
+import IconMenu from "vue-material-design-icons/DotsVertical";
 
 export default {
   computed: {
@@ -260,6 +278,7 @@ export default {
     Back,
     Folder,
     FolderOpen,
+    IconMenu,
   },
   methods: {
     ...mutations,

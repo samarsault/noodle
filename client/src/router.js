@@ -14,11 +14,11 @@ const router = new Router({
     ...admin,
     ...dashboard,
     ...adapted,
-    {
-      path: "/signup",
-      name: "signup",
-      component: () => import("./views/SignUp"),
-    },
+    // {
+    //   path: "/signup",
+    //   name: "signup",
+    //   component: () => import("./views/SignUp"),
+    // },
     {
       path: "/authorized",
       component: () => import("./Authorized.vue"),

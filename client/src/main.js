@@ -16,19 +16,24 @@ axios.interceptors.request.use(function (config) {
 
   return config;
 });
-// axios.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response && error.response.data && error.response.data.location) {
-//       // window.location.href = error.response.data.location;
-//       console.log(error);
-//     } else {
-//       return Promise.reject(error);
-//     }
-//   }
-// );
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.data) {
+      if (
+        error.response.data.error === "PHONEID" &&
+        window.location.pathname !== "/details"
+      ) {
+        window.location.href = "/details";
+      }
+      // console.log(error);
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
 
 new Vue({
   router,

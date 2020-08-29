@@ -2,11 +2,13 @@
 // Flavour
 //
 import NavBarComponent from './components/NavBar.vue'
+import FooterComponent from './components/Footer.vue'
 
 //
 // NavBar
 //
 export const NavBar = NavBarComponent;
+export const Footer = FooterComponent;
 
 //
 // Custom pages
@@ -28,5 +30,9 @@ export const routes = [{
   {
     path: '/course/:course_id',
     component: () => import('./course.vue'),
+  },
+  {
+    path: '/details',
+    component: () => import('./details.vue'),
   }
 ];

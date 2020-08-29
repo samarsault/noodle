@@ -32,7 +32,7 @@ export default {
   computed: {
     ...getters,
     isAdminOrDashboard() {
-      return this.$route.path.match(/(\/dashboard|\/admin)/);
+      return this.$route.path.match(/(\/dashboard|\/admin|\/details)/);
     },
   },
   components: {
