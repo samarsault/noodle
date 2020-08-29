@@ -19,7 +19,7 @@ router.get(
 router.get(
   "/callback",
   passport.authenticate("google", {
-    failureRedirect: "/loginError",
+    failureRedirect: "/auth/failure",
     session: false,
   }),
   (req, res) => {
@@ -27,7 +27,8 @@ router.get(
     // TODO:
     // Shouldn't pass auth tokens in URL
     // Use iframe/script instead (involves complications with different origin)
-    return res.redirect(`http://localhost:8080/authorized?token=${token}`);
+    const { CLIENT_URL } = process.env;
+    return res.redirect(`${CLIENT_URL}/authorized?token=${token}`);
   }
 );
 

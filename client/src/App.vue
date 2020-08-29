@@ -12,8 +12,9 @@
     </Modal>
     <Loading v-if="isLoading" />
     <div :class="{ 'app-loading': isLoading }" id="app">
-      <NavBar :user="user" :doLogOut="logout" />
+      <NavBar />
       <router-view />
+      <Footer v-if="!isAdminOrDashboard" />
     </div>
   </div>
 </template>
@@ -21,7 +22,7 @@
 <script>
 import userApi from "@/api/user";
 
-import { NavBar } from "noodle-flavour";
+import { NavBar, Footer } from "noodle-flavour";
 import Modal from "./components/Dialogs/Modal";
 import Loading from "./components/Loading";
 
@@ -30,21 +31,18 @@ import { getters, mutations } from "./utils/store";
 export default {
   computed: {
     ...getters,
+    isAdminOrDashboard() {
+      return this.$route.path.match(/(\/dashboard|\/admin)/);
+    },
   },
   components: {
     Loading,
     NavBar,
     Modal,
+    Footer,
   },
   methods: {
     ...mutations,
-    logout() {
-      localStorage.clear();
-      this.setUser(null);
-      this.$router.push({
-        path: "/",
-      });
-    },
   },
   async mounted() {
     this.setLoading(true);
