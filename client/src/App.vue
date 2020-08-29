@@ -14,7 +14,7 @@
     <div :class="{ 'app-loading': isLoading }" id="app">
       <NavBar />
       <router-view />
-      <Footer v-if="!isAdminOrDashboard" />
+      <Footer style="margin-top: auto;" v-if="!isAdminOrDashboard" />
     </div>
   </div>
 </template>
