@@ -80,8 +80,16 @@ export default {
         email: this.user.email,
         course: courseName,
       });
-
-      this.$router.push({ path: `/admin/umgt/${this.user._id}` });
+      //Refresh the page for new data
+      this.user = (
+        await axios.get(
+          `/admin/super/users/searchById/?q=${this.$route.params.user_id}`
+        )
+      ).data;
+      const courses = this.user.courses.map(async (course_id) => {
+        return (await axios.get(`/admin/super/courses/${course_id}`)).data;
+      });
+      this.courses = await Promise.all(courses);
     },
     async alterAccess() {
       const oppositeRole = this.user.role === "admin" ? "student" : "admin";
