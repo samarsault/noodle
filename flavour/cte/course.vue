@@ -5,7 +5,7 @@
       <div>
         <h1 style="margin-top: 0">{{ course.name }}</h1> 
         <p>{{ course.description }}</p>
-        <router-link :to="`/dashboard/course/${course.identifier}`" v-if="courseRegistered">
+        <router-link :to="`/dashboard/course/${course._id}`" v-if="courseRegistered">
           <button v-if="courseRegistered" class="primary">Go To Course</button>
         </router-link>
         <button v-else class="primary" @click="register(course._id)">Enroll</button>
