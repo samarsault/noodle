@@ -53,7 +53,7 @@ div
 
   section.gray(style="position: relative;display:flex")
     .container(style="width:100%")
-      img(src="./assets/bpgc.svg", style="position: absolute;left: 55vw;bottom: 0;")
+      img#bpgc(src="./assets/bpgc.svg")
       div(style="position: relative;z-index:1")
         h2(style="font-weight:bold;justify-content:flex-start")
           span Why collaborate with us?
@@ -145,7 +145,8 @@ section.white {
 p {
     color: lighten($black, 30%);
     // font-size: 20px;
-    font-size: 18px;
+    @include fluidType(16px, 18px);
+    // font-size: 18px;
 }
 .grid-item {
 	display: flex;
@@ -184,7 +185,18 @@ p {
 		margin: 0;
 	}
 }
-
+#bpgc {
+  position: absolute;
+  left: 55vw;
+  bottom: 0;
+  @media screen and (max-width: $burgerToggleWidth){
+    left: 40vw;
+    min-width: 130vw;
+  }
+  @media screen and (max-width: 400px){
+    left: 30vw;
+    min-width: 150vw;
+  }}
 #facts-list {
   display: flex;
   flex-wrap: wrap;
@@ -196,6 +208,9 @@ p {
     margin-bottom: 10px;
     margin-top: 10px;
     width: 180px;
+    @media screen and (max-width: 540px) {
+      width: 45%;
+    }
     padding: 20px;
     h2 {
       text-align: center;

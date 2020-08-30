@@ -4,7 +4,7 @@
       <img
         :src="course.coverImage"
         :alt="course.name"
-        style="width: 100%; height: 160px;"
+        style="width: 100%; height: 180px;"
       />
       <div class="card-container">
         <div>
@@ -52,7 +52,7 @@ export default {
   padding: 0px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.3s;
-  max-height: 340px;
+  max-height: 390px;
   border-radius: 4px;
   overflow: hidden;
   background-color: white;
