@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div v-if="user">
     <div class="header">
       <div>
         <h2>{{ user.name }}</h2>
         <p style="color: #999;">{{ user.email }}</p>
         <p style="color: #999;">{{ user.bits_id }}</p>
+        <p style="color: #999;">{{ user.phone }}</p>
         <p>
           {{ user.role | title }}
           <a href="#" @click="alterAccess">
