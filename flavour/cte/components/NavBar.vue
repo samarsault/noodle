@@ -23,7 +23,7 @@ header
         router-link.navbar-item(to='/admin', v-if='user && user.role == "admin"') Admin
         //- signout/signin
         a.navbar-item(v-if="user", @click.prevent='logout', href="#") Sign Out
-        a.navbar-item(v-else, :href='`${server_url}/auth`') Sign In
+        a.navbar-item(v-else, :href='`${server_url}/auth/`') Sign In
 </template>
 
 <script>

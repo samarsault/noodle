@@ -35,7 +35,6 @@ export default {
     return {
       registered: [],
       course_id: this.$route.params.course_id,
-      server_url: process.env.VUE_APP_SERVER_URL,
     };
   },
   components: {
