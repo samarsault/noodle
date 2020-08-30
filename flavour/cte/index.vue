@@ -9,7 +9,7 @@ div
           p We conduct courses,  workshops, host technical competitions, offer financial assistance to technical clubs and projects and organise academic help sessions
           router-link(to="/catalog")
             button.primary Find Courses
-        img(src="./assets/hero.svg")
+        img(src="./assets/hero.svg", style="width:100%")
 
   section.white
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -38,7 +38,7 @@ div
         div 
           h3 Tech Weekend
           p To promote the technical culture on campus, CTE, in collaboration with other technical clubs on campus, organizes a weekend filled with hackathons and competitions. These events range from fields like finance to aero-space and help students relax while encouraging healthy competition
-        img(src="./assets/techweekend.svg")
+        img(src="./assets/techweekend.png", style="width:100%")
       .grid-item
         div 
           h3 Project Fundings
@@ -53,7 +53,7 @@ div
 
   section.gray(style="position: relative;display:flex")
     .container(style="width:100%")
-      img#bpgc(src="./assets/bpgc.svg")
+      img#bpgc(src="./assets/bpgc.png")
       div(style="position: relative;z-index:1")
         h2(style="font-weight:bold;justify-content:flex-start")
           span Why collaborate with us?
