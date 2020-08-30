@@ -18,7 +18,10 @@
 
 <script>
 import axios from "axios";
+import { mutations, getters } from "@/utils/store";
+ 
 import Go from 'vue-material-design-icons/AccountArrowRight';
+
 export default {
 	components: {
 		Go
@@ -31,10 +34,18 @@ export default {
   },
   methods: {
     async updateInfo() {
-      const { status } = await axios.post("/auth/update", {
+      const user = getters.user();
+      const { status } = await axios.post("/api/user/update", {
         bits_id : this.bits_id,
         phone: this.phone
       });
+
+      mutations.setUser({
+        ...user,
+        bits_id: this.bits_id,
+        phone: this.phone
+      });
+
       if (status === 200) {
         this.$router.go(-1);
       } else {

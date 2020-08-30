@@ -17,11 +17,7 @@ module.exports = async function (req, res, next) {
     }
 
     req.user = user;
-    // if (req.path !== "/auth/update" && (!user.bits_id || !user.phone)) {
-    //   return res.status(401).json({
-    //     error: "PHONEID",
-    //   });
-    // }
+
     return next();
   } catch (e) {
     // TODO: Register on auth

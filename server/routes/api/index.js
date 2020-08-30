@@ -46,4 +46,20 @@ router.get("/user/courses", async function (req, res) {
   return res.status(200).json(courses);
 });
 
+// Update user with BITS ID, Phone Number
+router.post("/user/update", async (req, res) => {
+  const user_id = req.user._id;
+  // const { bits_id, phone }  =  req.body;
+  try {
+    await user.service.updateInfo(user_id, req.body);
+    return res.status(200).json({
+      success: true,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+    });
+  }
+});
+
 module.exports = router;
