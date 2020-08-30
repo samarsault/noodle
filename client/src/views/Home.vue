@@ -30,9 +30,9 @@
     <div class="not-found" v-if="courses.length == 0">
       <img src="/images/empty.png" />
       <h2>You are missing out!</h2>
-      <a href="/courses">
-        <button class="primary">Explore Courses</button>
-      </a>
+      <router-link to="/catalog" tag="button" class="primary"
+        >Explore Courses</router-link
+      >
     </div>
   </div>
 </template>
