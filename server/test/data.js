@@ -29,8 +29,8 @@ async function populateDB() {
     name: "Dummy Course",
     subtitle: new Array(10).join("Dummy....."),
     description: new Array(58).join("Long Description."),
+    handout: "/something.pdf",
     coverImage: "/something.png",
-    // topics: [ 'Introduction', 'Endnotes'],
     instructors: [instructor._id],
   });
 

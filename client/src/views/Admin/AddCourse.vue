@@ -3,7 +3,11 @@
     <div class="heading">
       <h2>Add Course</h2>
       <div class="buttons">
-        <button class="primary" @click="submitForm" :disabled="!coverRecieved">
+        <button
+          class="primary"
+          @click="submitForm"
+          :disabled="!(coverRecieved && handoutRecieved)"
+        >
           Add
         </button>
         <router-link to="/admin/cmgt" tag="button">Back</router-link>
@@ -63,6 +67,18 @@
         alt="Course Cover Image"
         class="courseImage"
       />
+
+      <h4 style="margin-bottom: 0;">Handout</h4>
+      <input type="text" name="handout" v-model="course.handout" v-if="false" />
+      <input type="file" ref="handout" v-on:change="handleHandoutUpload()" />
+      <button
+        class="secondary"
+        @click="submitHandout"
+        type="button"
+        v-if="!handoutRecieved"
+      >
+        Upload
+      </button>
     </div>
   </div>
 </template>
@@ -81,13 +97,16 @@ export default {
       course: {
         coverImage: null,
         description: null,
+        handout: null,
         instructors: null,
         name: null,
         subtitle: null,
       },
       coverImage: "",
+      handout: "",
       instructors: [],
       coverRecieved: false,
+      handoutRecieved: false,
     };
   },
   computed: {
@@ -101,10 +120,16 @@ export default {
     awsCover: function () {
       return this.course.coverImage;
     },
+    awsHandout: function () {
+      return this.course.handout;
+    },
   },
   watch: {
     awsCover(val) {
       this.coverRecieved = !!val;
+    },
+    awsHandout(val) {
+      this.handoutRecieved = !!val;
     },
   },
   methods: {
@@ -129,6 +154,29 @@ export default {
         alert("Error: can't add course");
       }
     },
+    async submitHandout() {
+      // Initialize the form data
+
+      let formData = new FormData();
+
+      // Add the form data we need to submit
+
+      formData.append("content", this.handout);
+
+      // Make the request to the POST /single-file URL
+
+      this.course.handout = (
+        await axios.post("/admin/super/upload/handout", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+      ).data;
+    },
+    handleHandoutUpload() {
+      this.handout = this.$refs.handout.files[0];
+    },
+
     async submitCoverImage() {
       // Initialize the form data
 
