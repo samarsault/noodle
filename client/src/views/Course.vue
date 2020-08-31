@@ -584,7 +584,7 @@ export default {
       padding: 15px;
       border-bottom: 1px solid #222;
       background-color: #0d0d0d;
-      border-left: 3px solid #0d0d0d;
+      border-left: 7px solid #0d0d0d;
       cursor: pointer;
       color: inherit;
       &:hover {

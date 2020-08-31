@@ -32,7 +32,6 @@ import { getters, mutations } from "@/utils/store";
 export default {
   data() {
     return {
-      burgerNavActive: false,
       menuOpen: false,
       server_url: process.env.VUE_APP_SERVER_URL
     };
@@ -42,11 +41,9 @@ export default {
   },
   methods: {
     ...mutations,
-    toggleMenu() {
+    toggleMenu(e) {
+      e.stopPropagation();
       this.menuOpen = !this.menuOpen;
-    },
-    toggleMobileNav() {
-      this.burgerNavActive = !this.burgerNavActive;
     },
   logout(e) {
       e.stopPropagation();
