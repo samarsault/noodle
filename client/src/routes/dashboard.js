@@ -11,40 +11,65 @@ export default [
   },
   {
     path: "/dashboard/course/:course_id",
-    component: () => import("../views/Course.vue"),
+    component: () =>
+      import(/* webpackChunkName: "course-content" */ "../views/Course.vue"),
     children: [
       {
         path: "/",
         name: "course",
-        component: () => import("../views/Course/Welcome.vue"),
+        component: () =>
+          import(
+            /* webpackChunkName: "course-content" */ "../views/Course/Welcome.vue"
+          ),
       },
       {
         path: "Article/:page_id",
-        component: () => import("../views/Course/Article.vue"),
+        component: () =>
+          import(
+            /* webpackChunkName: "course-content" */ "../views/Course/Article.vue"
+          ),
       },
       {
         path: "registrations",
-        component: () => import("../views/Course/Registrations.vue"),
+        component: () =>
+          import(
+            /* webpackChunkName: "course-instructor" */ "../views/Course/Registrations.vue"
+          ),
       },
       {
         path: "Quiz/:quiz_id",
-        component: () => import("../views/Course/Quiz/Quiz.vue"),
+        component: () =>
+          import(
+            /* webpackChunkName: "course-content" */ "../views/Course/Quiz/Quiz.vue"
+          ),
       },
       {
         path: "attempts/:quiz_id",
-        component: () => import("../views/Course/Quiz/Attempts.vue"),
+        component: () =>
+          import(
+            /* webpackChunkName: "course-instructor" */ "../views/Course/Quiz/Attempts.vue"
+          ),
       },
       {
         path: "review/:attempt_id",
-        component: () => import("../views/Course/Quiz/Review.vue"),
+        component: () =>
+          import(
+            /* webpackChunkName: "course-quiz" */ "../views/Course/Quiz/Review.vue"
+          ),
       },
       {
         path: "Quizzer/:quiz_id",
-        component: () => import("../views/Course/Quiz/Quizzer.vue"),
+        component: () =>
+          import(
+            /* webpackChunkName: "course-quiz" */ "../views/Course/Quiz/Quizzer.vue"
+          ),
       },
       {
         path: "questions/:group",
-        component: () => import("../views/Course/Quiz/QuestionBank.vue"),
+        component: () =>
+          import(
+            /* webpackChunkName: "course-instructor" */ "../views/Course/Quiz/QuestionBank.vue"
+          ),
       },
     ],
   },

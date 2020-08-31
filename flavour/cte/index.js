@@ -18,7 +18,7 @@ export const routes = [{
     component: () => import('./index.vue'),
   }, {
     path: '/catalog',
-    component: () => import('./catalog.vue'),
+    component: () => import(/* webpackChunkName: "course-info" */ './catalog.vue'),
   }, {
     path: '/team',
     component: () => import('./team.vue')
@@ -29,7 +29,7 @@ export const routes = [{
   },
   {
     path: '/course/:course_id',
-    component: () => import('./course.vue'),
+    component: () => import(/* webpackChunkName: "course-info" */ './course.vue'),
   },
   {
     path: '/details',
