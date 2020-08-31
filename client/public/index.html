@@ -5,7 +5,7 @@
     <script>
       const script  = document.createElement('script')
       script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_ID}`
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.VUE_APP_GOOGLE_ANALYTICS_ID}`
       var s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(script, s);
 
@@ -13,7 +13,7 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', process.env.GOOGLE_ANALYTICS_ID);
+      gtag('config', process.env.VUE_APP_GOOGLE_ANALYTICS_ID);
     </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
