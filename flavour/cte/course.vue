@@ -9,11 +9,11 @@
           <button class="primary">Go To Course</button>
         </router-link>
         <button v-else class="primary" @click="showTerms = true">Register</button>
-          <a :href="course.handout" target="_blank" rel="noopener noreferrer">
-            <button v-if="!isEdit" class="secondary">
-              Handout
-            </button>
-          </a>
+        <a v-if="course.handout" :href="course.handout" target="_blank" rel="noopener noreferrer">
+          <button v-if="!isEdit" class="secondary">
+            Handout
+          </button>
+        </a>
       </div>
       <img :src="course.coverImage">
       </div>
