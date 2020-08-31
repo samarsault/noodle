@@ -37,10 +37,12 @@ export default {
       course_id: this.$route.params.course_id,
     };
   },
+  props: ["onLoad"],
   components: {
     DownloadIcon,
   },
   mounted() {
+    this.onLoad(null);
     axios.get(`/admin/courses/${this.course_id}/students`).then(({ data }) => {
       this.registered = data;
     });

@@ -3,12 +3,13 @@
     <div class="course-view ">
       <div class="container">
       <div>
-        <h1 style="margin-top: 0">{{ course.name }}</h1> 
+        <h2 style="margin-top: 0">{{ course.name }}</h2> 
         <p>{{ course.description }}</p>
         <router-link :to="`/dashboard/course/${course._id}`" v-if="courseRegistered">
           <button class="primary">Go To Course</button>
         </router-link>
         <button v-else class="primary" @click="showTerms = true">Register</button>
+        <button class="secondary">Handout</button>
       </div>
       <img :src="course.coverImage">
       </div>

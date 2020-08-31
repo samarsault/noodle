@@ -1,7 +1,7 @@
 <template lang="pug">
 section#courses
   .container
-    h2 Courses
+    h2(style='margin-bottom:5px;margin-left:15px') Courses
     .courses
       CourseCard(v-for="course in courses", :course="course", :key="course._id")
         template(slot='body')
