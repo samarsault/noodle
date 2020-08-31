@@ -6,9 +6,9 @@
         <h1 style="margin-top: 0">{{ course.name }}</h1> 
         <p>{{ course.description }}</p>
         <router-link :to="`/dashboard/course/${course._id}`" v-if="courseRegistered">
-          <button v-if="courseRegistered" class="primary">Go To Course</button>
+          <button class="primary">Go To Course</button>
         </router-link>
-        <button v-else class="primary" @click="register(course._id)">Enroll</button>
+        <button v-else class="primary" @click="showTerms = true">Register</button>
       </div>
       <img :src="course.coverImage">
       </div>
@@ -29,6 +29,7 @@
         </div>
       </div>
     </div>
+    <Terms v-if="showTerms" @ok="register(course._id)" @close="showTerms = false" :name="course.name"/>
   </div>
 </template>
 
@@ -38,13 +39,15 @@ import courseApi from '@/api/course';
 import coursesApi from '@/api/courses';
 // import Footer from "./components/Footer.vue"
 import { getters } from '@/utils/store'
+import Terms from "./components/Terms";
 
 export default {
   data() {
     return {
       course: null,
       course_id: this.$route.params.course_id,
-      handout: null
+      handout: null,
+      showTerms: false
     }
   },
   computed: {
@@ -54,6 +57,9 @@ export default {
         return false;
       return this.user.courses.includes(this.course._id);
     }
+  },
+  components: {
+    Terms
   },
   async created() {
     this.course = await coursesApi.getCourse(this.course_id)
