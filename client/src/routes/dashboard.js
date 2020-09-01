@@ -54,14 +54,14 @@ export default [
         path: "review/:attempt_id",
         component: () =>
           import(
-            /* webpackChunkName: "course-quiz" */ "../views/Course/Quiz/Review.vue"
+            /* webpackPrefetch: true */ /* webpackChunkName: "course-quiz" */ "../views/Course/Quiz/Review.vue"
           ),
       },
       {
         path: "Quizzer/:quiz_id",
         component: () =>
           import(
-            /* webpackChunkName: "course-quiz" */ "../views/Course/Quiz/Quizzer.vue"
+            /* webpackPrefetch: true */ /* webpackChunkName: "course-quiz" */ "../views/Course/Quiz/Quizzer.vue"
           ),
       },
       {
