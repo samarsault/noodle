@@ -42,7 +42,8 @@ export default {
     DownloadIcon,
   },
   mounted() {
-    this.onLoad(null);
+    if (this.onLoad)
+      this.onLoad(null);
     axios.get(`/admin/courses/${this.course_id}/students`).then(({ data }) => {
       this.registered = data;
     });
