@@ -95,14 +95,18 @@ exports.reviewAttempt = async function (attempt_id) {
   const { answers } = attempt;
   const newAnswers = [];
 
+  // answers index
+  let j = 0;
   for (let i = 0; i < questions.length; i++) {
     const question = questions[i];
     if (question.type === "NoBody") {
       // eslint-disable-next-line no-await-in-loop
       const count = question.questions.length;
-      newAnswers.push(answers.slice(i, i + count));
+      newAnswers.push(answers.slice(j, j + count));
+      j += count;
     } else {
-      newAnswers.push(answers[i]);
+      newAnswers.push(answers[j]);
+      j++;
     }
   }
 
