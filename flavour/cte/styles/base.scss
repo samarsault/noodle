@@ -1,7 +1,6 @@
 @import 'include/vars';
 @import 'include/normalize';
 @import 'include/navbar';
-@import 'include/footer';
 @import 'include/form';
 
 *,*:before,*:after {
@@ -73,10 +72,6 @@ a {
 	}
 }
 
-.big-type {
-	@include fluidType(16px, 22px);
-}
-
 button {
 	border: 0;
 	padding: 10px 25px;
@@ -145,11 +140,6 @@ button {
 //
 // Components
 //
-.panel {
-	background-color: $white;
-	box-shadow: 0 0 3px 0 rgba(0,0,0,0.35);
-	padding: 10px 20px;
-}
 
 .container {
 	max-width: 1200px;
@@ -203,17 +193,4 @@ table {
   }
   padding: 50px 0;
   // background-color: $blueBlack;
-}
-
-#terms {
-	padding: 10px 20px;
-	li {
-		margin: 10px 0;
-		line-height: 1.4em;
-	}
-	background-color: #fff;
-}
-
-.light {
-	color: $darkGray;
 }

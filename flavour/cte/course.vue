@@ -92,10 +92,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .course-view {
-  padding: 10px 40px 40px 40px;
+  padding: 20px 40px 40px 40px;
   width: 100%;
   // margin-top: 20px;
   background-color: #fff;
+  @media screen and (max-width: $burgerToggleWidth) {
+    padding: 20px;
+  }
 }
 .course-view > .container{
   display: flex;

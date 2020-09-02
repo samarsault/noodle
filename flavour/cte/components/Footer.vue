@@ -23,7 +23,7 @@ export default {
 <style lang="scss">
 footer {
   background-color: darken($gray, 2%);
-  // color: #fff;
+  padding: 20px 0;
   a {
     color:inherit;
     &:hover {
