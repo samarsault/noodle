@@ -28,6 +28,10 @@ export const routes = [{
     component: () => import('./faq.vue')
   },
   {
+    path: '/loginError',
+    component: () => import('./loginError.vue')
+  },
+  {
     path: '/course/:course_id',
     component: () => import(/* webpackChunkName: "course-info" */ /* webpackPrefetch: true */ './course.vue'),
   },
