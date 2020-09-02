@@ -160,7 +160,7 @@ import javascript from "highlight.js/lib/languages/javascript";
 import css from "highlight.js/lib/languages/css";
 import python from "highlight.js/lib/languages/python";
 import xml from "highlight.js/lib/languages/xml";
-import clike from "highlight.js/lib/languages/c-like";
+import clike from "highlight.js/lib/languages/cpp";
 import java from "highlight.js/lib/languages/java";
 
 // menu icons
@@ -235,9 +235,7 @@ export default {
         new Heading({ levels: [1, 2, 3] }),
         new Image(),
         new CodeBlockHighlight({
-          options: {
-            languages: { javascript, css, xml, python, java, clike },
-          },
+          languages: { javascript, css, xml, python, java, clike },
         }),
         new History(),
         new Iframe(),
