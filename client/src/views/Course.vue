@@ -610,6 +610,9 @@ export default {
   padding: 30px 100px;
   overflow: scroll;
   height: 100%;
+  @media screen and (max-width: 1120px) {
+    padding: 30px 60px;
+  }
   @media screen and (max-width: $burgerToggleWidth) {
     padding: 30px 20px;
     max-width: 600px;

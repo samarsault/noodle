@@ -330,6 +330,17 @@ blockquote {
 #editor-container {
   position: relative;
   margin: 10px 0;
+  iframe {
+    width: 720px;
+    height: 405px;
+    @media screen and (max-width: 1220px) {
+      width: 100%;
+    }
+    @media screen and (max-width: 640px) {
+      width: 100%;
+      height: 340px;
+    }
+  }
 }
 
 .editing {
