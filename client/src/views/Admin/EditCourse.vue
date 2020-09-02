@@ -74,8 +74,8 @@
       <textarea
         name="description"
         rows="6"
-        placeholder="Detailed description in minimum 250 characters."
-        minlength="250"
+        placeholder="Detailed description in minimum 200 characters."
+        minlength="200"
         v-model="course.description"
         :disabled="!isEdit"
         :class="{ 'no-edit': !isEdit, edit: isEdit }"

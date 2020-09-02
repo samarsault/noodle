@@ -11,9 +11,9 @@ const CourseSchema = new Schema({
   description: {
     type: String,
     required: true,
-    minlength: 250,
+    minlength: 200,
   },
-  handout: r_string,
+  handout: String,
   coverImage: r_string,
   isArchived: {
     type: Boolean,
