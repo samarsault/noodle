@@ -3,11 +3,7 @@
     <div class="heading">
       <h2>Add Course</h2>
       <div class="buttons">
-        <button
-          class="primary"
-          @click="submitForm"
-          :disabled="!(coverRecieved && handoutRecieved)"
-        >
+        <button class="primary" @click="submitForm" :disabled="!coverRecieved">
           Add
         </button>
         <router-link to="/admin/cmgt" tag="button">Back</router-link>
