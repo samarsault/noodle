@@ -59,6 +59,7 @@ export default {
         }
       );
       if (status !== 200) alert("Can't save");
+      if (this.activePage) this.activePage.isEditing = false;
     },
   },
 };
