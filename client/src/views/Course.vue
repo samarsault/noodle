@@ -1,5 +1,6 @@
 <template>
   <div class="course-main">
+    <!-- Mobile Buttons -->
     <router-link
       v-if="sidebarHidden"
       :to="`/dashboard/course/${course_id}`"
@@ -7,6 +8,12 @@
     >
       <button class="primary"><IconSide :size="32" /></button>
     </router-link>
+    <div id="sidebar-mobile-button" v-else>
+      <button class="primary" @click="$router.go(-1)">
+        <IconX :size="32" />
+      </button>
+    </div>
+    <!-- Sidebar -->
     <div :class="`sidebar ${sidebarHidden ? 'hidden-mobile' : ''}`">
       <vue-context ref="menu">
         <template slot-scope="child">
@@ -57,6 +64,11 @@
                 />
                 <Folder v-else style="margin-right: 10px;" />
                 {{ module.name }}
+                <IconMenu
+                  v-if="isAdmin"
+                  style="margin-left: auto;"
+                  @click.stop="(e) => openContextMenu(e, module)"
+                />
               </a>
               <div class="module-content" v-if="module._id == activeModule">
                 <Draggable
@@ -76,6 +88,11 @@
                       <div>
                         {{ page.name }}
                       </div>
+                      <IconMenu
+                        v-if="isAdmin"
+                        style="margin-left: auto;"
+                        @click.stop="(e) => openContextMenu(e, page)"
+                      />
                     </router-link>
                   </div>
                 </Draggable>
@@ -114,6 +131,13 @@
                   :to="`/dashboard/course/${course_id}/questions/${group}`"
                 >
                   {{ group }}
+                  <IconMenu
+                    v-if="isAdmin"
+                    style="margin-left: auto;"
+                    @click.stop="
+                      (e) => openContextMenu(e, { name: group, qb: true })
+                    "
+                  />
                 </router-link>
               </div>
               <a href="#" @click="addQuestionGroup" class="icon-centre">
@@ -175,6 +199,7 @@ import IconSide from "vue-material-design-icons/MenuOpen";
 import Folder from "vue-material-design-icons/Folder";
 import FolderOpen from "vue-material-design-icons/FolderOpen";
 import Back from "vue-material-design-icons/ChevronLeft";
+import IconMenu from "vue-material-design-icons/DotsVertical";
 
 export default {
   computed: {
@@ -226,7 +251,8 @@ export default {
       this.pages = await this.api.getPages();
       if (
         this.$route.path === `/dashboard/course/${this.course_id}` &&
-        this.pages.length > 0
+        this.pages.length > 0 &&
+        window.innerWidth > 768
       ) {
         const item = this.pages[0];
         if (item.children.length > 0) {
@@ -252,6 +278,7 @@ export default {
     Back,
     Folder,
     FolderOpen,
+    IconMenu,
   },
   methods: {
     ...mutations,
@@ -424,7 +451,14 @@ export default {
       });
       if (this.addToModule) {
         const module = this.pages.find((x) => x._id === this.activeModule);
-        module.children = [...module.children, page];
+        if (
+          !module.children ||
+          (module.children && module.children.length == 0)
+        ) {
+          module.children = [page];
+        } else {
+          module.children = [...module.children, page];
+        }
         this.$router.push({
           path: `/dashboard/course/${this.course_id}/${page.type}/${page._id}`,
         });
@@ -583,6 +617,9 @@ export default {
   padding: 30px 100px;
   overflow: scroll;
   height: 100%;
+  @media screen and (max-width: 1120px) {
+    padding: 30px 60px;
+  }
   @media screen and (max-width: $burgerToggleWidth) {
     padding: 30px 20px;
     max-width: 600px;

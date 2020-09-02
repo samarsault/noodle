@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google Analytics tracking code  -->
-    <script>
-      const script  = document.createElement('script')
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.VUE_APP_GOOGLE_ANALYTICS_ID}`
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(script, s);
-
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', process.env.VUE_APP_GOOGLE_ANALYTICS_ID);
-    </script>
+    <!-- GA -->
+    <%= process.env.VUE_APP_GOOGLE_ANALYTICS_ID   
+    ? `<script> const script = document.createElement('script'); script.async = true; script.src = "https://www.googletagmanager.com/gtag/js?id=${process.env.VUE_APP_GOOGLE_ANALYTICS_ID}"; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s); window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${process.env.VUE_APP_GOOGLE_ANALYTICS_ID}'); </script>`
+    : '' 
+    %>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>Noodle</title>
+    <title>CTE | BITS Goa</title>
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,700|Open+Sans&display=swap" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   </head>
   <body>
     <noscript>

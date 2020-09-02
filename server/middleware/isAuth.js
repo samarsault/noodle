@@ -11,10 +11,13 @@ module.exports = async function (req, res, next) {
     const user = await User.findOne({
       _id: user_id,
     }).select("email role bits_id phone courses");
+
     if (!user) {
       throw new Error("No user with the given id");
     }
+
     req.user = user;
+
     return next();
   } catch (e) {
     // TODO: Register on auth

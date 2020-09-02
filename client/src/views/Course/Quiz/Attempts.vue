@@ -1,10 +1,12 @@
 <template>
-  <div v-if="attempts.length > 0">
-    <h1 style>{{ quiz.name }}</h1>
-    <AttemptView :attempts="attempts" :quiz="quiz" />
-  </div>
-  <div v-else>
-    <h1>No one has attempted this quiz yet.</h1>
+  <div v-if="attempts">
+    <div v-if="attempts.length > 0">
+      <h1 style>{{ quiz.name }}</h1>
+      <AttemptView :attempts="attempts" :quiz="quiz" />
+    </div>
+    <div v-else>
+      <h1>No one has attempted this quiz yet.</h1>
+    </div>
   </div>
 </template>
 <script>
@@ -22,7 +24,7 @@ export default {
     return {
       quiz_id: this.$route.params.quiz_id,
       course_id: this.$route.params.course_id,
-      attempts: [],
+      attempts: null,
       quiz: {},
     };
   },

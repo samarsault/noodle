@@ -1,7 +1,6 @@
 @import 'include/vars';
 @import 'include/normalize';
 @import 'include/navbar';
-@import 'include/footer';
 @import 'include/form';
 
 *,*:before,*:after {
@@ -73,10 +72,6 @@ a {
 	}
 }
 
-.big-type {
-	@include fluidType(16px,22px);
-}
-
 button {
 	border: 0;
 	padding: 10px 25px;
@@ -111,9 +106,9 @@ button {
 		}	
 	}
 	&.error {
-		background-color: rgb(221, 39, 39);
+		background-color: $red;
 		&:hover {
-			background-color: lighten(rgb(221, 39, 39), 4%);
+			background-color: lighten($red, 4%);
 		}
 	}
 	&:focus {
@@ -145,11 +140,6 @@ button {
 //
 // Components
 //
-.panel {
-	background-color: $white;
-	box-shadow: 0 0 3px 0 rgba(0,0,0,0.35);
-	padding: 10px 20px;
-}
 
 .container {
 	max-width: 1200px;
@@ -160,34 +150,6 @@ button {
 	@media screen and (max-width: 768px){
 		margin: 0 5vw;	
 	}
-}
-
-section.hero {
-	background-color: $blueBlack;
-	.container {
-		padding: 80px 0;
-	}
-	color: $white;
-	h1, h2, h3 {
-		margin-top: 0;
-		color: $white;
-	}
-	.card {
-		color: $blueBlack;
-		h1,h2,h3 {
-			margin: 15px 0;
-			color: $black;
-		}
-	}
-}
-
-.hero-overlay {
-  position: absolute;
-  height: 400px;
-  width: 100%;
-  z-index: -1;
-  top: 0;
-	margin-bottom: 400px;
 }
 
 table {
@@ -231,17 +193,4 @@ table {
   }
   padding: 50px 0;
   // background-color: $blueBlack;
-}
-
-#terms {
-	padding: 10px 20px;
-	li {
-		margin: 10px 0;
-		line-height: 1.4em;
-	}
-	background-color: #fff;
-}
-
-.light {
-	color: $darkGray;
 }

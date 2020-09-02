@@ -12,23 +12,28 @@ Vue.config.productionTip = false;
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
-  config.headers.Authorization = `Bearer ${token}`;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
 
   return config;
 });
-// axios.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response && error.response.data && error.response.data.location) {
-//       // window.location.href = error.response.data.location;
-//       console.log(error);
-//     } else {
-//       return Promise.reject(error);
-//     }
-//   }
-// );
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.data) {
+      if (
+        error.response.data.error === "PHONEID" &&
+        window.location.pathname !== "/details"
+      ) {
+        window.location.href = "/details";
+      }
+      // console.log(error);
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
 
 new Vue({
   router,

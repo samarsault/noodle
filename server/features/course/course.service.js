@@ -111,7 +111,14 @@ exports.getRegisteredCSV = async function (course_id) {
 };
 
 exports.create = async function (body) {
-  const { name, subtitle, description, instructors, coverImage } = body;
+  const {
+    name,
+    subtitle,
+    description,
+    instructors,
+    handout,
+    coverImage,
+  } = body;
 
   const instructorsArr = instructors.toString().split(",");
 
@@ -119,6 +126,7 @@ exports.create = async function (body) {
     name,
     subtitle,
     description,
+    handout,
     coverImage,
   });
   // Update instructor & roles

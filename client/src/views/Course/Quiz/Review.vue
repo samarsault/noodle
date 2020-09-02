@@ -1,22 +1,23 @@
 <template>
   <div class="quiz-container">
     <h1>{{ quiz.name }}</h1>
-    <div v-if="started" class="quizzer">
+    <div class="quizzer">
       <div class="quizzer-question">
         <form @submit="nextQuestion">
           <QuestionView
             :question="activeQuestion"
             :answer="answers[activeIndex]"
             :onAnswer="setAnswer"
+            :review="true"
           />
           <button class="primary">
-            {{ lastQuestion ? "Finish" : "Next" }}
+            {{ lastQuestion ? "Done" : "Next" }}
           </button>
-          <p>Time: {{ times[activeIndex] | stringTime }}</p>
+          <!-- <p>Time: {{ time[activeIndex] }}</p> -->
         </form>
       </div>
       <div class="quizzer-panel">
-        <p align="center">Time: {{ totalTime | stringTime }}</p>
+        <p align="center">Time: {{ totalTime }}</p>
         <div class="quizzer-nav">
           <div
             v-for="n in quiz.questions.length"
@@ -28,10 +29,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <p>Once, you are ready, click below to start the quiz.</p>
-      <button class="primary" @click="startQuiz">Start</button>
     </div>
   </div>
 </template>
@@ -50,16 +47,15 @@ export default {
   },
   data() {
     return {
-      quiz_id: this.$route.params.quiz_id,
+      attempt_id: this.$route.params.attempt_id,
       course_id: this.$route.params.course_id,
       quiz: {
+        _id: null,
         name: "",
         questions: [],
       },
       totalTime: 0,
-      started: false,
       answers: [],
-      times: [],
       activeIndex: 0,
       activeQuestion: {},
       attempt: {},
@@ -82,42 +78,20 @@ export default {
   },
   created() {
     axios
-      .get(`/api/courses/${this.course_id}/quiz/${this.quiz_id}`)
+      .get(`/api/courses/${this.course_id}/quiz/review/${this.attempt_id}`)
       .then(({ data }) => {
-        this.quiz = data;
-        if (this.answers.length !== this.quiz.questions.length) {
-          this.answers = new Array(this.quiz.questions.length).fill("");
-          this.times = new Array(this.quiz.questions.length).fill(0);
-        }
+        this.quiz = {
+          name: data.name,
+          questions: data.questions,
+          _id: data.quiz_id,
+        };
+        this.totalTime = data.time;
+        this.answers = data.answers;
         this.onLoad(null);
+        this.showQuestion(0);
       });
   },
   methods: {
-    startQuiz() {
-      if (this.quiz.questions.length === 0) {
-        alert("Quiz has no questions.");
-        return;
-      }
-
-      axios
-        .post(`/api/courses/${this.course_id}/quiz/attempt`, {
-          quiz_id: this.quiz_id,
-        })
-        .then(({ data, status }) => {
-          if (status === 200) {
-            this.attempt = data;
-            this.started = true;
-            this.showQuestion(0);
-            this.timer = setInterval(this.loopTime, 1000);
-          } else {
-            alert("Can't attempt quiz now.");
-          }
-        });
-    },
-    loopTime() {
-      this.$set(this.times, this.activeIndex, this.times[this.activeIndex] + 1);
-      this.totalTime += 1;
-    },
     showQuestion(n) {
       this.activeIndex = n;
       this.activeQuestion = this.quiz.questions[n];
@@ -125,27 +99,12 @@ export default {
     nextQuestion(e) {
       e.preventDefault();
       if (this.lastQuestion) {
-        this.submitQuiz();
+        this.$router.push({
+          path: `/dashboard/course/${this.course_id}/Quiz/${this.quiz._id}`,
+        });
       } else {
         this.showQuestion(this.activeIndex + 1);
       }
-    },
-    submitQuiz() {
-      clearInterval(this.timer);
-      axios
-        .post(`/api/courses/${this.course_id}/quiz/submit`, {
-          ...this.attempt,
-          answers: this.answers.flat(),
-        })
-        .then(({ status }) => {
-          if (status === 200) {
-            this.$router.push({
-              path: `/dashboard/course/${this.course_id}/Quiz/${this.quiz_id}`,
-            });
-          } else {
-            alert("Submission error");
-          }
-        });
     },
     setAnswer(answer) {
       this.$set(this.answers, this.activeIndex, answer);
