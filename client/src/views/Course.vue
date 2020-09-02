@@ -451,7 +451,14 @@ export default {
       });
       if (this.addToModule) {
         const module = this.pages.find((x) => x._id === this.activeModule);
-        module.children = [...module.children, page];
+        if (
+          !module.children ||
+          (module.children && module.children.length == 0)
+        ) {
+          module.children = [page];
+        } else {
+          module.children = [...module.children, page];
+        }
         this.$router.push({
           path: `/dashboard/course/${this.course_id}/${page.type}/${page._id}`,
         });
