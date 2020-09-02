@@ -78,6 +78,7 @@ router.post("/quiz/attempt", async function (req, res) {
     user_id: req.user._id,
     quiz_id: req.body.quiz_id,
   });
+  if (!quizAttempt) return res.status(401).send("Not‧allowed");
   return res.status(200).json(quizAttempt);
 });
 

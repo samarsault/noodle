@@ -13,6 +13,12 @@ function getStringTime(ms) {
   return `${seconds} s`;
 }
 
+function dateDiff(date1, date2) {
+  const diffTime = Math.abs(date2 - date1);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+}
+
 function resolveAttempts(attempts) {
   return Promise.all(
     attempts.map(async (attempt) => {
@@ -53,6 +59,19 @@ exports.getAttempts = async function (quiz_id) {
 //
 exports.attempt = async function (attempt) {
   const { user_id, quiz_id } = attempt;
+  // Get the last attempt date
+  const lastAttempt = await QuizAttempt.findOne({
+    user_id,
+    quiz_id,
+    end: { $exists: true },
+  }).sort({
+    end: -1,
+  });
+
+  const now = new Date();
+  // next attempt should be atleast a day apart from last attempt
+  if (lastAttempt && lastAttempt.end && dateDiff(now, lastAttempt.end) < 1)
+    return null;
   return QuizAttempt.create({
     quiz_id,
     user_id,
