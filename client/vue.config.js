@@ -12,6 +12,7 @@ module.exports = {
       "noodle-flavour",
       path.resolve("..", noodleConfig.flavour)
     );
+    config.plugins.delete("prefetch");
   },
   css: {
     loaderOptions: {

@@ -2,11 +2,13 @@
 // Flavour
 //
 import NavBarComponent from './components/NavBar.vue'
+import FooterComponent from './components/Footer.vue'
 
 //
 // NavBar
 //
 export const NavBar = NavBarComponent;
+export const Footer = FooterComponent;
 
 //
 // Custom pages
@@ -16,7 +18,7 @@ export const routes = [{
     component: () => import('./index.vue'),
   }, {
     path: '/catalog',
-    component: () => import('./catalog.vue'),
+    component: () => import(/* webpackChunkName: "course-info" */ /* webpackPrefetch: true */ './catalog.vue'),
   }, {
     path: '/team',
     component: () => import('./team.vue')
@@ -27,6 +29,10 @@ export const routes = [{
   },
   {
     path: '/course/:course_id',
-    component: () => import('./course.vue'),
+    component: () => import(/* webpackChunkName: "course-info" */ /* webpackPrefetch: true */ './course.vue'),
+  },
+  {
+    path: '/details',
+    component: () => import('./details.vue'),
   }
 ];

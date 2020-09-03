@@ -1,12 +1,16 @@
 <script>
 // For Oauth providers
-import queryString from "query-string";
+import userApi from "@/api/user";
+import { mutations } from "./utils/store";
 
 export default {
-  mounted() {
-    const { token } = queryString.parse(window.location.search);
-    localStorage.setItem("token", token);
+  methods: { ...mutations },
+  async mounted() {
+    const token = this.$route.query.token;
     if (token) {
+      localStorage.setItem("token", token);
+      const user = await userApi.get();
+      this.setUser(user);
       this.$router.push({
         path: "/dashboard",
       });

@@ -13,6 +13,12 @@ function getStringTime(ms) {
   return `${seconds} s`;
 }
 
+function dateDiff(date1, date2) {
+  const diffTime = Math.abs(date2 - date1);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+}
+
 function resolveAttempts(attempts) {
   return Promise.all(
     attempts.map(async (attempt) => {
@@ -53,11 +59,60 @@ exports.getAttempts = async function (quiz_id) {
 //
 exports.attempt = async function (attempt) {
   const { user_id, quiz_id } = attempt;
+  // Get the last attempt date
+  const lastAttempt = await QuizAttempt.findOne({
+    user_id,
+    quiz_id,
+    end: { $exists: true },
+  }).sort({
+    end: -1,
+  });
+
+  const now = new Date();
+  // next attempt should be atleast a day apart from last attempt
+  if (lastAttempt && lastAttempt.end && dateDiff(now, lastAttempt.end) < 1)
+    return null;
   return QuizAttempt.create({
     quiz_id,
     user_id,
     start: Date.now(),
   });
+};
+
+exports.reviewAttempt = async function (attempt_id) {
+  const attempt = await QuizAttempt.findOne({
+    _id: attempt_id,
+  })
+    .populate({
+      path: "quiz_id",
+      populate: {
+        path: "questions",
+      },
+    })
+    .lean();
+  const quiz = attempt.quiz_id;
+  const questions = await questionService.resolve(quiz.questions);
+  const { answers } = attempt;
+  const newAnswers = [];
+
+  for (let i = 0; i < questions.length; i++) {
+    const question = questions[i];
+    if (question.type === "NoBody") {
+      // eslint-disable-next-line no-await-in-loop
+      const count = question.questions.length;
+      newAnswers.push(answers.slice(i, i + count));
+    } else {
+      newAnswers.push(answers[i]);
+    }
+  }
+
+  return {
+    name: quiz.name,
+    questions,
+    answers: newAnswers,
+    time: getStringTime(attempt.end - attempt.start),
+    quiz_id: quiz._id,
+  };
 };
 
 //

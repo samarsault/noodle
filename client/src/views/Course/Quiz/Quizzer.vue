@@ -110,7 +110,7 @@ export default {
             this.showQuestion(0);
             this.timer = setInterval(this.loopTime, 1000);
           } else {
-            alert("Error attempting quiz.");
+            alert("Can't attempt quiz now.");
           }
         });
     },

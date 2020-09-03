@@ -28,7 +28,7 @@ module.exports = model(
       },
       parent: {
         type: Schema.Types.ObjectId,
-        ref: "Course",
+        ref: "Question",
         default: null,
       },
       // Group the question belongs to

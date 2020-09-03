@@ -17,6 +17,12 @@
       :to="`/dashboard/course/${course_id}/Quizzer/${quiz._id}`"
     >
       <button class="primary">Attempt Quiz</button>
+      <router-link
+        :to="`/dashboard/course/${course_id}/attempts/${quiz._id}`"
+        v-if="isAdmin"
+      >
+        <button class="secondary">View Attempts</button>
+      </router-link>
     </router-link>
     <div v-if="attempts.length > 0">
       <h3>My Attempts</h3>
@@ -25,9 +31,6 @@
     </div>
     <div v-if="isAdmin && isEditing">
       <h3>Admin</h3>
-      <router-link :to="`/dashboard/course/${course_id}/attempts/${quiz._id}`">
-        <button class>View Attempts</button>
-      </router-link>
       <button class="secondary" @click="editing = true">Add Question</button>
       <QuestionManager
         style="margin-top: 15px;"

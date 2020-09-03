@@ -18,13 +18,9 @@
         </tr>
       </tbody>
     </table>
-    <a :href="`/admin/courses/${course_id}/students/download`">
-      <button class="primary icon-button">
-        <DownloadIcon decorative /><span class="icon-left"
-          >Download as CSV</span
-        >
-      </button>
-    </a>
+    <button class="primary icon-button" @click="downloadCSV">
+      <DownloadIcon decorative /><span class="icon-left">Download as CSV</span>
+    </button>
   </div>
   <div v-else>
     <h4>No student registered.</h4>
@@ -41,13 +37,31 @@ export default {
       course_id: this.$route.params.course_id,
     };
   },
+  props: ["onLoad"],
   components: {
     DownloadIcon,
   },
   mounted() {
+    if (this.onLoad) this.onLoad(null);
     axios.get(`/admin/courses/${this.course_id}/students`).then(({ data }) => {
       this.registered = data;
     });
+  },
+  methods: {
+    async downloadCSV() {
+      const { data } = await axios.get(
+        `/admin/courses/${this.course_id}/students/download`
+      );
+      var fileURL = window.URL.createObjectURL(new Blob([data]));
+      var fileLink = document.createElement("a");
+
+      fileLink.href = fileURL;
+      fileLink.setAttribute("download", "registrations.csv");
+      document.body.appendChild(fileLink);
+
+      fileLink.click();
+      document.body.removeChild(fileLink);
+    },
   },
 };
 </script>

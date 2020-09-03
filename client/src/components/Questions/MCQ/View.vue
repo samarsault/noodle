@@ -13,15 +13,27 @@
         <span class="option-value">{{ option }}</span>
       </li>
     </ol>
+    <div v-if="review">
+      <p v-if="question.answer == answer" class="ans-box green">
+        Correct Option: {{ question.answer | optionify }}
+      </p>
+      <p v-else class="ans-box red">Wrong Answer</p>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "MCQView",
-  props: ["question", "answer", "onAnswer"],
+  props: ["question", "answer", "onAnswer", "review"],
+  filters: {
+    optionify(index) {
+      return String.fromCharCode("A".charCodeAt(0) + index);
+    },
+  },
   methods: {
     selectOption(index) {
+      if (this.review) return;
       this.onAnswer(index);
     },
   },

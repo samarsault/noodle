@@ -5,6 +5,8 @@ import admin from "./routes/admin";
 import dashboard from "./routes/dashboard";
 import adapted from "./routes/adapted";
 
+import { getters } from "./utils/store";
+
 Vue.use(Router);
 
 const router = new Router({
@@ -14,11 +16,11 @@ const router = new Router({
     ...admin,
     ...dashboard,
     ...adapted,
-    {
-      path: "/signup",
-      name: "signup",
-      component: () => import("./views/SignUp"),
-    },
+    // {
+    //   path: "/signup",
+    //   name: "signup",
+    //   component: () => import("./views/SignUp"),
+    // },
     {
       path: "/authorized",
       component: () => import("./Authorized.vue"),
@@ -26,6 +28,19 @@ const router = new Router({
   ],
 });
 
+router.beforeEach((to, from, next) => {
+  const user = getters.user();
+
+  if (to.path === "/details") return next();
+  if (!user) return next();
+
+  if (!(user.bits_id && user.phone)) {
+    return next({
+      path: "/details",
+    });
+  }
+  return next();
+});
 // router.beforeEach((to, from, next) => {
 //   if (to.meta.requiresAuth) {
 //     const user = getters.user();

@@ -30,9 +30,6 @@ export default class Iframe extends Node {
           allowfullscreen: "true",
           allow:
             "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-          // You can set the width and height here also
-          width: 560,
-          height: 340,
         },
       ],
     };

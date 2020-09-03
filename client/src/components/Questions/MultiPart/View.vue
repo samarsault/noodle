@@ -6,6 +6,7 @@
       :question="part"
       :answer="answer ? answer[index] : null"
       :onAnswer="(ans) => setAnswer(index, ans)"
+      :review="review"
     />
   </div>
 </template>
@@ -13,7 +14,7 @@
 <script>
 export default {
   name: "MultiPartView",
-  props: ["question", "answer", "onAnswer"],
+  props: ["question", "answer", "onAnswer", "review"],
   components: {
     // Needs to be imported dynamically
     // https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
