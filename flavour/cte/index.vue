@@ -48,7 +48,7 @@ div
       .grid-item
         div
           h3 TechForums
-          p To promote the technical culture on campus, CTE, in collaboration with other technical clubs on campus, organizes a weekend filled with hackathons and competitions. These events range from fields like finance to aero-space and helps students relax while encouraging healthy competition
+          p An online platform, one that can answer all the queries with discussions, tags, user-friendly UI, moderators, and a great knowledge base.The one stop online technical community for BITS Goa.
         img(src="./assets/techforum.svg")
 
   section.gray(style="position: relative;display:flex")

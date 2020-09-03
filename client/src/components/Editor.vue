@@ -293,7 +293,7 @@ code {
   padding: 5px;
   border-radius: 4px;
   font-size: 90%;
-  font-family: Monaco, Consolas, "Roboto Mono", "Ubuntu Monospaced";
+  font-family: Monaco, Consolas, "Roboto Mono", monospace;
 }
 
 pre {

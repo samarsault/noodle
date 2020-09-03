@@ -5,8 +5,8 @@ const authService = require("./auth.service");
 async function oauthCallback(accessToken, refreshToken, profile, done) {
   const email = profile.emails[0].value;
 
-  if (email.split("@")[1] !== "goa.bits-pilani.ac.in")
-    return done(null, false, "Please Sign In using your BITS Goa Email");
+  if (!email.split("@")[1].includes("bits-pilani.ac.in"))
+    return done(null, false, "Please Sign In using your BITS Email");
 
   try {
     const token = await authService.login({
