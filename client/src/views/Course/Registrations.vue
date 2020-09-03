@@ -7,6 +7,8 @@
           <th>Email</th>
           <th>ID</th>
           <th>Phone</th>
+          <th v-if="user.role === 'admin'">Deregister</th>
+          <th v-if="user.role === 'admin'">Details</th>
         </tr>
       </thead>
       <tbody>
@@ -15,6 +17,16 @@
           <td>{{ student.email }}</td>
           <td>{{ student.bits_id }}</td>
           <td>{{ student.phone }}</td>
+          <td v-if="user.role === 'admin'">
+            <button class="error" @click="dereg(student.email, course_id)">
+              Deregister
+            </button>
+          </td>
+          <td v-if="user.role === 'admin'">
+            <router-link :to="`/admin/umgt/${student._id}`" tag="button"
+              >View</router-link
+            >
+          </td>
         </tr>
       </tbody>
     </table>
@@ -29,10 +41,12 @@
 
 <script>
 import axios from "axios";
+import { getters } from "@/utils/store";
 import DownloadIcon from "vue-material-design-icons/FileDownload";
 export default {
   data() {
     return {
+      user: null,
       registered: [],
       course_id: this.$route.params.course_id,
     };
@@ -43,6 +57,7 @@ export default {
   },
   mounted() {
     if (this.onLoad) this.onLoad(null);
+    this.user = getters.user();
     axios.get(`/admin/courses/${this.course_id}/students`).then(({ data }) => {
       this.registered = data;
     });
@@ -62,6 +77,19 @@ export default {
       fileLink.click();
       document.body.removeChild(fileLink);
     },
+    async dereg(email, courseId) {
+      const courseName = (await axios.get(`/admin/super/courses/${courseId}`))
+        .data.name;
+      await axios.post("/admin/super/deregister", {
+        email: email,
+        course: courseName,
+      });
+      axios
+        .get(`/admin/courses/${this.course_id}/students`)
+        .then(({ data }) => {
+          this.registered = data;
+        });
+    },
   },
 };
 </script>
@@ -70,8 +98,5 @@ export default {
 table {
   max-height: 250px;
   overflow-y: scroll;
-}
-button {
-  margin-top: 20px;
 }
 </style>
