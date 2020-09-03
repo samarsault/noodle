@@ -48,7 +48,7 @@ div
       .grid-item
         div
           h3 TechForums
-          p An online platform, one that can answer all the queries with discussions, tags, user-friendly UI, moderators, and a great knowledge base.The one stop online technical community for BITS Goa.
+          p There are communities on campus, interest groups, topics, issues, queries which haven’t quite been able to be centralized. We, at CTE, envisioned an online place, one that can answer all these needs. A place with tags, discussions, user-friendly UI, moderators, timed events, and sessions. A one-stop location for all answers.
         img(src="./assets/techforum.svg")
 
   section.gray(style="position: relative;display:flex")
