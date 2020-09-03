@@ -101,8 +101,8 @@ section#team
             LinkedIn
 
   div.img-wrapper
-    h2 2019-20
-    img(src="/images/team/2019.jpg")
+    h2 2020-21
+    img(src="./assets/team/2020.jpg")
 </template>
 <style lang="scss">
 section#team {
