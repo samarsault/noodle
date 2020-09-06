@@ -7,7 +7,7 @@
 		<section>
 			<form method="POST" @submit.prevent="updateInfo">
 				<label for="bits_id">BITS ID</label>
-				<input name="bits_id" v-model="bits_id" type="text" placeholder="Your 13 digit BITS ID. For example, 2018A8PS0414G" pattern='\d{4}[ABH](A|[0-9])(PS|([ABH]|[0-9])(A|[0-9]))\d{4}[GHP]' required>
+				<input name="bits_id" v-model="bits_id" type="text" placeholder="Your 13 digit BITS ID. For example, 2018A8PS0414G" pattern='\d{4}(PH|[ABH](A|B|[0-9]))(PS|TS|PX|([ABH]|[0-9])(A|B|[0-9]))\d{4}[GHP]' required>
 				<label for="phone">Phone</label>
 				<input name="phone" v-model="phone" type="number" placeholder="10 Digit Phone" pattern="\\d{10}" minlength="10" required>
 				<button class="primary icon-button"><span class="icon-right">Let's Go</span><Go :size="28"/></button>

@@ -19,7 +19,8 @@ const UserSchema = new Schema({
   },
   bits_id: {
     type: String,
-    match: /\d{4}[ABH](A|[0-9])(PS|([ABH]|[0-9])(A|[0-9]))\d{4}[GHP]/,
+    match: /\d{4}(PH|[ABH](A|B|[0-9]))(PS|TS|PX|([ABH]|[0-9])(A|B|[0-9]))\d{4}[GHP]/,
+    // match: /\d{4}[ABH](A|[0-9])(PS|([ABH]|[0-9])(A|[0-9]))\d{4}[GHP]/,
   },
   phone: {
     type: String,
