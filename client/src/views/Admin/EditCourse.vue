@@ -10,6 +10,12 @@
         form="editForm"
       />
       <div class="buttons">
+        <button @click="archiveCourse(true)" v-if="!course.isArchived">
+          Archive
+        </button>
+        <button @click="archiveCourse(false)" v-if="course.isArchived">
+          UnArchive
+        </button>
         <button @click="toggleEdit()" v-if="!isEdit">
           Edit
         </button>
@@ -206,6 +212,13 @@ export default {
       ).data;
       this.isEdit = !this.isEdit;
       this.doMounting();
+    },
+    async archiveCourse(toArchive) {
+      this.course = (
+        await axios.put(
+          `/admin/super/courses/archive/${this.course._id}/${toArchive}`
+        )
+      ).data;
     },
     async toggleEdit() {
       this.isEdit = !this.isEdit;

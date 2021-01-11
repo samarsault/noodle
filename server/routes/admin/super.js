@@ -61,7 +61,7 @@ router.get("/users/searchById", async function (req, res) {
 });
 
 router.get("/courses/all", async function (req, res) {
-  const courses = await courseService.getAll();
+  const courses = await courseService.getAllSuper();
   res.send(courses);
 });
 
@@ -74,6 +74,19 @@ router.put("/courses/update/:course_id", async function (req, res) {
   try {
     // Update Course
     const course = await courseService.update(req.params.course_id, req.body);
+    return res.status(200).send(course);
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+});
+
+router.put("/courses/archive/:course_id/:toArchive", async function (req, res) {
+  try {
+    // Change Course Archive Status
+    const course = await courseService.archive(
+      req.params.course_id,
+      req.params.toArchive
+    );
     return res.status(200).send(course);
   } catch (err) {
     return res.status(500).send(err.message);

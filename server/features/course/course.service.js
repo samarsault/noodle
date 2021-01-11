@@ -75,6 +75,10 @@ exports.getAll = function () {
   }).limit(10);
 };
 
+exports.getAllSuper = function () {
+  return Course.find({}).limit(30);
+};
+
 exports.getArchives = function () {
   return Course.find({
     isArchived: true,
@@ -216,4 +220,9 @@ exports.update = async function (course_id, newCourse) {
     await Promise.all(updateDelegates);
   }
   return Course.findOne({ _id: course._id });
+};
+
+exports.archive = async function (course_id, toArchive) {
+  await Course.updateOne({ _id: course_id }, { isArchived: toArchive });
+  return Course.findOne({ _id: course_id });
 };
