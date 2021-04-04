@@ -39,10 +39,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: |
-          cd server
-          npm install
-          npm test -- --ci
+      - run: cd server
+      - run: npm ci
+      - run: npm test -- --ci
+      
   lint:
     name: Tests the linting
     runs-on: ubuntu-latest
