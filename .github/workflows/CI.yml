@@ -41,7 +41,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: echo `pwd`
       - run: cd server && echo `pwd` && npm ci
-      - run: cd server && echo `pwd` && npm ci && npm test -- --ci --verbose --maxWorkers=2
+      - run: cd server && echo `pwd` && npm ci && npm test -- --ci --verbose --maxWorkers=2 --forceExit
         env:
           CI: true
           EXCHANGE_OMS_ID: 1
