@@ -41,7 +41,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: echo `pwd`
       - run: cd server && echo `pwd` && npm ci
-      - run: cd server && echo `pwd` && npm ci && npm test -- --ci
+      - run: cd server && echo `pwd` && npm ci && npm test -- --ci --verbose --maxWorkers=2
       
   lint:
     name: Tests the linting
