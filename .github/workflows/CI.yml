@@ -40,6 +40,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: cd server
+      - run: echo `pwd`
       - run: npm ci
       - run: npm test -- --ci
       
