@@ -40,7 +40,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: echo `pwd`
-      - run: cd server && echo `pwd` && npm ci
+#       - run: cd server && echo `pwd` && npm ci
       - run: cd server && echo `pwd` && npm ci && npm test -- --ci --verbose --forceExit --detectOpenHandles --runInBand
         env:
           CI: true
