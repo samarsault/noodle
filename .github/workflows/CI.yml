@@ -42,6 +42,10 @@ jobs:
       - run: echo `pwd`
       - run: cd server && echo `pwd` && npm ci
       - run: cd server && echo `pwd` && npm ci && npm test -- --ci --verbose --maxWorkers=2
+        env:
+          CI: true
+          EXCHANGE_OMS_ID: 1
+          ISOLATE: true
       
   lint:
     name: Tests the linting
