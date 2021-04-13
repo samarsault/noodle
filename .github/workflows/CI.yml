@@ -9,10 +9,10 @@ on:
 jobs:
   build:
     name: Vue app builds successfully
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-18.04]
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
@@ -28,10 +28,10 @@ jobs:
         
   test:
     name: Tests server
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-18.04]
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
@@ -45,10 +45,10 @@ jobs:
           npm test -- --ci
   lint:
     name: Tests the linting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-18.04]
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
