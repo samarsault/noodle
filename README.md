@@ -12,7 +12,7 @@
 
 Requires: MongoDB, NodeJS
 
-```sh
+```console
 $ git clone https://github.com/samarsault/noodle
 # Build the vue app
 $ cd client && npm i && npm run build
