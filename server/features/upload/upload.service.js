@@ -12,6 +12,11 @@ aws.config.update({
   region: process.env.aws_region,
 });
 
+const AWS_Present =
+  !!process.env.aws_access_key_id &&
+  !!process.env.aws_secret_access_key &&
+  !!process.env.aws_region;
+
 const s3Uploader = async function (req, res) {
   aws.config.setPromisesDependency();
   aws.config.update({
@@ -21,6 +26,7 @@ const s3Uploader = async function (req, res) {
   });
   const s3 = new aws.S3();
   const locations = [];
+  const result = [];
   const dataPromises = Object.values(req.files).map((file) => {
     const params = {
       ACL: "public-read",
@@ -30,7 +36,10 @@ const s3Uploader = async function (req, res) {
     };
 
     const prom = s3.upload(params).promise();
-    fs.unlinkSync(file[0].path); // Empty temp folder
+    result.push(`/upload${file[0].path.split("/upload")[1]}`);
+    if (AWS_Present) {
+      fs.unlinkSync(file[0].path); // Empty temp folder
+    }
     return prom;
   });
 
@@ -44,7 +53,7 @@ const s3Uploader = async function (req, res) {
       res.status(500).send(e.stack);
     }
   });
-  return locations[0];
+  return AWS_Present ? locations[0] : result[0];
 };
 
 const upload = multer({
