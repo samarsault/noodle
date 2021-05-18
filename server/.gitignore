@@ -23,7 +23,7 @@ yarn-error.log*
 
 # local db
 db
-upload/temp/*
+features/upload/temp/*
 coverage
 
 public/stylesheets/*.css
