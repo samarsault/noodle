@@ -47,7 +47,7 @@ app.use("/public", publicRouter);
 app.use("/auth", authRouter);
 app.use("/courses", isAuth, coursesRouter); // handle course registration
 app.use("/admin", isAuth, adminRouter);
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/upload", express.static(path.join(__dirname, "features", "upload")));
 // API
 app.use("/api", isAuth, apiRouter);
 
