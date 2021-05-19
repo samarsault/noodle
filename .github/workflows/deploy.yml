@@ -16,6 +16,7 @@ jobs:
      
           script: |
             echo 'Deployment Started'
+            nvm use 12
             echo `node -v`
             cd noodle
             git pull
