@@ -3,26 +3,15 @@ module.exports = {
     {
       name: "noodle-server",
       script: "npm",
-      args: 'run dev',
+      args: 'start',
       autorestart: true,
       watch: false,
       cwd: './server',
       max_memory_restart: "1G",
       env: {
-        NODE_ENV: "development",
-        PORT: 3000,
+        NODE_ENV: "production",
+        PORT: 6000,
       },
     },
-    {
-      name: 'noodle-client',
-      script: 'npm',
-      args: 'run serve',
-      cwd: './client',
-      autorestart: true,
-      env: {
-        NODE_ENV: 'development',
-      }
-    }
- 
   ],
 };
