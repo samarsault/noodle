@@ -21,7 +21,8 @@ jobs:
             nvm use 12
             echo `node -v`
             cd noodle
-            git pull
+            git checkout production
+            git pull origin production
             cd client
             npm i && npm run build
             cd ../server
