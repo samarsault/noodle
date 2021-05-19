@@ -15,7 +15,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }} # User of the server you want to ssh into
      
           script: |
-            echo 'Deployment Started' 
+            echo 'Deployment Started'
+            echo `node -v`
             cd noodle
             git pull
             cd client
