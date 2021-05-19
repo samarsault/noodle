@@ -72,7 +72,7 @@ exports.getAll = function () {
       // works for false, undefined etc.
       $ne: true,
     },
-  }).limit(10);
+  }).limit(30);
 };
 
 exports.getAllSuper = function () {
