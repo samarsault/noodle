@@ -23,7 +23,7 @@
         Registered Courses
       </h4>
       <!-- <Students/> -->
-      <div style="display: flex;">
+      <div style="display: flex; flex-wrap: wrap;">
         <CourseCard
           v-for="course in courses"
           :key="course._id"

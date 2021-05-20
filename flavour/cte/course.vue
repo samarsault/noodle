@@ -4,7 +4,7 @@
       <div class="container">
       <div>
         <h2 style="margin-top: 0">{{ course.name }}</h2> 
-        <p>{{ course.description }}</p>
+        <p style="white-space: pre-wrap;">{{ course.description }}</p>
         <router-link :to="`/dashboard/course/${course._id}`" v-if="courseRegistered">
           <button class="primary">Go To Course</button>
         </router-link>

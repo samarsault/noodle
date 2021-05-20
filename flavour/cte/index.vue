@@ -66,10 +66,10 @@ div
             h2.num 40+
             span Projects Funded
           div 
-            h2.num 230K
+            h2.num 250K+
             span Cash prizes rewarded
           div 
-            h2.num 110
+            h2.num 110+
             span Pizzas Ordered
 
   section.white
