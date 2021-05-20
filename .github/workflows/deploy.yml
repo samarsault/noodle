@@ -15,5 +15,20 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }} # User of the server you want to ssh into
      
           script: |
-            echo 'Deployment successful to digital ocean' 
-            git clone git@github.com:samarsault/noodle.git 
+            echo 'Deployment Started'
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            nvm use 12
+            echo `node -v`
+            cd noodle
+            git checkout production
+            git pull origin production
+            cd client
+            npm i && npm run build
+            cd ../server
+            npm i
+            cd ..
+            pm2 stop ecosystem.config.js
+            pm2 start ecosystem.config.js
+            sudo service nginx restart
+            echo 'Deployment Complete' 
