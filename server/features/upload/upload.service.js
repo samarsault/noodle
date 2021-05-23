@@ -28,31 +28,32 @@ const s3Uploader = async function (req, res) {
   const locations = [];
   const result = [];
   const dataPromises = Object.values(req.files).map((file) => {
-    const params = {
-      ACL: "public-read",
-      Bucket: process.env.aws_bucket_name,
-      Body: fs.createReadStream(file[0].path),
-      Key: file[0].filename,
-    };
-
-    const prom = s3.upload(params).promise();
     result.push(`/upload${file[0].path.split("/upload")[1]}`);
     if (AWS_Present) {
-      fs.unlinkSync(file[0].path); // Empty temp folder
-    }
-    return prom;
-  });
+      const params = {
+        ACL: "public-read",
+        Bucket: process.env.aws_bucket_name || null,
+        Body: fs.createReadStream(file[0].path),
+        Key: file[0].filename,
+      };
 
-  const datas = await Promise.all(dataPromises);
-  // fs.unlinkSync(path.join(__dirname, "temp"));
-  datas.forEach((data) => {
-    try {
-      locations.push(data.Location);
-    } catch (e) {
-      console.log("Error occured while trying to upload to S3 bucket", e);
-      res.status(500).send(e.stack);
+      const prom = s3.upload(params).promise();
+      fs.unlinkSync(file[0].path); // Empty temp folder
+      return prom;
     }
   });
+  if (AWS_Present) {
+    const datas = await Promise.all(dataPromises);
+    // fs.unlinkSync(path.join(__dirname, "temp"));
+    datas.forEach((data) => {
+      try {
+        locations.push(data.Location);
+      } catch (e) {
+        console.log("Error occured while trying to upload to S3 bucket", e);
+        res.status(500).send(e.stack);
+      }
+    });
+  }
   return AWS_Present ? locations[0] : result[0];
 };
 
