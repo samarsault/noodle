@@ -17,6 +17,7 @@ jobs:
           script: |
             echo 'Deployment Started'
             export NVM_DIR=~/.nvm
+            source ~/noodle_env.sh
             source ~/.nvm/nvm.sh
             nvm use 12
             echo `node -v`

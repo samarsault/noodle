@@ -23,10 +23,32 @@ $ npm i && npm start
 
 **Setting up**
 
-To run the app, you will require a .env file for the server (`server/.env`) and the client (`client/.env`) which contains some configuration details.
+To run the app, you will require a .env file for the both the server (`server/.env`) and the client (`client/.env`) which contains some configuration details. 
+
 These environment variables can be easily set by running `bash populate_env.sh` from the root folder.
 
-The GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET, used for authentication can be obtained via the [Google API console](https://console.developers.google.com/)
+The client env file will look like this (substitute your values):
+
+```
+VUE_APP_SERVER_URL=http://localhost:3000
+VUE_APP_GOOGLE_ANALYTICS_ID=UA-GG
+```
+
+The server env file will look something like(subtitute your values):
+```
+GOOGLE_CLIENT_ID=3232-u23.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=sdjfoasjfoda
+SECRET_KEY=adfnsa3qr080w4
+CLIENT_URL=http://localhost:8080
+```
+The `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, used for authentication can be obtained via the [Google API console](https://console.developers.google.com/)
+While setting up [`Google Credentials`](https://console.cloud.google.com/apis/credentials) ensure you set the following fields correctly:
+- Authorized JavaScript origins
+  - URIs: http://localhost:3000
+- Authorized redirect URIs
+  - URIs:
+    1. http://localhost:3000
+    2. http://localhost:3000/auth/callback
 
 If you plan on working on any of the AWS related features, include the `aws_access_key_id`, `aws_secret_access_key`, `aws_region` and `aws_bucket_name` in the .env as well. These can be obtained from your [AWS account](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)
 
