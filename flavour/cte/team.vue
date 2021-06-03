@@ -5,51 +5,51 @@ section#team
   .team-cards
     .team-3
       div
-        img(src='./assets/team/abdullah.jpg', alt="Abdullah Mukaddam")
-        h3 Abdullah Mukaddam
+        img(src='./assets/team/suhrudh.jpg', alt="Suhrudh Sarathy")
+        h3 Suhrudh Sarathy
         p President
         div.social
-          a(href='#')
+          a(href='mailto:f20190390@goa.bits-pilani.ac.in')
             Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/suhrudh-sarathy-a55a851a0/')
             LinkedIn
 
       div
-        img(src='./assets/team/PranavP.jpg', alt='Pranav Pateriya')
-        h3 Pranav Pateriya
+        img(src='./assets/team/manas.jpg', alt='Manas Mhasakar')
+        h3 Manas Mhasakar
         p Vice President
         div.social
-          a(href='mailto:f20180686@goa.bits-pilani.ac.in')
+          a(href='mailto:f20190130@goa.bits-pilani.ac.in')
            Mail
-          a(href='https://www.facebook.com/pranav.pateriya.3')
+          a(href='#')
             FB
-          a(href='https://www.linkedin.com/in/pranav-pateriya-8455b1158')
+          a(href='https://www.linkedin.com/in/manas-mhasakar-abb123176/')
             LinkedIn
 
       div
-        img(src='./assets/team/saubhagya.jpg', alt='Saubhagya Shukla')
-        h3 Saubhagya Shukla
+        img(src='./assets/team/shwetabh.jpg', alt='Shwetabh Pandey')
+        h3 Shwetabh Pandey
         p Treasurer
         div.social
-          a(href='#')
+          a(href='mailto:f20190300@goa.bits-pilani.ac.in')
            Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/shwetabh-pandey-183803108/')
             LinkedIn
 
       div
-        img(src='./assets/team/Bhavyam.jpeg', alt='Bhavyam Kamal')
-        h3 Bhavyam Kamal
+        img(src='./assets/team/milind.jpeg', alt='Milind Gupta')
+        h3 Milind Gupta
         p PR Head
         div.social
-          a(href='mailto:f20180112@goa.bits-pilani.ac.in')
+          a(href='mailto:f20190523@goa.bits-pilani.ac.in')
            Mail
-          a(href='https://www.facebook.com/bhavyam.kamal.5')
+          a(href='#')
             FB
-          a(href='https://www.linkedin.com/in/bhavyam-k-b8b782166/')
+          a(href='#')
             LinkedIn
 
     .team-3
@@ -66,42 +66,42 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/somesh.jpg', alt='Somesh Singh')
-        h3 Somesh Singh
+        img(src='./assets/team/shuja.jpg', alt='Shuja Jameel Siddiqui')
+        h3 Shuja Jameel Siddiqui
         p Events & Initiatives Head
         div.social
-          a(href='#')
+          a(href='mailto:f20190948@goa.bits-pilani.ac.in')
            Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/shuja-jameel-siddiqui/')
             LinkedIn
 
       div
-        img(src='./assets/team/rishikesh.jpg', alt='Rishikesh Trivedi')
-        h3 Rishikesh Trivedi
-        p Projects & Incubation Head
+        img(src='./assets/team/soham.jpg', alt='Soham Yadav')
+        h3 Soham Yadav
+        p Projects & Research Head
         div.social
-          a(href='#')
+          a(href='mailto:f20190139@goa.bits-pilani.ac.in')
            Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/soham-yadav/')
             LinkedIn
       div
-        img(src='./assets/team/anshuman.jpg', alt='Anshuman Singh')
-        h3 Anshuman Singh
+        img(src='./assets/team/tanmaiy.jpg', alt='Tanmaiy Sethia Jain')
+        h3 Tanmaiy Sethia Jain
         p Courses Head
         div.social
-          a(href='mailto:f20180512@goa.bits-pilani.ac.in')
+          a(href='mailto:f20190117@goa.bits-pilani.ac.in')
            Mail
-          a(href='https://www.facebook.com/notAnshuman')
+          a(href='#')
             FB
-          a(href='https://www.linkedin.com/in/ACoAACu6Zz4BZvAuinneEBHAEc7zSMmE7U3HheQ/')
+          a(href='https://www.linkedin.com/in/tanmaiysethia0097/')
             LinkedIn
 
   div.img-wrapper
-    h2 2020-21
+    h2 2021-22
     img(src="./assets/team/2020.jpg")
 </template>
 <style lang="scss">
