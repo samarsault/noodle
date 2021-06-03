@@ -5,7 +5,7 @@ section#team
   .team-cards
     .team-3
       div
-        img(src='./assets/team/suhrudh.jpg', alt="Suhrudh Sarathy")
+        img(src='./assets/team/suhrudh.jpeg', alt="Suhrudh Sarathy")
         h3 Suhrudh Sarathy
         p President
         div.social
@@ -17,7 +17,7 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/manas.jpg', alt='Manas Mhasakar')
+        img(src='./assets/team/manas.jpeg', alt='Manas Mhasakar')
         h3 Manas Mhasakar
         p Vice President
         div.social
@@ -41,7 +41,7 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/milind.jpeg', alt='Milind Gupta')
+        img(src='./assets/team/milind.jpg', alt='Milind Gupta')
         h3 Milind Gupta
         p PR Head
         div.social
@@ -66,7 +66,7 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/shuja.jpg', alt='Shuja Jameel Siddiqui')
+        img(src='./assets/team/shuja.jpeg', alt='Shuja Jameel Siddiqui')
         h3 Shuja Jameel Siddiqui
         p Events & Initiatives Head
         div.social
@@ -78,7 +78,7 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/soham.jpg', alt='Soham Yadav')
+        img(src='./assets/team/soham.jpeg', alt='Soham Yadav')
         h3 Soham Yadav
         p Projects & Research Head
         div.social
@@ -89,7 +89,7 @@ section#team
           a(href='https://www.linkedin.com/in/soham-yadav/')
             LinkedIn
       div
-        img(src='./assets/team/tanmaiy.jpg', alt='Tanmaiy Sethia Jain')
+        img(src='./assets/team/tanmaiy.jpeg', alt='Tanmaiy Sethia Jain')
         h3 Tanmaiy Sethia Jain
         p Courses Head
         div.social
