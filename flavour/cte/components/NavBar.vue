@@ -20,6 +20,7 @@ header
         router-link.navbar-item(v-if='user', to='/dashboard') My Courses
         router-link.navbar-item(to='/catalog') Catalog
         router-link.navbar-item(to='/faq') FAQ
+        router-link.navbar-item(to='https://techweekend.bpgc-cte.org') TechWeekend
         router-link.navbar-item(to='/admin', v-if='user && user.role == "admin"') Admin
         //- signout/signin
         a.navbar-item(v-if="user", @click.prevent='logout', href="#") Sign Out
