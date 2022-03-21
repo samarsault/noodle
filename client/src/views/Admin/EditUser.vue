@@ -7,9 +7,9 @@
         <p style="color: #999;">{{ user.bits_id }}</p>
         <p style="color: #999;">{{ user.phone }}</p>
         <p>
-          {{ user.role | title }}
+          {{ pseudoUser.role | title }}
           <a href="#" @click="alterAccess">
-            {{ user.role === "student" ? "Upgrade" : "Downgrade" }}
+            {{ pseudoUser.role === "student" ? "Upgrade" : "Downgrade" }}
           </a>
         </p>
       </div>
@@ -46,11 +46,11 @@
 <script>
 import axios from "axios";
 import CourseCard from "@/components/CourseCard.vue";
-
+import { getters } from '../../utils/store';
 export default {
   data() {
     return {
-      user: null,
+      pseudoUser: null,
       courses: [],
     };
   },
@@ -65,20 +65,21 @@ export default {
     CourseCard,
   },
   async mounted() {
-    this.user = (
+    this.pseudoUser = (
       await axios.get(
         `/admin/super/users/searchById/?q=${this.$route.params.user_id}`
       )
     ).data;
-    const courses = this.user.courses.map(async (course_id) => {
+    const courses = this.pseudoUser.courses.map(async (course_id) => {
       return (await axios.get(`/admin/super/courses/${course_id}`)).data;
     });
     this.courses = await Promise.all(courses);
   },
   methods: {
+    ...getters,
     async dereg(courseName) {
       await axios.post("/admin/super/deregister", {
-        email: this.user.email,
+        email: this.pseudoUser.email,
         course: courseName,
       });
       //Refresh the page for new data
@@ -93,14 +94,20 @@ export default {
       this.courses = await Promise.all(courses);
     },
     async alterAccess() {
-      const oppositeRole = this.user.role === "admin" ? "student" : "admin";
+      const oppositeRole = this.pseudoUser.role === "admin" ? "student" : "admin";
       try {
+        if(this.pseudoUser._id === this.user()._id){
+          const confirmation = confirm(
+            `Warning! you will be demoted to a ${oppositeRole}?`
+          );
+          if(!confirmation) return;
+        }
         const { status } = await axios.post("/admin/super/users/updateAccess", {
-          user_id: this.user._id,
+          user_id: this.pseudoUser._id,
           role: oppositeRole,
         });
         if (status !== 200) throw new Error("Error updating access level");
-        this.user.role = oppositeRole;
+        this.pseudoUser.role = oppositeRole;
       } catch (err) {
         alert(err.message);
       }
