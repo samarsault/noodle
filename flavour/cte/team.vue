@@ -9,7 +9,7 @@ section#team
         h3 Anchal Malani
         p President
         div.social
-          a(href='#')Team
+          a(href='#')
             Mail
           a(href='#')
             FB
