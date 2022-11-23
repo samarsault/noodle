@@ -5,8 +5,8 @@ section#team
   .team-cards
     .team-3
       div
-        img(src='./assets/team/abdullah.jpg', alt="Abdullah Mukaddam")
-        h3 Abdullah Mukaddam
+        img(src='./assets/team/anchal.jpeg', alt="Anchal Malani")
+        h3 Anchal Malani
         p President
         div.social
           a(href='#')
@@ -17,20 +17,20 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/PranavP.jpg', alt='Pranav Pateriya')
-        h3 Pranav Pateriya
+        img(src='./assets/team/djfinal-min.jpg', alt='Dhruv Johari')
+        h3 Dhruv Johari
         p Vice President
         div.social
-          a(href='mailto:f20180686@goa.bits-pilani.ac.in')
+          a(href='#')
            Mail
-          a(href='https://www.facebook.com/pranav.pateriya.3')
+          a(href='#')
             FB
-          a(href='https://www.linkedin.com/in/pranav-pateriya-8455b1158')
+          a(href='#')
             LinkedIn
 
       div
-        img(src='./assets/team/saubhagya.jpg', alt='Saubhagya Shukla')
-        h3 Saubhagya Shukla
+        img(src='./assets/team/ishanfinal-min.jpg', alt='Ishan Gupta')
+        h3 Ishan Gupta
         p Treasurer
         div.social
           a(href='#')
@@ -41,33 +41,33 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/Bhavyam.jpeg', alt='Bhavyam Kamal')
-        h3 Bhavyam Kamal
+        img(src='./assets/team/Tushankaa_sitepicfinal-min.jpg', alt='Tushankaa Barai')
+        h3 Tushankaa Barai
         p PR Head
         div.social
-          a(href='mailto:f20180112@goa.bits-pilani.ac.in')
+          a(href='#')
            Mail
-          a(href='https://www.facebook.com/bhavyam.kamal.5')
+          a(href='#')
             FB
-          a(href='https://www.linkedin.com/in/bhavyam-k-b8b782166/')
+          a(href='#')
             LinkedIn
 
     .team-3
       div
-        img(src='./assets/team/samarsault.jpg', alt='Samarjeet Singh')
-        h3 Samarjeet Singh
-        p Development Head
+        img(src='./assets/team/darshanfinal.jpg', alt='Darshan Khade')
+        h3 Darshan Khade
+        p Web Dev & Automation Head
         div.social
-          a(href='mailto:f20180414@goa.bits-pilani.ac.in')
+          a(href='#')
            Mail
-          a(href='https://www.facebook.com/samarjeet27')
+          a(href='#')
             FB
-          a(href='https://linkedin.com/in/samarsault')
+          a(href='#')
             LinkedIn
 
       div
-        img(src='./assets/team/somesh.jpg', alt='Somesh Singh')
-        h3 Somesh Singh
+        img(src='./assets/team/yashkhannafinal.jpg', alt='Yash Khanna')
+        h3 Yash Khanna
         p Events & Initiatives Head
         div.social
           a(href='#')
@@ -78,26 +78,15 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/rishikesh.jpg', alt='Rishikesh Trivedi')
-        h3 Rishikesh Trivedi
-        p Projects & Incubation Head
-        div.social
-          a(href='#')
-           Mail
-          a(href='#')
-            FB
-          a(href='#')
-            LinkedIn
-      div
-        img(src='./assets/team/anshuman.jpg', alt='Anshuman Singh')
-        h3 Anshuman Singh
+        img(src='./assets/team/pkilledar.jpg', alt='Prathamesh Killedar')
+        h3 Prathamesh Killedar
         p Courses Head
         div.social
-          a(href='mailto:f20180512@goa.bits-pilani.ac.in')
+          a(href='#')
            Mail
-          a(href='https://www.facebook.com/notAnshuman')
+          a(href='#')
             FB
-          a(href='https://www.linkedin.com/in/ACoAACu6Zz4BZvAuinneEBHAEc7zSMmE7U3HheQ/')
+          a(href='#')
             LinkedIn
 
   div.img-wrapper
