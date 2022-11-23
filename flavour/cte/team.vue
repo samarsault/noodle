@@ -78,7 +78,7 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/prathamesh.jpg', alt='Prathamesh Killedar')
+        img(src='./assets/team/pkilledar.jpg', alt='Prathamesh Killedar')
         h3 Prathamesh Killedar
         p Courses Head
         div.social
