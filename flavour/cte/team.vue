@@ -5,8 +5,8 @@ section#team
   .team-cards
     .team-3
       div
-        img(src='./assets/team/anchal.jpeg', alt="Anchal Malani")
-        h3 Anchal Malani
+        img(src='./assets/team/Gautam.png', alt="Gautam Sajith")
+        h3 Gautam Sajith
         p President
         div.social
           a(href='#')
@@ -17,8 +17,8 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/djfinal-min.jpg', alt='Dhruv Johari')
-        h3 Dhruv Johari
+        img(src='./assets/team/Anushka.jpg', alt='Anushka Sethi')
+        h3 Anushka Sethi
         p Vice President
         div.social
           a(href='#')
@@ -29,9 +29,9 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/ishanfinal-min.jpg', alt='Ishan Gupta')
-        h3 Ishan Gupta
-        p Treasurer
+        img(src='./assets/team/Soham.jpeg', alt='Soham Shinde')
+        h3 Soham Shinde
+        p Events and Initiatives Head
         div.social
           a(href='#')
            Mail
@@ -41,8 +41,8 @@ section#team
             LinkedIn
 
       div
-        img(src='./assets/team/Tushankaa_sitepicfinal-min.jpg', alt='Tushankaa Barai')
-        h3 Tushankaa Barai
+        img(src='./assets/team/Aditya.jpg', alt='Aditya Shripad')
+        h3 Aditya Shripad
         p PR Head
         div.social
           a(href='#')
@@ -54,32 +54,8 @@ section#team
 
     .team-3
       div
-        img(src='./assets/team/darshanfinal.jpg', alt='Darshan Khade')
-        h3 Darshan Khade
-        p Web Dev & Automation Head
-        div.social
-          a(href='#')
-           Mail
-          a(href='#')
-            FB
-          a(href='#')
-            LinkedIn
-
-      div
-        img(src='./assets/team/yashkhannafinal.jpg', alt='Yash Khanna')
-        h3 Yash Khanna
-        p Events & Initiatives Head
-        div.social
-          a(href='#')
-           Mail
-          a(href='#')
-            FB
-          a(href='#')
-            LinkedIn
-
-      div
-        img(src='./assets/team/pkilledar.jpg', alt='Prathamesh Killedar')
-        h3 Prathamesh Killedar
+        img(src='./assets/team/Krish.jpg', alt='Krish Chaplot')
+        h3 Krish Chaplot
         p Courses Head
         div.social
           a(href='#')
@@ -88,6 +64,19 @@ section#team
             FB
           a(href='#')
             LinkedIn
+
+      div
+        img(src='./assets/team/Amish.jpg', alt='Amish Sharma')
+        h3 Amish Sharma
+        p Finance Head
+        div.social
+          a(href='#')
+           Mail
+          a(href='#')
+            FB
+          a(href='#')
+            LinkedIn
+
 
   div.img-wrapper
     h2 2020-21
