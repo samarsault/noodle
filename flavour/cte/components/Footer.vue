@@ -1,7 +1,7 @@
 <template>
   <footer>
     <div class="container">
-      <div id="copy">&copy; CTE BPGC 2021</div>
+      <div id="copy">&copy; CTE BPGC 2024</div>
       <div id="social-icons">
         <a href="https://www.facebook.com/ctebpgc/"><FB :size="32"/></a>
         <a href="https://instagram.com/ctebpgc"><Insta :size="32"/></a>

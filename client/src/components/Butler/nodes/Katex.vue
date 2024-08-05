@@ -84,7 +84,7 @@ export default {
   width: fit-content;
   padding: 0 10px;
   position: absolute;
-  bottom: calc(0 - 100%);
+  bottom: calc(0% - 100%);
   left: 0;
   input[type="text"] {
     background-color: #eee;

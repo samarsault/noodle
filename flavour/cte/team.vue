@@ -5,82 +5,82 @@ section#team
   .team-cards
     .team-3
       div
-        img(src='./assets/team/Gautam.png', alt="Gautam Sajith")
-        h3 Gautam Sajith
+        img(src='./assets/team/Vrishti_ne.jpg', alt="Vrishti Godhwani")
+        h3 Vrishti Godhwani
         p President
         div.social
           a(href='#')
             Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/vrishti-godhwani/')
             LinkedIn
 
       div
-        img(src='./assets/team/Anushka.jpg', alt='Anushka Sethi')
-        h3 Anushka Sethi
-        p Vice President
+        img(src='./assets/team/Riteesh.jpg', alt='Riteesh Rath')
+        h3 Reetish Rath
+        p Vice President and Events Head
         div.social
           a(href='#')
            Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/reetish-rath-95306626a/')
             LinkedIn
 
       div
-        img(src='./assets/team/Soham.jpeg', alt='Soham Shinde')
-        h3 Soham Shinde
-        p Events and Initiatives Head
+        img(src='./assets/team/Adi.jpg', alt='Aditya Chaudhary')
+        h3 Aditya Chaudhary
+        p Web Development and Sponsorships Head
         div.social
           a(href='#')
            Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/aditya-chaudhary-34bb95244/')
             LinkedIn
 
       div
-        img(src='./assets/team/Aditya.jpg', alt='Aditya Shripad')
-        h3 Aditya Shripad
+        img(src='./assets/team/Manas.jpg', alt='Manas Jaiswal')
+        h3 Manas Jaiswal
         p PR Head
         div.social
           a(href='#')
            Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/manas-jaiswal-5a15aa210/')
             LinkedIn
 
     .team-3
       div
-        img(src='./assets/team/Krish.jpg', alt='Krish Chaplot')
-        h3 Krish Chaplot
+        img(src='./assets/team/Jainam.jpg', alt='Jainam Mehta')
+        h3 Jainam Mehta
         p Courses Head
         div.social
           a(href='#')
            Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/jainam-mehta-b538191b8/')
             LinkedIn
 
       div
-        img(src='./assets/team/Amish.jpg', alt='Amish Sharma')
-        h3 Amish Sharma
+        img(src='./assets/team/Pray.jpg', alt='Pray Raskapoorwala')
+        h3 Pray Raskapoorwala
         p Finance Head
         div.social
           a(href='#')
            Mail
           a(href='#')
             FB
-          a(href='#')
+          a(href='https://www.linkedin.com/in/pray-raskapoorwala-65a84325b/')
             LinkedIn
 
 
   div.img-wrapper
-    h2 2020-21
-    img(src="./assets/team/2020.jpg")
+    h2 2023-24
+    img(src="./assets/team/Team_23.jpeg")
 </template>
 <style lang="scss">
 section#team {
